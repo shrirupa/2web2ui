@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Page, Banner } from '@sparkpost/matchbox';
 import { Loading, ApiErrorBanner, TableCollection, PageLink } from 'src/components';
 import { Users } from 'src/components/images';
+import { capitalize } from 'src/helpers/string';
 
 import StoryContainer from './StoryContainer';
 
@@ -19,34 +20,30 @@ class ListPage extends React.Component {
     const { loadItems, error, noun } = this.props;
     return <ApiErrorBanner
       errorDetails={error.message}
-      message={`Sorry, we seem to have had some trouble loading your ${noun}s .`}
+      message={`Sorry, we seem to have had some trouble loading your ${noun.toLowerCase()}s .`}
       reload={loadItems}
     />;
   }
 
   renderItems() {
-    const { columns, items, formatRow } = this.props;
+    const { columns, items, formatRow, filterBox, defaultSortColumn } = this.props;
     return <TableCollection
       columns={columns}
       getRowData={formatRow}
       pagination={true}
       rows={items}
-      // filterBox={{
-      //   show: true,
-      //   keyMap: { role: 'access' },
-      //   exampleModifiers: ['name', 'email', 'role'],
-      //   itemToStringKeys: ['username', 'name', 'email']
-      // }}
-      // defaultSortColumn='name'
+      filterBox={filterBox}
+      defaultSortColumn={defaultSortColumn || columns[0]}
     />;
   }
 
   render() {
-    const { noun, loading, error, banner, empty, otherActions } = this.props;
+    const { noun, slug, loading, error, banner, empty, otherActions } = this.props;
+    const capsNoun = capitalize(noun);
     const primaryAction = {
-      content: `Create ${noun}`,
+      content: `Create ${capsNoun}`,
       Component: Link,
-      to: '/account/${noun}/create'
+      to: `/account/${slug}/create`
     };
 
     if (loading) {
@@ -58,7 +55,7 @@ class ListPage extends React.Component {
       : {};
 
     return <Page
-      title={`${noun}s`}
+      title={capsNoun}
       primaryAction={primaryAction}
       secondaryActions={otherActions}
       empty={emptyProps}
@@ -71,14 +68,28 @@ class ListPage extends React.Component {
 
 ListPage.propTypes = {
   noun: propTypes.string.isRequired,
+  slug: propTypes.string.isRequired,
   loadItems: propTypes.func.isRequired,
   loading: propTypes.bool,
-  error: propTypes.object,
+  error: propTypes.shape({
+    message: propTypes.string
+  }),
   items: propTypes.arrayOf(propTypes.object),
   columns: propTypes.arrayOf(propTypes.object).isRequired,
+  defaultSortColumn: propTypes.string,
   formatRow: propTypes.func,
-  banner: propTypes.object,
-  empty: propTypes.object,
+  filterBox: propTypes.object, // TODO: reference FilterBox propTypes
+  banner: propTypes.element,
+  empty: propTypes.shape({
+    title: propTypes.string,
+    image: propTypes.shape(),
+    content: propTypes.element,
+    secondaryAction: propTypes.shape({
+      Component: propTypes.element,
+      content: propTypes.string,
+      to: propTypes.string
+    })
+  }),
   otherActions: propTypes.arrayOf(propTypes.object)
 };
 
@@ -86,8 +97,15 @@ ListPage.propTypes = {
 
 const baseProps = {
   noun: 'sprocket',
+  slug: 'sprocket',
   loadItems: action('loadItems'),
   columns: [ { label: 'Name', sortKey: 'name' }, { label: 'Diameter', sortKey: 'diam' }],
+  filterBox: {
+    show: true,
+    keyMap: { role: 'access' },
+    exampleModifiers: ['name', 'diam'],
+    itemToStringKeys: ['diam']
+  },
   formatRow: (item) => [item.name, item.diam],
   otherActions: [
     { Component: PageLink, content: 'Do a less obvious thing here', to: '' },

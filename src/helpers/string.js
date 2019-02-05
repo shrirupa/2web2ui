@@ -104,3 +104,5 @@ export const tagAsCopy = (str) => {
 };
 
 export const pluralString = (count, singularLabel, pluralLabel) => `${count} ${count === 1 ? singularLabel : pluralLabel || `${singularLabel}s`}`;
+
+export const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
