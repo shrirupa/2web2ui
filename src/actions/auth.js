@@ -22,7 +22,6 @@ export function login({ authData = {}, saveCookie = false }) {
   }
 
   return (dispatch) => {
-    dispatch(websiteAuth.login(saveCookie)); // Complete the website cookie set up process
     dispatch({
       type: 'LOGIN_SUCCESS',
       payload: authData
@@ -55,14 +54,15 @@ export function authenticate(username, password, rememberMe = false) {
       .then(({ data = {}} = {}) => {
         const authData = { ...data, username };
 
-        // Start website auth token cookie setup process
-        dispatch(websiteAuth.authenticate(username, password, rememberMe));
-
         return Promise.all([authData, getTfaStatusBeforeLoggedIn({ username, token: authData.access_token })]);
       })
       .then(([authData, tfaResponse]) => {
         const { enabled: tfaEnabled, required: tfaRequired } = tfaResponse.data.results;
         const tfaAction = actOnTfaStatus(tfaEnabled, tfaRequired, authData);
+
+        // Adds website auth token to cookie
+        dispatch(websiteAuth.authenticate(username, password, rememberMe));
+
         if (tfaAction) {
           dispatch(tfaAction);
         } else {
@@ -147,7 +147,7 @@ export function ssoCheck(username) {
 
 export function refresh(token, refreshToken) {
   return (dispatch) => {
-    const newCookie = authCookie.merge({ access_token: token, refresh_token: refreshToken });
+    const newCookie = authCookie.merge({ access_token: token, refresh_token: refreshToken }); //also saves to cookie
     dispatch(websiteAuth.refresh());
     return dispatch(login({ authData: newCookie }));
   };

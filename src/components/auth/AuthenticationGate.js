@@ -2,7 +2,9 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import authCookie from 'src/helpers/authCookie';
+import siteCookie from 'src/helpers/websiteAuthCookie';
 import { login } from 'src/actions/auth';
+import { successAction } from 'src/actions/websiteAuth';
 import { getGrantsFromCookie } from 'src/actions/currentUser';
 import { logout } from 'src/actions/auth';
 import { AUTH_ROUTE, SSO_AUTH_ROUTE } from 'src/constants';
@@ -19,6 +21,11 @@ export class AuthenticationGate extends Component {
     if (foundCookie) {
       this.props.login({ authData: foundCookie });
       this.props.getGrantsFromCookie(foundCookie);
+    }
+
+    const websiteCookie = siteCookie.get();
+    if (websiteCookie) {
+      this.props.successAction({ data: websiteCookie });
     }
   }
 
@@ -43,4 +50,4 @@ export class AuthenticationGate extends Component {
   }
 }
 
-export default withRouter(connect(({ auth, account }) => ({ auth, account }), { login, logout, getGrantsFromCookie })(AuthenticationGate));
+export default withRouter(connect(({ auth, account }) => ({ auth, account }), { login, logout, getGrantsFromCookie, successAction })(AuthenticationGate));

@@ -4,7 +4,11 @@ import config from 'src/config';
 const { authentication } = config;
 const { site: siteCfg } = authentication;
 
-function successAction({ data = {}}) {
+export function successAction({ data = {}, saveCookie = false }) {
+  if (saveCookie) {
+    siteCookie.save(data);
+  }
+
   return {
     type: 'WEBSITE_AUTH_SUCCESS',
     payload: data
@@ -24,7 +28,7 @@ function errorAction(err) {
 }
 
 function handleAuthResponse(apiCall, dispatch) {
-  return apiCall.then((result) => { dispatch(successAction(result)); })
+  return apiCall.then((result) => { dispatch(successAction({ ... result, saveCookie: true })); })
     .catch((err) => { dispatch(errorAction(err)); });
 }
 
@@ -34,22 +38,11 @@ export function authenticate(username, password, rememberMe = false) {
     dispatch);
 }
 
-export function login(saveCookie) {
-  return (dispatch, getState) => {
-    if (saveCookie) {
-      siteCookie.save(getState().websiteAuth);
-    }
-    dispatch({
-      type: 'WEBSITE_AUTH_COMPLETE'
-    });
-  };
-}
-
 export function refresh() {
   return (dispatch, getState) => {
-    const { websiteAuth: { refreshToken }} = getState();
+    const { websiteAuth: { refresh_token }} = getState();
     return handleAuthResponse(
-      useRefreshToken(refreshToken, siteCfg.authHeader),
+      useRefreshToken(refresh_token, siteCfg.authHeader),
       dispatch);
   };
 }
