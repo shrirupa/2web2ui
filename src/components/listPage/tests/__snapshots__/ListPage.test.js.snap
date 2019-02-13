@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListPage should append item actions 1`] = `
+Array [
+  "m3 bolt",
+  3,
+  "metric",
+  <Actions
+    customActions={
+      Array [
+        Object {
+          "content": "Flocculate",
+          "to": "/sprocket/1/flocculate",
+        },
+      ]
+    }
+    deletable={true}
+    editRoute="/sprocket/1"
+    item={
+      Object {
+        "diam": 3,
+        "name": "m3 bolt",
+        "scale": "metric",
+      }
+    }
+    onDelete={[Function]}
+  />,
+]
+`;
