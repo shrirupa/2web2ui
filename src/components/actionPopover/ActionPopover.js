@@ -8,4 +8,8 @@ const ActionPopover = ({ actions }) => (
   </Popover>
 );
 
+ActionPopover.propTypes = {
+  actions: ActionList.propTypes.actions
+};
+
 export default ActionPopover;
