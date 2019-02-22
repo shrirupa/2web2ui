@@ -60,11 +60,6 @@ const formatRow = (user) => ({
 });
 
 export class ListPage2 extends React.Component {
-  inviteUser = () => {
-    const { history } = this.props;
-    history.push('/account/users/create');
-  };
-
   emptyState = () => {
     const { currentUser, users } = this.props;
 
@@ -91,7 +86,7 @@ export class ListPage2 extends React.Component {
     return (
       <ListPage
         noun='user'
-        primaryActionTitle='Invite User'
+        primaryAction={{ content: 'Invite User', to: '/account/users/create' }}
         error={error}
         loadItems={listUsers}
         loading={loading}

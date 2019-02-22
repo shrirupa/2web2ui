@@ -32,9 +32,9 @@ const deleteWarning = ({ name }) => <p>This lovely {name} will no longer be usab
 
 const baseProps = {
   noun,
+  primaryAction: { to: '/sprocket/new' },
   loadItems: action('loadItems'),
   columns,
-  onCreate: action('onCreate'),
   filterBox,
   formatRow,
   additionalActions: [

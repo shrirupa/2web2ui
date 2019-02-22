@@ -18,6 +18,9 @@ export default {
   noun: propTypes.string.isRequired,
   onCreate: propTypes.func,
   onDelete: propTypes.func,
-  primaryActionTitle: propTypes.string,
+  primaryAction: propTypes.shape({
+    content: propTypes.node,
+    to: propTypes.string.isRequired
+  }),
   additionalActions: propTypes.arrayOf(propTypes.object)
 };

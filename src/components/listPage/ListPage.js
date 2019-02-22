@@ -108,8 +108,7 @@ class ListPage extends React.Component {
     const { itemToDelete } = this.state;
     const {
       noun,
-      primaryActionTitle,
-      onCreate,
+      primaryAction,
       loading,
       error,
       banner,
@@ -117,9 +116,9 @@ class ListPage extends React.Component {
       additionalActions
     } = this.props;
     const capsNoun = capitalize(noun);
-    const primaryAction = onCreate && {
-      content: primaryActionTitle || `Create ${capsNoun}`,
-      onClick: onCreate
+    const primaryActionProp = {
+      content: `Create ${capsNoun}`,
+      ...primaryAction
     };
 
     if (loading) {
@@ -131,7 +130,7 @@ class ListPage extends React.Component {
     return (
       <Page
         title={`${capsNoun}s`}
-        primaryAction={primaryAction}
+        primaryAction={primaryActionProp}
         secondaryActions={additionalActions}
         empty={empty}
       >

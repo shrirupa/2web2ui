@@ -29,7 +29,7 @@ describe('ListPage', () => {
       formatRow: ({ name, diam, scale }) => [name, diam, scale],
       loadItems: jest.fn(),
       noun: fixtures.noun,
-      onCreate: jest.fn()
+      primaryAction: { to: '/sprocket/new' }
     };
     onEdit = jest.fn();
     onDelete = jest.fn();
@@ -102,5 +102,10 @@ describe('ListPage', () => {
     wrapper.find('DeleteModal').prop('onCancel')();
     expect(onDelete).not.toHaveBeenCalled();
     expect(wrapper.find('DeleteModal').prop('open')).toBeFalsy();
+  });
+
+  it('should render custom primary action content', () => {
+    const content = 'Make a thang';
+    expect(subject({ primaryAction: { content, ...baseProps.primaryAction }}).find('Page').prop('primaryAction').content).toEqual(content);
   });
 });
