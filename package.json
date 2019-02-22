@@ -61,6 +61,7 @@
     "@sparkpost/matchbox-icons": "^1.1.5",
     "axios": "^0.18.0",
     "bowser": "2.1.0",
+    "capitalize": "^2.0.0",
     "classnames": "^2.2.5",
     "color": "^3.0.0",
     "copy-to-clipboard": "^3.0.8",

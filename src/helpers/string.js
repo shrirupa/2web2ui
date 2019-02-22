@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { newlineStrRegex, spacesRegex } from './regex';
+import capsLib from 'capitalize';
 
 export function snakeToFriendly(string = '') {
   return string
@@ -105,4 +106,4 @@ export const tagAsCopy = (str) => {
 
 export const pluralString = (count, singularLabel, pluralLabel) => `${count} ${count === 1 ? singularLabel : pluralLabel || `${singularLabel}s`}`;
 
-export const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+export const capitalize = (s) => capsLib.words(s);
