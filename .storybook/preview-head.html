@@ -1,0 +1,9 @@
+<script>
+console.log('manager-head')
+  document.addEventListener('DOMContentLoaded', function() {
+    // Modals need this portal element in place _before_ they render.
+    var modalPortal = document.createElement('div');
+    modalPortal.id = 'modal-portal';
+    document.body.appendChild(modalPortal);
+  });
+</script>
