@@ -11,7 +11,7 @@ export default {
     message: propTypes.string
   }),
   filterBox: propTypes.object, // TODO: reference FilterBox propTypes
-  formatRow: propTypes.func.isRequired,
+  renderRow: propTypes.func.isRequired,
   items: propTypes.arrayOf(propTypes.object),
   loading: propTypes.bool,
   loadItems: propTypes.func.isRequired,

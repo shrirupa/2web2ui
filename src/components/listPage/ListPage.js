@@ -52,9 +52,9 @@ class ListPage extends React.Component {
     );
   }
 
-  formatRowWithActions = (row) => {
-    const { formatRow } = this.props;
-    const formatted = formatRow(row);
+  renderRowWithActions = (row) => {
+    const { renderRow } = this.props;
+    const formatted = renderRow(row);
     const fields = formatted.fields || formatted;
     const actions = formatted.actions || {};
     return [
@@ -80,7 +80,7 @@ class ListPage extends React.Component {
     return (
       <TableCollection
         columns={columns}
-        getRowData={this.formatRowWithActions}
+        getRowData={this.renderRowWithActions}
         pagination={true}
         rows={items}
         filterBox={filterBoxOptions}

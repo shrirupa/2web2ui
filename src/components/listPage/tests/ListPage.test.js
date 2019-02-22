@@ -14,8 +14,8 @@ describe('ListPage', () => {
 
   const subject = (props) => shallow(<ListPage {...baseProps} {...props} />);
 
-  const formatRowWithActions = (row) => ({
-    fields: baseProps.formatRow(row),
+  const renderRowWithActions = (row) => ({
+    fields: baseProps.renderRow(row),
     actions: {
       editRoute: '/sprocket/1',
       deletable: true,
@@ -26,7 +26,7 @@ describe('ListPage', () => {
   beforeEach(() => {
     baseProps = {
       columns: fixtures.columns,
-      formatRow: ({ name, diam, scale }) => [name, diam, scale],
+      renderRow: ({ name, diam, scale }) => [name, diam, scale],
       loadItems: jest.fn(),
       noun: fixtures.noun,
       primaryAction: { to: '/sprocket/new' }
@@ -65,12 +65,12 @@ describe('ListPage', () => {
       items,
       onEdit,
       onDelete,
-      formatRow: formatRowWithActions
+      renderRow: renderRowWithActions
     });
-    const formatRowFn = wrapper.find('TableCollection').prop('getRowData');
-    const formattedRow = formatRowFn(items[0]);
-    expect(formattedRow).toHaveLength(Object.keys(items[0]).length + 1);
-    expect(formattedRow).toMatchSnapshot();
+    const renderRowFn = wrapper.find('TableCollection').prop('getRowData');
+    const row = renderRowFn(items[0]);
+    expect(row).toHaveLength(Object.keys(items[0]).length + 1);
+    expect(row).toMatchSnapshot();
   });
 
   it('should show the delete modal on request', () => {

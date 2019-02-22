@@ -38,7 +38,7 @@ const renderDeleteWarning = ({ name }) => (
   </p>
 );
 
-const formatRow = (user) => ({
+const renderRow = (user) => ({
   fields: [
     <User name={user.name} email={user.email} username={user.username} />,
     user.access,
@@ -94,7 +94,7 @@ export class ListPage2 extends React.Component {
         columns={COLUMNS}
         defaultSortColumn={DEFAULT_SORT_COLUMN}
         empty={empty}
-        formatRow={formatRow}
+        renderRow={renderRow}
         onCreate={this.inviteUser}
         onDelete={this.deleteUser}
         deleteWarning={renderDeleteWarning}
