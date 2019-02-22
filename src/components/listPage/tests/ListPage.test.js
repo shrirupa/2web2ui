@@ -32,21 +32,21 @@ describe('ListPage', () => {
       primaryAction: { to: '/sprocket/new' }
     };
     onEdit = jest.fn();
-    onDelete = jest.fn();
+    onDelete = jest.fn().mockResolvedValue({});
     items = [...fixtures.items];
     error = { ...fixtures.error };
   });
 
   it('should render while loading', () => {
-    expect(subject({ loading: true }).find('Loading')).toHaveLength(1);
+    expect(subject({ loading: true }).find('Loading')).toExist();
   });
 
   it('should render an error', () => {
-    expect(subject({ error }).find('ApiErrorBanner')).toHaveLength(1);
+    expect(subject({ error }).find('ApiErrorBanner')).toExist();
   });
 
   it('should render items', () => {
-    expect(subject({ items }).find('TableCollection')).toHaveLength(1);
+    expect(subject({ items }).find('TableCollection')).toExist();
   });
 
   it('should render a filter box', () => {

@@ -32,8 +32,8 @@ class ListPage extends React.Component {
     const { onDelete } = this.props;
     const { itemToDelete } = this.state;
 
-    this.setState(DEFAULT_STATE, () => {
-      onDelete(itemToDelete);
+    onDelete(itemToDelete).then(() => {
+      this.setState(DEFAULT_STATE);
     });
   };
 
