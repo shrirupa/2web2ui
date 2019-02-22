@@ -19,8 +19,8 @@ import { slugify } from 'src/helpers/string';
 
 import StoryContainer from './StoryContainer';
 
-const formatRow = (item) => [item.name, item.diam];
-const formatRowWithActions = (item) => ({
+const renderRow = (item) => [item.name, item.diam];
+const renderRowWithActions = (item) => ({
   fields: [item.name, item.diam],
   actions: {
     editRoute: `/account/sprocket/${slugify(item.name)}`,
@@ -28,7 +28,7 @@ const formatRowWithActions = (item) => ({
   }
 });
 
-const deleteWarning = ({ name }) => <p>This lovely {name} will no longer be usable.</p>;
+const renderDeleteWarning = ({ name }) => <p>This lovely {name} will no longer be usable.</p>;
 
 const baseProps = {
   noun,
@@ -36,7 +36,7 @@ const baseProps = {
   loadItems: action('loadItems'),
   columns,
   filterBox,
-  formatRow,
+  renderRow,
   additionalActions: [
     { Component: PageLink, content: 'Do a less obvious thing here', to: '' },
     { Component: PageLink, content: 'Straighten cheese', to: '' }
@@ -61,6 +61,13 @@ const emptyProps = {
   )
 };
 
+const onDelete = () => new Promise((resolve) => {
+  setTimeout(() => {
+    action('onDelete');
+    resolve();
+  }, 500);
+});
+
 storiesOf('ListPage', module)
   .addDecorator((getStory) => <StoryContainer>{getStory()}</StoryContainer>)
   .add('Loading', () => <ListPage {...baseProps} loading />)
@@ -70,10 +77,10 @@ storiesOf('ListPage', module)
     <ListPage
       {...baseProps}
       onEdit={action('onEdit')}
-      onDelete={action('onDelete')}
+      onDelete={onDelete}
       items={items}
-      deleteWarning={deleteWarning}
-      formatRow={formatRowWithActions}
+      renderDeleteWarning={renderDeleteWarning}
+      renderRow={renderRowWithActions}
     />
   ))
   .add('Without items', () => <ListPage {...baseProps} empty={emptyProps} />)
