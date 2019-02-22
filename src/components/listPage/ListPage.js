@@ -91,15 +91,17 @@ class ListPage extends React.Component {
 
   renderDeleteWarning() {
     const { itemToDelete } = this.state;
-    const { deleteWarning } = this.props;
+    const { renderDeleteWarning } = this.props;
 
     if (!itemToDelete) {
       return null;
     }
-    if (typeof deleteWarning === 'function') {
-      return deleteWarning(itemToDelete);
+
+    if (!renderDeleteWarning) {
+      return null;
     }
-    return deleteWarning;
+
+    return renderDeleteWarning(itemToDelete);
   }
 
   render() {

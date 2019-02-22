@@ -79,21 +79,14 @@ describe('ListPage', () => {
     expect(wrapper.find('DeleteModal').prop('open')).toBeTruthy();
   });
 
-  it('should format a fixed custom delete message', () => {
-    const deleteWarning = <p>Item will no longer be able to sing!</p>;
-    const wrapper = subject({ items, onDelete, deleteWarning });
-    wrapper.instance().showDeleteModal(items[0]);
-    expect(wrapper.find('DeleteModal').prop('content')).toEqual(deleteWarning);
-  });
-
   it('should format a data-dependant custom delete message', () => {
-    const deleteWarning = (item) => (
+    const renderDeleteWarning = (item) => (
       <p>{`${item.name} will no longer be able to sing!`}</p>
     );
-    const wrapper = subject({ items, onDelete, deleteWarning });
+    const wrapper = subject({ items, onDelete, renderDeleteWarning });
     wrapper.instance().showDeleteModal(items[0]);
     expect(wrapper.find('DeleteModal').prop('content')).toEqual(
-      deleteWarning(items[0])
+      renderDeleteWarning(items[0])
     );
   });
 

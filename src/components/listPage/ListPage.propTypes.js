@@ -5,7 +5,7 @@ export default {
   banner: propTypes.element,
   columns: propTypes.arrayOf(propTypes.object).isRequired,
   defaultSortColumn: propTypes.string,
-  deleteWarning: propTypes.oneOfType([propTypes.element, propTypes.func]),
+  renderDeleteWarning: propTypes.func,
   empty: Page.propTypes.empty,
   error: propTypes.shape({
     message: propTypes.string
