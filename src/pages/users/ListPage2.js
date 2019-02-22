@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TimeAgo from 'react-timeago';
-import { withRouter } from 'react-router-dom';
 import { Tag } from '@sparkpost/matchbox';
 
 import ListPage from 'src/components/listPage/ListPage';
@@ -110,17 +109,15 @@ export class ListPage2 extends React.Component {
   }
 }
 
-export default withRouter(
-  connect(
-    (state) => ({
-      currentUser: state.currentUser,
-      error: state.users.error,
-      loading: state.users.loading,
-      users: selectUsers(state)
-    }),
-    {
-      listUsers,
-      deleteUser
-    }
-  )(ListPage2)
-);
+export default connect(
+  (state) => ({
+    currentUser: state.currentUser,
+    error: state.users.error,
+    loading: state.users.loading,
+    users: selectUsers(state)
+  }),
+  {
+    listUsers,
+    deleteUser
+  }
+)(ListPage2);
