@@ -5,6 +5,11 @@ import _ from 'lodash';
 
 function useSparkpostApiRequest(options) {
   const [response, setResponse] = useState({});
+
+  // Force effect to rerun by using a toggled boolean as a dependant
+  const [retryToggle, setRetryToggle] = useState(false);
+  const retry = () => setRetryToggle(!retryToggle);
+
   const { auth } = store.getState();
   const httpOptions = { ...options };
 
@@ -21,9 +26,9 @@ function useSparkpostApiRequest(options) {
     }).catch((error) => {
       setResponse({ pending: false, error: error });
     });
-  }, []);
-  // console.log(response);
-  return response;
+  }, [retryToggle]);
+
+  return { ...response, retry };
 }
 
 export default useSparkpostApiRequest;

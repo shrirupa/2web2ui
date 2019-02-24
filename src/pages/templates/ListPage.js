@@ -11,7 +11,7 @@ import useSparkpostApiRequest from 'src/actions/helpers/useSparkpostApiRequest';
 function ListPage(props) {
   const { canModify, hasSubaccounts } = props;
 
-  const { pending, results = [], error } = useSparkpostApiRequest({
+  const { pending, results = [], retry, error } = useSparkpostApiRequest({
     method: 'GET',
     url: '/v1/templates'
   });
@@ -37,7 +37,7 @@ function ListPage(props) {
         content: <p>Build, test, preview and send your transmissions.</p>
       }} >
       {error
-        ? <ErrorBanner error={error} />
+        ? <ErrorBanner error={error} retry={retry} />
         : <Collection templates={results} hasSubaccounts={hasSubaccounts} />
       }
     </Page>
@@ -87,12 +87,12 @@ function Collection({ templates, hasSubaccounts }) {
   );
 }
 
-function ErrorBanner({ error }) {
+function ErrorBanner({ error, retry }) {
   return (
     <ApiErrorBanner
       message={'Sorry, we seem to have had some trouble loading your templates.'}
       errorDetails={error.message}
-      // reload={this.props.listTemplates}
+      reload={retry}
     />
   );
 }
