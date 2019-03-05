@@ -6,16 +6,30 @@ import { Tag } from '@sparkpost/matchbox';
 import ListPage from 'src/components/listPage/ListPage';
 import { Users } from 'src/components/images';
 import PageLink from 'src/components/pageLink/PageLink';
+import { SubaccountTag } from 'src/components';
 import User from './components/User';
 
 import { listUsers, deleteUser } from 'src/actions/users';
 import { selectUsers } from 'src/selectors/users';
+import { hasSubaccounts } from 'src/selectors/subaccounts';
+
+import { SUBACCOUNT_REPORTING_ROLE } from 'src/constants';
+import { hasUiOption } from 'src/helpers/conditions/account';
 
 const COLUMNS = [
   { label: 'User', sortKey: 'name' },
   { label: 'Role', sortKey: 'access' },
   { label: 'Two Factor Auth', sortKey: 'tfa_enabled' },
   { label: 'Last Login', sortKey: 'last_login' },
+  null
+];
+
+const SUB_COLUMNS = [
+  { label: 'User', sortKey: 'name', width: '40%' },
+  { label: 'Role', sortKey: 'access', width: '11%' },
+  { label: 'Subaccount', sortKey: 'subaccount_id', width: '15%' },
+  { label: 'Two Factor Auth', sortKey: 'tfa_enabled', width: '8%' },
+  { label: 'Last Login', sortKey: 'last_login', width: '14%' },
   null
 ];
 
@@ -27,6 +41,13 @@ const FILTER_BOX = {
   itemToStringKeys: ['username', 'name', 'email']
 };
 
+function formatRole(role) {
+  if (role === SUBACCOUNT_REPORTING_ROLE) {
+    return 'reporting';
+  }
+  return role;
+}
+
 const renderDeleteWarning = ({ name }) => (
   <p>
     <span>User "</span>
@@ -37,27 +58,6 @@ const renderDeleteWarning = ({ name }) => (
     </span>
   </p>
 );
-
-const renderRow = (user) => ({
-  fields: [
-    <User name={user.name} email={user.email} username={user.username} />,
-    user.access,
-    user.tfa_enabled ? (
-      <Tag color={'blue'}>Enabled</Tag>
-    ) : (
-      <Tag>Disabled</Tag>
-    ),
-    user.last_login ? (
-      <TimeAgo date={user.last_login} live={false} />
-    ) : (
-      'Never'
-    )
-  ],
-  actions: {
-    editRoute: `/account/users/edit/${user.username}`,
-    deletable: !user.isCurrentUser
-  }
-});
 
 export class ListPage2 extends React.Component {
   emptyState = () => {
@@ -76,10 +76,41 @@ export class ListPage2 extends React.Component {
     };
   }
 
+  renderRow = (user) => {
+    const { hasSubaccounts, isSubAccountReportingLive } = this.props;
+    const fields = [
+      <User name={user.name} email={user.email} username={user.username} />,
+      formatRole(user.access),
+      user.tfa_enabled ? (
+        <Tag color={'blue'}>Enabled</Tag>
+      ) : (
+        <Tag>Disabled</Tag>
+      ),
+      user.last_login ? (
+        <TimeAgo date={user.last_login} live={false} />
+      ) : (
+        'Never'
+      )
+    ];
+
+    if (isSubAccountReportingLive && hasSubaccounts) {
+      fields.splice(2, 0, user.subaccount_id ? <SubaccountTag id={user.subaccount_id} /> : null);
+    }
+
+    return {
+      fields,
+      actions: {
+        editRoute: `/account/users/edit/${user.username}`,
+        deletable: !user.isCurrentUser
+      }
+    };
+  }
+
   deleteUser = (user) => this.props.deleteUser(user.username);
 
   render() {
-    const { error, listUsers, loading, users } = this.props;
+    const { error, listUsers, loading, users, hasSubaccounts, isSubAccountReportingLive } = this.props;
+    const columns = isSubAccountReportingLive && hasSubaccounts ? SUB_COLUMNS : COLUMNS;
 
     const empty = this.emptyState();
 
@@ -91,11 +122,10 @@ export class ListPage2 extends React.Component {
         loadItems={listUsers}
         loading={loading}
         items={users}
-        columns={COLUMNS}
+        columns={columns}
         defaultSortColumn={DEFAULT_SORT_COLUMN}
         empty={empty}
-        renderRow={renderRow}
-        onCreate={this.inviteUser}
+        renderRow={this.renderRow}
         onDelete={this.deleteUser}
         deleteWarning={renderDeleteWarning}
         filterBox={FILTER_BOX}
@@ -109,7 +139,9 @@ export default connect(
     currentUser: state.currentUser,
     error: state.users.error,
     loading: state.users.loading,
-    users: selectUsers(state)
+    users: selectUsers(state),
+    hasSubaccounts: hasSubaccounts(state),
+    isSubAccountReportingLive: hasUiOption('subaccount_reporting')(state)
   }),
   {
     listUsers,

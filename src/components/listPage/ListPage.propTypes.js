@@ -16,7 +16,6 @@ export default {
   loading: propTypes.bool,
   loadItems: propTypes.func.isRequired,
   noun: propTypes.string.isRequired,
-  onCreate: propTypes.func,
   onDelete: propTypes.func,
   primaryAction: propTypes.shape({
     content: propTypes.node,

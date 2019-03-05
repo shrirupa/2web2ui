@@ -14,45 +14,50 @@ describe('Page: ListPage2', () => {
       loading: false,
       users,
       listUsers: jest.fn(),
-      deleteUser: jest.fn()
+      deleteUser: jest.fn(),
+      hasSubaccounts: false,
+      isSubAccountReportingLive: true
     };
   });
 
   const subject = (props) => shallow(<ListPage2 {...baseProps} {...props} />);
-  const subjectFormatRowFn = (props) => subject(props).find('ListPage').prop('formatRow');
+  const subjectRenderRowFn = (props) => subject(props).find('ListPage').prop('renderRow');
 
   it('renders a list page', () => {
     expect(subject()).toMatchSnapshot();
   });
 
   it('formats users for the table collection', () => {
-    const formatRow = subjectFormatRowFn();
-    const row = formatRow({ ...users[0], isCurrentUser: false });
+    const renderRow = subjectRenderRowFn();
+    const row = renderRow({ ...users[0], isCurrentUser: false });
     expect(row).toMatchSnapshot();
   });
 
   it('displays TFA enabled status', () => {
-    const formatRow = subjectFormatRowFn();
-    expect(formatRow({ ...users[0], tfa_enabled: true })).toMatchSnapshot();
+    const renderRow = subjectRenderRowFn();
+    expect(renderRow({ ...users[0], tfa_enabled: true })).toMatchSnapshot();
   });
 
   it('displays last login', () => {
-    const formatRow = subjectFormatRowFn();
-    expect(formatRow({ ...users[0], last_login: new Date('2018-04-01T16:15:00.000Z') })).toMatchSnapshot();
+    const renderRow = subjectRenderRowFn();
+    expect(renderRow({ ...users[0], last_login: new Date('2018-04-01T16:15:00.000Z') })).toMatchSnapshot();
+  });
+
+  it('displays subaccount info when the account uses them', () => {
+    expect(subject({ hasSubaccounts: true }).find('ListPage').prop('columns')).toContainEqual(expect.objectContaining({
+      label: 'Subaccount'
+    }));
+  });
+
+  it('should not render subaccount info when the feature is disabled', () => {
+    expect(subject({ hasSubaccounts: true, isSubAccountReportingLive: false }).find('ListPage').prop('columns')).not.toContainEqual(expect.objectContaining({
+      label: 'Subaccount'
+    }));
   });
 
   it('does not allow deletion of the current user', () => {
-    const formatRow = subjectFormatRowFn();
-    expect(formatRow({ ...users[0], isCurrentUser: true }).actions.deletable).toBeFalsy();
-  });
-
-  it('invites users', () => {
-    const props = {
-      history: { push: jest.fn() }
-    };
-    const createFn = subject(props).find('ListPage').prop('onCreate');
-    createFn();
-    expect(props.history.push).toHaveBeenCalledWith('/account/users/create');
+    const renderRow = subjectRenderRowFn();
+    expect(renderRow({ ...users[0], isCurrentUser: true }).actions.deletable).toBeFalsy();
   });
 
   it('deletes users', () => {

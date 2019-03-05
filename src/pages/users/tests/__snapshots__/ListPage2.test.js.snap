@@ -131,7 +131,6 @@ exports[`Page: ListPage2 renders a list page 1`] = `
       },
     }
   }
-  formatRow={[Function]}
   items={
     Array [
       Object {
@@ -148,13 +147,26 @@ exports[`Page: ListPage2 renders a list page 1`] = `
         "tfa_enabled": true,
         "username": "test-user-2",
       },
+      Object {
+        "access": "admin",
+        "email": "user3@test.com",
+        "name": "Test User 3",
+        "subaccount_id": 125,
+        "tfa_enabled": true,
+        "username": "test-user-3",
+      },
     ]
   }
   loadItems={[MockFunction]}
   loading={false}
   noun="user"
-  onCreate={[Function]}
   onDelete={[Function]}
-  primaryActionTitle="Invite User"
+  primaryAction={
+    Object {
+      "content": "Invite User",
+      "to": "/account/users/create",
+    }
+  }
+  renderRow={[Function]}
 />
 `;
