@@ -82,7 +82,7 @@
     "react-ace": "^6.1.0",
     "react-day-picker": "^7.1.10",
     "react-dom": "^16.8.3",
-    "react-dropzone": "^7.0.1",
+    "react-dropzone": "^10.0.1",
     "react-helmet": "^5.2.0",
     "react-instantsearch": "^5.3.1",
     "react-load-script": "0.0.6",
