@@ -19,16 +19,15 @@ import { slugify } from 'src/helpers/string';
 
 import StoryContainer from './StoryContainer';
 
-const renderRow = (item) => [item.name, item.diam];
-const renderRowWithActions = (item) => ({
-  fields: [item.name, item.diam],
-  actions: {
-    editRoute: `/account/sprocket/${slugify(item.name)}`,
-    deletable: item.name !== 'm3 bolt'
-  }
-});
+const onEdit = action('onEdit');
 
-const renderDeleteWarning = ({ name }) => <p>This lovely {name} will no longer be usable.</p>;
+const onDelete = () =>
+  new Promise(resolve => {
+    setTimeout(() => {
+      action('onDelete');
+      resolve();
+    }, 500);
+  });
 
 const baseProps = {
   noun,
@@ -36,18 +35,13 @@ const baseProps = {
   loadItems: action('loadItems'),
   columns,
   filterBox,
-  renderRow,
+  onEdit,
+  onDelete,
   additionalActions: [
     { Component: PageLink, content: 'Do a less obvious thing here', to: '' },
     { Component: PageLink, content: 'Straighten cheese', to: '' }
   ]
 };
-
-const banner = (
-  <Banner title="Happiness" status="success">
-    Wheeeee! Wonder bubble!
-  </Banner>
-);
 
 const emptyProps = {
   show: true,
@@ -61,29 +55,113 @@ const emptyProps = {
   )
 };
 
-const onDelete = () => new Promise((resolve) => {
-  setTimeout(() => {
-    action('onDelete');
-    resolve();
-  }, 500);
-});
+const mkEditRoute = name => `/account/sprocket/${slugify(name)}`;
+const mkDeletable = name => name !== 'm3 bolt';
 
 storiesOf('ListPage', module)
-  .addDecorator((getStory) => <StoryContainer>{getStory()}</StoryContainer>)
-  .add('Loading', () => <ListPage {...baseProps} loading />)
-  .add('Load failed', () => <ListPage {...baseProps} error={error} />)
-  .add('With loaded items', () => <ListPage {...baseProps} items={items} />)
-  .add('With Edit/Delete', () => (
-    <ListPage
-      {...baseProps}
-      onEdit={action('onEdit')}
-      onDelete={onDelete}
-      items={items}
-      renderDeleteWarning={renderDeleteWarning}
-      renderRow={renderRowWithActions}
-    />
+  .addDecorator(getStory => <StoryContainer>{getStory()}</StoryContainer>)
+  .add('State: Loading', () => <ListPage {...baseProps} loading />)
+  .add('State: Load failed', () => <ListPage {...baseProps} error={error} />)
+  .add('State: Without items', () => (
+    <ListPage {...baseProps} empty={emptyProps} />
   ))
-  .add('Without items', () => <ListPage {...baseProps} empty={emptyProps} />)
-  .add('With banner', () => (
-    <ListPage {...baseProps} banner={banner} items={items} />
+  .add('State: With loaded items', () => (
+    <ListPage {...baseProps} items={items} />
+  ))
+  .add('Render: With custom rows', () => (
+    <ListPage {...baseProps} items={items}>
+      {({ errorProps, tableProps }) => (
+        <>
+          <ListPage.ErrorBanner {...errorProps} />
+          <ListPage.Table {...tableProps}>
+            {({ row: { name, diam } }) => [name.toUpperCase(), diam]}
+          </ListPage.Table>
+        </>
+      )}
+    </ListPage>
+  ))
+  .add('Render: With custom page elements', () => (
+    <ListPage {...baseProps} items={items}>
+      {({ tableProps, errorProps }) => (
+        <>
+          <Banner title="Happiness" status="success">
+            Wheeeee! Wonder bubble!
+          </Banner>
+          <ListPage.ErrorBanner {...errorProps} />
+          <ListPage.Table {...tableProps} />
+          <footer>I am at the bottom</footer>
+        </>
+      )}
+    </ListPage>
+  ))
+  .add('Actions: With Edit/Delete', () => (
+    <ListPage {...baseProps} items={items}>
+      {({ errorProps, tableProps, modalProps }) => (
+        <>
+          <ListPage.ErrorBanner {...errorProps} />
+          <ListPage.Table {...tableProps}>
+            {({ row, actionProps }) => [
+              row.name,
+              row.diam,
+              <ListPage.Actions
+                {...actionProps}
+                editRoute={mkEditRoute(name)}
+                deletable={mkDeletable(name)}
+              />
+            ]}
+          </ListPage.Table>
+          <ListPage.Modal {...modalProps} />
+        </>
+      )}
+    </ListPage>
+  ))
+  .add('Actions: with custom item actions', () => (
+    <ListPage {...baseProps} items={items}>
+      {({ errorProps, tableProps, modalProps }) => (
+        <>
+          <ListPage.ErrorBanner {...errorProps} />
+          <ListPage.Table {...tableProps}>
+            {({ row, actionProps }) => [
+              row.name,
+              row.diam,
+              <ListPage.Actions
+                {...actionProps}
+                editRoute={mkEditRoute(name)}
+                deletable={mkDeletable(name)}
+                customActions={[
+                  row.diam < 10 && {
+                    content: 'Frobnicate',
+                    onClick: () => action('frobnicate')
+                  }
+                ]}
+              />
+            ]}
+          </ListPage.Table>
+          <ListPage.Modal {...modalProps} />
+        </>
+      )}
+    </ListPage>
+  ))
+  .add('Render: With custom delete warning', () => (
+    <ListPage {...baseProps} items={items}>
+      {({ errorProps, tableProps, modalProps }) => (
+        <>
+          <ListPage.ErrorBanner {...errorProps} />
+          <ListPage.Table {...tableProps}>
+          {({row, actionProps}) => [
+            row.name,
+            row.diam,
+            <ListPage.Actions {...actionProps} deletable={true} />
+          ]}
+          </ListPage.Table>
+          <ListPage.Modal {...modalProps}>
+            {({ noun, item }) => (
+              <p>
+                This lovely '{item.name}'' {noun} will no longer be usable.
+              </p>
+            )}
+          </ListPage.Modal>
+        </>
+      )}
+    </ListPage>
   ));

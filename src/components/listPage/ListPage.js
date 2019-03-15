@@ -1,16 +1,14 @@
-/* eslint-max-lines: ["error": 180] */
 import React from 'react';
 
 import { Page } from '@sparkpost/matchbox';
-import {
-  Loading,
-  ApiErrorBanner,
-  TableCollection,
-  DeleteModal
-} from 'src/components';
+import { Loading } from 'src/components';
 import { capitalize } from 'src/helpers/string';
 
+import ErrorBanner from './ErrorBanner';
+import Table from './Table';
 import Actions from './Actions';
+import Modal from './Modal';
+
 import ListPagePropTypes from './ListPage.propTypes';
 
 const DEFAULT_STATE = {
@@ -41,79 +39,21 @@ class ListPage extends React.Component {
     this.setState({ itemToDelete: item });
   };
 
-  renderError() {
-    const { loadItems, error, noun } = this.props;
-    return (
-      <ApiErrorBanner
-        errorDetails={error.message}
-        message={`Sorry, we seem to have had some trouble loading your ${noun.toLowerCase()}s .`}
-        reload={loadItems}
-      />
-    );
-  }
-
-  renderRowWithActions = (row) => {
-    const { renderRow } = this.props;
-    const formatted = renderRow(row);
-    const fields = formatted.fields || formatted;
-    const actions = formatted.actions || {};
-    return [
-      ...fields,
-      <Actions
-        item={row}
-        editRoute={actions.editRoute}
-        deletable={actions.deletable}
-        onDelete={this.showDeleteModal}
-        customActions={actions.customActions}
-      />
-    ];
-  };
-
-  renderItems() {
+  render() {
+    const { itemToDelete } = this.state;
     const {
       columns,
       items,
       filterBox,
-      defaultSortColumn
-    } = this.props;
-    const filterBoxOptions = filterBox ? { show: true, ...filterBox } : { show: false };
-    return (
-      <TableCollection
-        columns={columns}
-        getRowData={this.renderRowWithActions}
-        pagination={true}
-        rows={items}
-        filterBox={filterBoxOptions}
-        defaultSortColumn={defaultSortColumn || columns[0]}
-      />
-    );
-  }
-
-  renderDeleteWarning() {
-    const { itemToDelete } = this.state;
-    const { renderDeleteWarning } = this.props;
-
-    if (!itemToDelete) {
-      return null;
-    }
-
-    if (!renderDeleteWarning) {
-      return null;
-    }
-
-    return renderDeleteWarning(itemToDelete);
-  }
-
-  render() {
-    const { itemToDelete } = this.state;
-    const {
+      defaultSortColumn,
+      loadItems,
       noun,
       primaryAction,
       loading,
       error,
-      banner,
       empty,
-      additionalActions
+      additionalActions,
+      children
     } = this.props;
     const capsNoun = capitalize(noun);
     const primaryActionProp = {
@@ -125,8 +65,6 @@ class ListPage extends React.Component {
       return <Loading />;
     }
 
-    const modalContent = this.renderDeleteWarning();
-
     return (
       <Page
         title={`${capsNoun}s`}
@@ -134,23 +72,45 @@ class ListPage extends React.Component {
         secondaryActions={additionalActions}
         empty={empty}
       >
-        {banner}
-        {error ? this.renderError() : this.renderItems()}
-        <DeleteModal
-          open={Boolean(itemToDelete)}
-          onCancel={this.handleCancel}
-          onDelete={this.handleDelete}
-          title={`Are you sure you want to delete this ${noun}?`}
-          content={modalContent}
-        />
+        {children({
+          tableProps: {
+            columns,
+            items,
+            filterBox,
+            defaultSortColumn,
+            actionProps: {
+              onDelete: this.showDeleteModal
+            }
+          },
+          modalProps: {
+            open: Boolean(itemToDelete),
+            onCancel: this.handleCancel,
+            onDelete: this.handleDelete,
+            noun,
+            item: itemToDelete
+          },
+          errorProps: { error, loadItems, noun }
+        })}
       </Page>
     );
   }
 }
 
+ListPage.ErrorBanner = ErrorBanner;
+ListPage.Table = Table;
+ListPage.Modal = Modal;
+ListPage.Actions = Actions;
+
 ListPage.propTypes = ListPagePropTypes;
 ListPage.defaultProps = {
-  items: []
+  items: [],
+  children: ({ tableProps, modalProps, errorProps }) => (
+    <>
+      <ErrorBanner {...errorProps} />
+      <Table {...tableProps} />
+      <Modal {...modalProps} />
+    </>
+  )
 };
 
 export default ListPage;

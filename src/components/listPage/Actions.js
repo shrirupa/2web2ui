@@ -4,7 +4,7 @@ import PageLink from 'src/components/pageLink';
 import { ActionPopover } from 'src/components';
 
 const Actions = ({ item, editRoute, deletable, onDelete, customActions }) => {
-  const baseActions = [
+  const actions = [
     editRoute && {
       component: PageLink,
       content: 'Edit',
@@ -13,10 +13,10 @@ const Actions = ({ item, editRoute, deletable, onDelete, customActions }) => {
     deletable && {
       content: 'Delete',
       onClick: () => onDelete(item)
-    }
+    },
+    ...customActions
   ].filter(Boolean);
 
-  const actions = [...baseActions, ...customActions];
   return <ActionPopover actions={actions} />;
 };
 
