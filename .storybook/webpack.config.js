@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const paths = require('../config/paths');
 
 const sassRegex = /\.(scss|sass)$/;
@@ -48,5 +49,11 @@ module.exports = {
         include: path.resolve(__dirname, '../')
       },
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      SUPPORTED_BROWSERS: {},
+      TENANT_CONFIGS: {}
+    })
+  ]
 };
