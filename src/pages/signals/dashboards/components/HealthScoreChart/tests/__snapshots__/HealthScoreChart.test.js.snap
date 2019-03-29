@@ -94,9 +94,8 @@ exports[`Signals Health Score Chart renders happy path correctly 1`] = `
         Object {
           "tickFormatter": [Function],
           "ticks": Array [
-            "2018-12-27",
-            "2019-02-10",
-            "2019-03-27",
+            1,
+            2,
           ],
         }
       }

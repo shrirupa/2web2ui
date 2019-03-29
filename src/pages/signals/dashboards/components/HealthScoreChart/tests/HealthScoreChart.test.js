@@ -1,6 +1,9 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import { HealthScoreChart } from '../HealthScoreChart';
+import * as dateMock from 'src/helpers/date';
+
+jest.mock('src/helpers/date');
 
 describe('Signals Health Score Chart', () => {
   let props; let subject;
@@ -36,6 +39,7 @@ describe('Signals Health Score Chart', () => {
       }
     };
 
+    dateMock.getDateTicks.mockImplementation(() => [1,2]);
     subject = (options = {}) => shallow(
       <HealthScoreChart {...props} {...options} />
     );
