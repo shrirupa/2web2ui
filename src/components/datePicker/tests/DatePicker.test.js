@@ -66,6 +66,11 @@ describe('Component: DatePicker', () => {
     expect(instance.syncTimeToState).toHaveBeenCalledTimes(1);
   });
 
+  it('should not render form fields when manual entry is hidden', () => {
+    wrapper.setProps({ hideManualEntry: true });
+    expect(wrapper.find('ManualEntryForm')).not.toExist();
+  });
+
   describe('syncTimeToState', () => {
 
     const before = { from: 'unchanged', to: 'unchanged' };
@@ -220,6 +225,22 @@ describe('Component: DatePicker', () => {
       expect(dateHelpers.getEndOfDay).toHaveBeenCalledWith(mockClicked, { preventFuture: true });
       expect(wrapper.state('selected')).toEqual(mockNewSelected);
       expect(wrapper.state('beforeSelected')).toEqual(mockNewSelected);
+      expect(wrapper.state('selecting')).toEqual(true);
+    });
+
+    it('should handle a day click whith a validation error', () => {
+      const validate = jest.fn(() => 'error oh no');
+      const mockSelected = {};
+      const mockClicked = {};
+
+      dateHelpers.isSameDate = jest.fn(() => true);
+
+      wrapper.setProps({ validate });
+      wrapper.setState({ selecting: false, selected: mockSelected, beforeSelected: null });
+      const mockNewSelected = { from: 'start-of-day', to: 'end-of-day' };
+
+      instance.handleDayClick(mockClicked);
+      expect(validate).toHaveBeenCalledWith(mockNewSelected);
       expect(wrapper.state('selecting')).toEqual(true);
     });
 
@@ -386,6 +407,15 @@ describe('Component: DatePicker', () => {
       expect(wrapper.state('showDatePicker')).toEqual(false);
       expect(wrapper.state('selecting')).toEqual(false);
       expect(props.onChange).toHaveBeenCalledWith({ ...mockSelected, relativeRange: 'custom' });
+    });
+
+    it('should not do anything with a validation error', () => {
+      const mockSelected = { a: 1, b: 2, c: 3 };
+      wrapper.setState({ showDatePicker: true, selecting: true, selected: mockSelected, validationError: 'oh no' });
+      instance.handleSubmit();
+      expect(wrapper.state('showDatePicker')).toEqual(true);
+      expect(wrapper.state('selecting')).toEqual(true);
+      expect(props.onChange).not.toHaveBeenCalled();
     });
 
   });

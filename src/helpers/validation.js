@@ -5,6 +5,7 @@ import { isEmailAddress, isEmailLocalPart, isRecipientEmailAddress } from 'src/h
 import { domainRegex, slugRegex } from './regex';
 import isURL from 'validator/lib/isURL';
 import Payment from 'payment';
+import moment from 'moment';
 
 export function required(value) {
   return value ? undefined : 'Required';
@@ -152,3 +153,12 @@ export const json = (value) => {
     return 'Must be valid JSON';
   }
 };
+
+// Date validator for the DatePicker component
+export const minDays = _.memoize(function minDays(min) {
+  return function (dates) {
+    return Math.abs(moment(dates.from).diff(moment(dates.to), 'days')) < min
+      ? 'Select a range of at least 7 days'
+      : undefined;
+  };
+});

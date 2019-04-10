@@ -8,3 +8,11 @@
 .Apply {
   margin-right: spacing();
 }
+
+
+.Error {
+  display: inline-block;
+  margin-left: spacing();
+  vertical-align: middle;
+  line-height: rem(18);
+}

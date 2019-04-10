@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { subMonths, format } from 'date-fns';
 import { getStartOfDay, getEndOfDay, getRelativeDateOptions, getNextHour, isSameDate } from 'src/helpers/date';
 import { roundBoundaries } from 'src/helpers/metrics';
-import { Button, TextField, Select, Popover, WindowEvent } from '@sparkpost/matchbox';
+import { Button, TextField, Select, Popover, WindowEvent, Error } from '@sparkpost/matchbox';
 import DateSelector from 'src/components/dateSelector/DateSelector';
 import ManualEntryForm from './ManualEntryForm';
 import { FORMATS } from 'src/constants';
@@ -16,7 +16,8 @@ export default class AppDatePicker extends Component {
   state = {
     showDatePicker: false,
     selecting: false,
-    selected: { }
+    selected: { },
+    validationError: null
   }
 
   componentDidMount() {
@@ -65,14 +66,24 @@ export default class AppDatePicker extends Component {
 
   handleDayClick = (clicked) => {
     const { selecting, selected } = this.state;
+    const { validate } = this.props;
+
     const dates = selecting
       ? selected
       : { from: this.fromFormatter(clicked), to: getEndOfDay(clicked, { preventFuture: this.props.preventFuture }) };
 
+    const validationError = validate && validate(dates);
+
+    if (selecting && validationError) {
+      this.setState({ validationError });
+      return;
+    }
+
     this.setState({
       selected: dates,
       beforeSelected: dates,
-      selecting: !selecting
+      selecting: !selecting,
+      validationError: null
     });
   }
 
@@ -117,7 +128,11 @@ export default class AppDatePicker extends Component {
   }
 
   handleSubmit = () => {
-    this.setState({ showDatePicker: false, selecting: false });
+    if (this.state.validationError) {
+      return;
+    }
+
+    this.setState({ showDatePicker: false, selecting: false, validationError: null });
     this.props.onChange({ ...this.state.selected, relativeRange: 'custom' });
   }
 
@@ -134,7 +149,7 @@ export default class AppDatePicker extends Component {
   }
 
   render() {
-    const { selected: { from, to }, showDatePicker } = this.state;
+    const { selected: { from, to }, showDatePicker, validationError } = this.state;
     const selectedRange = showDatePicker ? 'custom' : this.props.relativeRange;
 
     // allow for prop-level override of "now" (DI, etc.)
@@ -149,7 +164,8 @@ export default class AppDatePicker extends Component {
       preventFuture,
       showPresets = true,
       error,
-      left
+      left,
+      hideManualEntry
     } = this.props;
     const dateFormat = dateFieldFormat || this.DATE_FORMAT;
 
@@ -196,17 +212,24 @@ export default class AppDatePicker extends Component {
           {...datePickerProps}
         />
 
-        <ManualEntryForm
-          selectDates={this.handleFormDates}
-          onEnter={this.handleKeyDown}
-          to={to}
-          from={from}
-          roundToPrecision={roundToPrecision}
-          preventFuture={preventFuture}
-        />
+        {!hideManualEntry && (
+          <ManualEntryForm
+            selectDates={this.handleFormDates}
+            onEnter={this.handleKeyDown}
+            to={to}
+            from={from}
+            roundToPrecision={roundToPrecision}
+            preventFuture={preventFuture}
+          />
+        )}
 
         <Button primary onClick={this.handleSubmit} className={styles.Apply}>Apply</Button>
         <Button onClick={this.cancelDatePicker}>Cancel</Button>
+        {validationError && (
+          <span className={styles.Error}>
+            <Error wrapper='span' error={validationError}></Error>
+          </span>
+        )}
         <WindowEvent event='keydown' handler={this.handleKeyDown} />
       </Popover>
     );
@@ -224,7 +247,8 @@ AppDatePicker.propTypes = {
   datePickerProps: PropTypes.object,
   dateFieldFormat: PropTypes.string,
   disabled: PropTypes.bool,
-  showPresets: PropTypes.bool
+  showPresets: PropTypes.bool,
+  hideManualEntry: PropTypes.bool
 };
 
 AppDatePicker.defaultProps = {
