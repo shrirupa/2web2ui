@@ -1,7 +1,35 @@
 @import '~@sparkpost/matchbox/src/styles/config.scss';
 
+// Simulating connectLeft behavior
 .FacetFilter {
-  display: inline-block;
-  margin-left: spacing();
-  width: rem(180);
+  &.FacetSelected {
+    display: flex;
+  }
+
+  &.FacetSelected > * {
+    flex: 1 0;
+  }
+
+  &.FacetSelected fieldset:first-child {
+    margin-bottom: 0;
+
+    select {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &:focus {
+        z-index: 1;
+      }
+    }
+  }
+
+  fieldset:last-child {
+    margin-left: -1px;
+    margin-bottom: 0;
+
+    input {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
 }

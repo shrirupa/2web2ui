@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Popover, UnstyledLink, WindowEvent } from '@sparkpost/matchbox';
+import { Button, Grid, Popover, UnstyledLink, WindowEvent } from '@sparkpost/matchbox';
 import { ArrowDropDown, ChevronLeft } from '@sparkpost/matchbox-icons';
 import SubaccountTypeahead from 'src/components/typeahead/SubaccountTypeahead';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
@@ -68,55 +68,56 @@ export class SubaccountFilter extends React.Component {
     }
 
     const trigger = (
-      <span ref={(node) => this.triggerRef = node}>
-        <Button onClick={this.handleVisibilityToggle}>
+      <div ref={(node) => this.triggerRef = node}>
+        <Button fullWidth onClick={this.handleVisibilityToggle} className={styles.Button}>
           <span className={styles.ButtonLabel}>
             {subaccount.name}
           </span>
           {subaccount.id > 0 && <span>({subaccount.id})</span>}
           <ArrowDropDown className={styles.ButtonIcon} />
         </Button>
-      </span>
+      </div>
     );
 
     return (
-      <div className={styles.SubaccountFilter}>
-        <WindowEvent handler={this.handleWindowClick} event='click' />
-        <WindowEvent handler={onEscape(this.close)} event='keydown' />
-        <Popover className={styles.Popover} left open={isOpen} trigger={trigger}>
-          <div ref={(node) => this.contentRef = node}>
-            <div className={classnames(styles.PopoverContent, isSearchOpen && styles.showSearch)}>
-              <div className={styles.SubaccountSearchHeader}>
-                <UnstyledLink className={styles.BackButton} onClick={this.handleSearchToggle}>
-                  <ChevronLeft size={20} />
-                </UnstyledLink>
-                <span>Subaccount</span>
+      <Grid.Column md={5} lg={4} xl={3}>
+        <div className={styles.SubaccountFilter}>
+          <WindowEvent handler={this.handleWindowClick} event='click' />
+          <WindowEvent handler={onEscape(this.close)} event='keydown' />
+          <Popover className={styles.Popover} left open={isOpen} trigger={trigger}>
+            <div ref={(node) => this.contentRef = node}>
+              <div className={classnames(styles.PopoverContent, isSearchOpen && styles.showSearch)}>
+                <div className={styles.SubaccountSearchHeader}>
+                  <UnstyledLink className={styles.BackButton} onClick={this.handleSearchToggle}>
+                    <ChevronLeft size={20} />
+                  </UnstyledLink>
+                  <span>Subaccount</span>
+                </div>
+                <div className={styles.SubaccountSearch}>
+                  <SubaccountTypeahead
+                    label=""
+                    onChange={this.handleChange}
+                    placeholder="Search here"
+                  />
+                </div>
               </div>
-              <div className={styles.SubaccountSearch}>
-                <SubaccountTypeahead
-                  label=""
-                  onChange={this.handleChange}
-                  placeholder="Search here"
-                />
+              <div className={classnames(styles.PopoverContent, !isSearchOpen && styles.showOptions)}>
+                {OPTIONS.map(({ condition, id, name, nested }) => (
+                  <SubaccountOption
+                    key={name}
+                    label={name}
+                    nested={nested}
+                    onChange={this.handleChange}
+                    onOpen={this.handleSearchToggle}
+                    selected={condition(subaccount)}
+                    value={{ id, name }}
+                  />
+                ))}
               </div>
             </div>
-            <div className={classnames(styles.PopoverContent, !isSearchOpen && styles.showOptions)}>
-              {OPTIONS.map(({ condition, id, name, nested }) => (
-                <SubaccountOption
-                  key={name}
-                  label={name}
-                  nested={nested}
-                  onChange={this.handleChange}
-                  onOpen={this.handleSearchToggle}
-                  selected={condition(subaccount)}
-                  value={{ id, name }}
-                />
-              ))}
-            </div>
-
-          </div>
-        </Popover>
-      </div>
+          </Popover>
+        </div>
+      </Grid.Column>
     );
   }
 }

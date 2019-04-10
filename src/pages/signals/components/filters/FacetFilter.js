@@ -1,5 +1,6 @@
 import React from 'react';
-import { Select, TextField } from '@sparkpost/matchbox';
+import classnames from 'classnames';
+import { Grid, Select, TextField } from '@sparkpost/matchbox';
 import { Search } from '@sparkpost/matchbox-icons';
 import { onEnter } from 'src/helpers/keyEvents';
 import facets from '../../constants/facets';
@@ -47,26 +48,25 @@ export class FacetFilter extends React.Component {
     const { searchTerm } = this.state;
 
     return (
-      <React.Fragment>
-        <div className={styles.FacetFilter}>
+      <Grid.Column lg={facet ? 4 : 3} xl={facet ? 5 : 3}>
+        <div className={classnames(styles.FacetFilter, facet && styles.FacetSelected)}>
           <Select
             onChange={this.handleFacetChange}
             options={OPTIONS}
             value={facet}
           />
-        </div>
-        {facet && (
-          <div className={styles.FacetFilter}>
+          {facet && (
             <TextField
               onChange={this.handleSearchChange}
               onKeyPress={onEnter(this.handleFacetSearch)}
-              placeholder="Search here"
+              onBlur={this.handleFacetSearch}
+              placeholder="Search"
               suffix={<Search />}
               value={searchTerm}
             />
-          </div>
-        )}
-      </React.Fragment>
+          )}
+        </div>
+      </Grid.Column>
     );
   }
 }

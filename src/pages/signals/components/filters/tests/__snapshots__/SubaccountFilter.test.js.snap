@@ -8,8 +8,10 @@ exports[`SubaccountFilter Component renders open popover with options 1`] = `
   open={true}
   right={true}
   trigger={
-    <span>
+    <div>
       <Button
+        className="Button"
+        fullWidth={true}
         onClick={[Function]}
         size="default"
       >
@@ -22,7 +24,7 @@ exports[`SubaccountFilter Component renders open popover with options 1`] = `
           className="ButtonIcon"
         />
       </Button>
-    </span>
+    </div>
   }
 >
   <div>
@@ -107,120 +109,128 @@ exports[`SubaccountFilter Component renders open popover with options after back
 exports[`SubaccountFilter Component renders open popover with subaccount search 1`] = `"PopoverContent showSearch"`;
 
 exports[`SubaccountFilter Component renders with subaccount 1`] = `
-<div
-  className="SubaccountFilter"
+<Grid.Column
+  lg={4}
+  md={5}
+  xl={3}
 >
-  <WindowEvent
-    event="click"
-    handler={[Function]}
-  />
-  <WindowEvent
-    event="keydown"
-    handler={[Function]}
-  />
-  <Popover
-    bottom={true}
-    className="Popover"
-    left={true}
-    open={false}
-    right={true}
-    trigger={
-      <span>
-        <Button
-          onClick={[Function]}
-          size="default"
-        >
-          <span
-            className="ButtonLabel"
-          >
-            Test Subaccount
-          </span>
-          <span>
-            (
-            123
-            )
-          </span>
-          <ArrowDropDown
-            className="ButtonIcon"
-          />
-        </Button>
-      </span>
-    }
+  <div
+    className="SubaccountFilter"
   >
-    <div>
-      <div
-        className="PopoverContent"
-      >
-        <div
-          className="SubaccountSearchHeader"
-        >
-          <UnstyledLink
-            className="BackButton"
+    <WindowEvent
+      event="click"
+      handler={[Function]}
+    />
+    <WindowEvent
+      event="keydown"
+      handler={[Function]}
+    />
+    <Popover
+      bottom={true}
+      className="Popover"
+      left={true}
+      open={false}
+      right={true}
+      trigger={
+        <div>
+          <Button
+            className="Button"
+            fullWidth={true}
             onClick={[Function]}
+            size="default"
           >
-            <ChevronLeft
-              size={20}
+            <span
+              className="ButtonLabel"
+            >
+              Test Subaccount
+            </span>
+            <span>
+              (
+              123
+              )
+            </span>
+            <ArrowDropDown
+              className="ButtonIcon"
             />
-          </UnstyledLink>
-          <span>
-            Subaccount
-          </span>
+          </Button>
+        </div>
+      }
+    >
+      <div>
+        <div
+          className="PopoverContent"
+        >
+          <div
+            className="SubaccountSearchHeader"
+          >
+            <UnstyledLink
+              className="BackButton"
+              onClick={[Function]}
+            >
+              <ChevronLeft
+                size={20}
+              />
+            </UnstyledLink>
+            <span>
+              Subaccount
+            </span>
+          </div>
+          <div
+            className="SubaccountSearch"
+          >
+            <Connect(SubaccountTypeahead)
+              label=""
+              onChange={[Function]}
+              placeholder="Search here"
+            />
+          </div>
         </div>
         <div
-          className="SubaccountSearch"
+          className="PopoverContent showOptions"
         >
-          <Connect(SubaccountTypeahead)
-            label=""
+          <SubaccountOption
+            key="Master & All Subaccounts"
+            label="Master & All Subaccounts"
             onChange={[Function]}
-            placeholder="Search here"
+            onOpen={[Function]}
+            selected={false}
+            value={
+              Object {
+                "id": undefined,
+                "name": "Master & All Subaccounts",
+              }
+            }
+          />
+          <SubaccountOption
+            key="Master Account"
+            label="Master Account"
+            onChange={[Function]}
+            onOpen={[Function]}
+            selected={false}
+            value={
+              Object {
+                "id": 0,
+                "name": "Master Account",
+              }
+            }
+          />
+          <SubaccountOption
+            key="Search for Subaccount"
+            label="Search for Subaccount"
+            nested={true}
+            onChange={[Function]}
+            onOpen={[Function]}
+            selected={true}
+            value={
+              Object {
+                "id": undefined,
+                "name": "Search for Subaccount",
+              }
+            }
           />
         </div>
       </div>
-      <div
-        className="PopoverContent showOptions"
-      >
-        <SubaccountOption
-          key="Master & All Subaccounts"
-          label="Master & All Subaccounts"
-          onChange={[Function]}
-          onOpen={[Function]}
-          selected={false}
-          value={
-            Object {
-              "id": undefined,
-              "name": "Master & All Subaccounts",
-            }
-          }
-        />
-        <SubaccountOption
-          key="Master Account"
-          label="Master Account"
-          onChange={[Function]}
-          onOpen={[Function]}
-          selected={false}
-          value={
-            Object {
-              "id": 0,
-              "name": "Master Account",
-            }
-          }
-        />
-        <SubaccountOption
-          key="Search for Subaccount"
-          label="Search for Subaccount"
-          nested={true}
-          onChange={[Function]}
-          onOpen={[Function]}
-          selected={true}
-          value={
-            Object {
-              "id": undefined,
-              "name": "Search for Subaccount",
-            }
-          }
-        />
-      </div>
-    </div>
-  </Popover>
-</div>
+    </Popover>
+  </div>
+</Grid.Column>
 `;

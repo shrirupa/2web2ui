@@ -12,6 +12,10 @@
 }
 
 .ButtonIcon {
+  position: absolute;
+  right: spacing(small);
+  top: 50%;
+  transform: translate(0, -50%);
   color: color(grey, 4); // to match other selects
 }
 
@@ -34,8 +38,9 @@
   }
 }
 
-.SubaccountFilter {
-  display: inline-block;
+.Button {
+  text-align: left;
+  position: relative;
 }
 
 .SubaccountSearch {
