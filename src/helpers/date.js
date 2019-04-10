@@ -185,14 +185,19 @@ export const fillByDate = ({ dataSet, fill = {}, from, now, relativeRange, to } 
  * Generates 3 dates based off relative range
  * Returns first date, middle date, and 1 day before to
  */
-export function getDateTicks(relativeRange) {
-  const { from, to } = getRelativeDates(relativeRange, { now: moment().subtract(1, 'day') });
-  const diff = moment(to).diff(from, 'days');
-  const middle = moment(from).add(diff / 2, 'days');
+export function getDateTicks({ relativeRange, to, from }) {
+  let dates = { to, from };
+
+  if (relativeRange !== 'custom') {
+    dates = getRelativeDates(relativeRange, { now: moment().subtract(1, 'day') });
+  }
+
+  const diff = moment(dates.to).diff(dates.from, 'days');
+  const middle = moment(dates.from).add(diff / 2, 'days');
 
   return [
-    formatInputDate(from),
+    formatInputDate(dates.from),
     formatInputDate(middle),
-    formatInputDate(to)
+    formatInputDate(dates.to)
   ];
 }
