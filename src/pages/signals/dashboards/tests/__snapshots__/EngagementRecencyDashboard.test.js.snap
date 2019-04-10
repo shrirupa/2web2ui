@@ -2,15 +2,23 @@
 
 exports[`Signals Engagement Recency Dashboard renders page 1`] = `
 <SignalsPage
-  primaryArea={
-    <React.Fragment>
-      <Connect(Connect(SubaccountFilter)) />
-      <Connect(DateFilter) />
-      <Connect(FacetFilter) />
-    </React.Fragment>
-  }
   title="Engagement Recency"
 >
-  <Connect(withRouter(Connect(EngagementRecencyOverview))) />
+  <Panel
+    sectioned={true}
+  >
+    <Grid>
+      <Grid.Column
+        lg={4}
+      >
+        <Connect(DateFilter) />
+      </Grid.Column>
+      <Connect(FacetFilter) />
+      <Connect(Connect(SubaccountFilter)) />
+    </Grid>
+  </Panel>
+  <Connect(withRouter(Connect(EngagementRecencyOverview)))
+    hideTitle={true}
+  />
 </SignalsPage>
 `;

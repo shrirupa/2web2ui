@@ -6,10 +6,13 @@ import { Panel, Tooltip } from '@sparkpost/matchbox';
 import { InfoOutline } from '@sparkpost/matchbox-icons';
 import { PanelLoading } from 'src/components';
 import Callout from 'src/components/callout';
+import { formatDate } from 'src/helpers/date';
+import { FORMATS } from 'src/constants';
 import Gauge from './Gauge';
 import MetricDisplay from '../MetricDisplay/MetricDisplay';
 import { HEALTH_SCORE_INFO } from '../../../constants/info';
 import thresholds from '../../../constants/healthScoreThresholds';
+
 import _ from 'lodash';
 
 import styles from './CurrentHealthGauge.module.scss';
@@ -48,11 +51,15 @@ export function CurrentHealthGauge(props) {
     return { value: _.isNil(value) ? 'n/a' : `${value}%`, ...getCaretProps(value) };
   }
 
+  const title = _.get(props, 'filters.relativeRange') === 'custom'
+    ? `Health Score for ${formatDate(props.filters.to, FORMATS.DATE)}`
+    : 'Current Health Score';
+
   return (
     <Panel sectioned>
       <div className={styles.Content}>
         <h2 className={styles.Header}>
-          Current Health Score – Overall
+          {title}
           {' '}
           <Tooltip
             children={<InfoOutline className={styles.TooltipIcon} size={18} />}
@@ -82,7 +89,8 @@ export function CurrentHealthGauge(props) {
 }
 
 const mapStateToProps = (state) => ({
-  ...selectCurrentHealthScoreDashboard(state)
+  ...selectCurrentHealthScoreDashboard(state),
+  filters: state.signalOptions
 });
 
 export default connect(mapStateToProps, {})(CurrentHealthGauge);

@@ -21,7 +21,7 @@ exports[`Signals Health Score Gauge Container renders happy path correctly 1`] =
     <h2
       className="Header"
     >
-      Current Health Score – Overall
+      Current Health Score
        
       <Tooltip
         bottom={true}

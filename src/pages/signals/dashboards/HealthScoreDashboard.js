@@ -12,7 +12,7 @@ import CurrentHealthGauge from './components/CurrentHealthGauge/CurrentHealthGau
 import HealthScoreChart from './components/HealthScoreChart/HealthScoreChart';
 
 export function HealthScoreDashboard(props) {
-  const { getCurrentHealthScore, getInjections, getSubaccounts, relativeRange } = props;
+  const { from, getCurrentHealthScore, getInjections, getSubaccounts, relativeRange, subaccounts, to } = props;
 
   // Gets subaccount info on mount
   useEffect(() => {
@@ -21,12 +21,12 @@ export function HealthScoreDashboard(props) {
 
   // Gets injections and current score for gauge and timeseries only when dates change
   useEffect(() => {
-    getCurrentHealthScore({ relativeRange });
-    getInjections({ relativeRange });
-  }, [getCurrentHealthScore, getInjections, relativeRange]);
+    getCurrentHealthScore({ relativeRange, from, to });
+    getInjections({ relativeRange, from, to });
+  }, [getCurrentHealthScore, getInjections, relativeRange, from, to]);
 
   return (
-    <Page title='Health Score' primaryArea={<DateFilter />}>
+    <Page title='Health Score' primaryArea={<DateFilter left />}>
       <Grid>
         <Grid.Column xs={12} lg={5} xl={4}>
           <CurrentHealthGauge />
@@ -35,18 +35,26 @@ export function HealthScoreDashboard(props) {
           <HealthScoreChart />
         </Grid.Column>
       </Grid>
-      <div style={{ marginBottom: '1rem', marginTop: '1.5rem', textAlign: 'right' }}>
-        <SubaccountFilter />
-        <FacetFilter />
-      </div>
-      <HealthScoreOverview subaccounts={props.subaccounts} />
+      <HealthScoreOverview
+        subaccounts={subaccounts}
+        hideTitle
+        header={
+          <Grid>
+            <FacetFilter />
+            <SubaccountFilter />
+          </Grid>
+        }
+      />
     </Page>
   );
 }
 
 const mapStateToProps = (state) => ({
+  facet: state.signalOptions.facet,
+  from: state.signalOptions.from,
   subaccounts: state.subaccounts.list,
-  relativeRange: state.signalOptions.relativeRange
+  relativeRange: state.signalOptions.relativeRange,
+  to: state.signalOptions.to
 });
 
 const mapDispatchToProps = {

@@ -2,17 +2,15 @@ import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getCaretProps, getDoD } from 'src/helpers/signals';
 import { selectCurrentHealthScoreDashboard } from 'src/selectors/signals';
-import { Panel, Tooltip } from '@sparkpost/matchbox';
-import { InfoOutline } from '@sparkpost/matchbox-icons';
+import { Panel } from '@sparkpost/matchbox';
 import BarChart from '../../../components/charts/barchart/BarChart';
 import TooltipMetric from '../../../components/charts/tooltip/TooltipMetric';
 import { PanelLoading } from 'src/components';
 import Callout from 'src/components/callout';
 import MetricDisplay from '../MetricDisplay/MetricDisplay';
-import { HEALTH_SCORE_INFO } from '../../../constants/info';
 import { formatNumber, roundToPlaces } from 'src/helpers/units';
 import thresholds from '../../../constants/healthScoreThresholds';
-import { getDateTicks } from 'src/helpers/date';
+import { formatDate, getDateTicks } from 'src/helpers/date';
 import moment from 'moment';
 import _ from 'lodash';
 import styles from './HealthScoreChart.module.scss';
@@ -50,7 +48,7 @@ export function HealthScoreChart(props) {
   }
 
   function getXAxisProps() {
-    const xTicks = getDateTicks(filters.relativeRange);
+    const xTicks = getDateTicks(filters);
     return {
       ticks: xTicks,
       tickFormatter: (tick) => moment(tick).format('M/D')
@@ -98,15 +96,7 @@ export function HealthScoreChart(props) {
     <Panel sectioned>
       <div className={styles.Content}>
         <h2 className={styles.Header}>
-          Health Score – {filters.relativeRange.replace('days', ' days')}
-          {' '}
-          <Tooltip
-            children={<InfoOutline className={styles.TooltipIcon} size={18} />}
-            content={HEALTH_SCORE_INFO}
-            dark
-            horizontalOffset='-1rem'
-            right
-          />
+          {formatDate(filters.from)} – {formatDate(filters.to)}
         </h2>
         {noData && <div><Callout height='auto'>Health Scores Not Available</Callout></div>}
         {!noData && (

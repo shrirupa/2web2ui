@@ -2,7 +2,11 @@
 
 exports[`Signals Health Score Dashboard renders page 1`] = `
 <SignalsPage
-  primaryArea={<Connect(DateFilter) />}
+  primaryArea={
+    <Connect(DateFilter)
+      left={true}
+    />
+  }
   title="Health Score"
 >
   <Grid>
@@ -21,18 +25,20 @@ exports[`Signals Health Score Dashboard renders page 1`] = `
       <Connect(HealthScoreChart) />
     </Grid.Column>
   </Grid>
-  <div
-    style={
-      Object {
-        "marginBottom": "1rem",
-        "marginTop": "1.5rem",
-        "textAlign": "right",
-      }
+  <Connect(withRouter(Connect(HealthScoreOverview)))
+    header={
+      <Grid>
+        <Connect(FacetFilter) />
+        <Connect(Connect(SubaccountFilter)) />
+      </Grid>
     }
-  >
-    <Connect(Connect(SubaccountFilter)) />
-    <Connect(FacetFilter) />
-  </div>
-  <Connect(withRouter(Connect(HealthScoreOverview))) />
+    hideTitle={true}
+    subaccounts={
+      Array [
+        "sub1",
+        "sub2",
+      ]
+    }
+  />
 </SignalsPage>
 `;

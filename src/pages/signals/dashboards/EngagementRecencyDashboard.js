@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { list as getSubaccounts } from 'src/actions/subaccounts';
+import { Panel, Grid } from '@sparkpost/matchbox';
 import Page from '../components/SignalsPage';
 import EngagementRecencyOverview from '../containers/EngagementRecencyOverviewContainer';
 import FacetFilter from '../components/filters/FacetFilter';
@@ -16,17 +17,17 @@ export class EngagementRecencyDashboard extends Component {
     const { subaccounts } = this.props;
 
     return (
-      <Page
-        title='Engagement Recency'
-        primaryArea={
-          <Fragment>
-            <SubaccountFilter />
-            <DateFilter />
+      <Page title='Engagement Recency'>
+        <Panel sectioned>
+          <Grid>
+            <Grid.Column lg={4}>
+              <DateFilter />
+            </Grid.Column>
             <FacetFilter />
-          </Fragment>
-        }
-      >
-        <EngagementRecencyOverview subaccounts={subaccounts} />
+            <SubaccountFilter />
+          </Grid>
+        </Panel>
+        <EngagementRecencyOverview subaccounts={subaccounts} hideTitle />
       </Page>
     );
   }

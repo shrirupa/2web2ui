@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { list as getSubaccounts } from 'src/actions/subaccounts';
+import { Panel, Grid } from '@sparkpost/matchbox';
 import Page from '../components/SignalsPage';
 import SpamTrapOverview from '../containers/SpamTrapOverviewContainer';
 import FacetFilter from '../components/filters/FacetFilter';
@@ -16,17 +17,17 @@ export class SpamTrapDashboard extends Component {
     const { subaccounts } = this.props;
 
     return (
-      <Page
-        title='Spam Trap Monitoring'
-        primaryArea={
-          <Fragment>
-            <SubaccountFilter />
-            <DateFilter />
+      <Page title='Spam Trap Monitoring' >
+        <Panel sectioned>
+          <Grid>
+            <Grid.Column xs={4}>
+              <DateFilter />
+            </Grid.Column>
             <FacetFilter />
-          </Fragment>
-        }
-      >
-        <SpamTrapOverview subaccounts={subaccounts} />
+            <SubaccountFilter />
+          </Grid>
+        </Panel>
+        <SpamTrapOverview subaccounts={subaccounts} hideTitle />
       </Page>
     );
   }

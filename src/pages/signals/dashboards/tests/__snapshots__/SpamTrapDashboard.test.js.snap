@@ -2,15 +2,23 @@
 
 exports[`Signals Spam Trap Dashboard Dashboard renders page 1`] = `
 <SignalsPage
-  primaryArea={
-    <React.Fragment>
-      <Connect(Connect(SubaccountFilter)) />
-      <Connect(DateFilter) />
-      <Connect(FacetFilter) />
-    </React.Fragment>
-  }
   title="Spam Trap Monitoring"
 >
-  <Connect(withRouter(Connect(SpamTrapOverview))) />
+  <Panel
+    sectioned={true}
+  >
+    <Grid>
+      <Grid.Column
+        xs={4}
+      >
+        <Connect(DateFilter) />
+      </Grid.Column>
+      <Connect(FacetFilter) />
+      <Connect(Connect(SubaccountFilter)) />
+    </Grid>
+  </Panel>
+  <Connect(withRouter(Connect(SpamTrapOverview)))
+    hideTitle={true}
+  />
 </SignalsPage>
 `;

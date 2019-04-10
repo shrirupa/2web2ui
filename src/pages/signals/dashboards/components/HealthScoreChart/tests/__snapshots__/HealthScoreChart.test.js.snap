@@ -19,34 +19,9 @@ exports[`Signals Health Score Chart renders happy path correctly 1`] = `
     <h2
       className="Header"
     >
-      Health Score – 
-      90 days
-       
-      <Tooltip
-        bottom={true}
-        content="
-  This is a predictive score that monitors your email health to identify problems before
-  they negatively impact email delivery. This score is informed by message events,
-  including bounces, spam trap hits, and engagement across our entire network.
-"
-        dark={true}
-        forcePosition={false}
-        horizontalOffset="-1rem"
-        preferredDirection={
-          Object {
-            "bottom": true,
-            "left": false,
-            "right": true,
-            "top": false,
-          }
-        }
-        right={true}
-      >
-        <InfoOutline
-          className="TooltipIcon"
-          size={18}
-        />
-      </Tooltip>
+      Dec 1 2014
+       – 
+      Feb 1 2015
     </h2>
     <BarChart
       activeFill="#22838A"

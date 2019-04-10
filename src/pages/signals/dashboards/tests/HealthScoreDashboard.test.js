@@ -19,7 +19,10 @@ describe('Signals Health Score Dashboard', () => {
       getCurrentHealthScore={() => {}}
       getSubaccounts={() => {}}
       getInjections={() => {}}
-      filters={{ relativeRange: '90days' }}
+      relativeRange='90days'
+      from='2015-01-01'
+      to='2015-01-05'
+      subaccounts={['sub1', 'sub2']}
       {...props}
     />
   );
@@ -38,7 +41,7 @@ describe('Signals Health Score Dashboard', () => {
     const getInjections = jest.fn();
     const getCurrentHealthScore = jest.fn();
     subject({ getInjections, getCurrentHealthScore }, mount);
-    expect(getInjections).toHaveBeenCalled();
-    expect(getCurrentHealthScore).toHaveBeenCalled();
+    expect(getInjections).toHaveBeenCalledWith({ from: '2015-01-01', relativeRange: '90days', to: '2015-01-05' });
+    expect(getCurrentHealthScore).toHaveBeenCalledWith({ from: '2015-01-01', relativeRange: '90days', to: '2015-01-05' });
   });
 });
