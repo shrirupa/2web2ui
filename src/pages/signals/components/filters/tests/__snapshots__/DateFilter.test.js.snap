@@ -1,31 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DateFilter renders a select 1`] = `
-<div
-  className="DateFilter"
->
-  <Select
-    onChange={[Function]}
-    options={
-      Array [
-        Object {
-          "label": "Last 7 Days",
-          "value": "7days",
-        },
-        Object {
-          "label": "Last 14 Days",
-          "value": "14days",
-        },
-        Object {
-          "label": "Last 30 Days",
-          "value": "30days",
-        },
-        Object {
-          "label": "Last 90 Days",
-          "value": "90days",
-        },
-      ]
-    }
-  />
-</div>
+exports[`DateFilter renders datepicker 1`] = `
+Object {
+  "dateFieldFormat": "MMM Do",
+  "datePickerProps": Object {
+    "disabledDays": Object {
+      "after": 2017-12-31T05:00:00.000Z,
+      "before": 2017-10-02T04:00:00.000Z,
+    },
+    "fromMonth": 2017-10-02T04:00:00.000Z,
+  },
+  "from": undefined,
+  "hideManualEntry": true,
+  "left": true,
+  "now": 2017-12-31T05:00:00.000Z,
+  "onChange": [Function],
+  "preventFuture": true,
+  "relativeDateOptions": Array [
+    "7days",
+    "14days",
+    "30days",
+    "90days",
+    "custom",
+  ],
+  "relativeRange": undefined,
+  "roundToPrecision": false,
+  "to": undefined,
+  "validate": [Function],
+}
 `;
