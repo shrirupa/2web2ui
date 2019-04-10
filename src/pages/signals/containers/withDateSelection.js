@@ -30,7 +30,7 @@ export class WithDateSelection extends Component {
     // Select last date in time series
     if (dataSetChanged && !selectedDataByDay) {
       selectedDataByDay = _.last(data);
-      this.setState({ selectedDate: selectedDataByDay.date });
+      this.setState({ selectedDate: _.get(selectedDataByDay, 'date') });
     }
   }
 
