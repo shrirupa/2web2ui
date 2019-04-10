@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { list as getSubaccounts } from 'src/actions/subaccounts';
 import Page from './components/SignalsPage';
@@ -8,7 +8,7 @@ import SpamTrapOverview from './containers/SpamTrapOverviewContainer';
 import FacetFilter from './components/filters/FacetFilter';
 import DateFilter from './components/filters/DateFilter';
 import SubaccountFilter from './components/filters/SubaccountFilter';
-import OverviewHelpCopy from './components/OverviewHelpCopy';
+import { Grid, Panel } from '@sparkpost/matchbox';
 
 export class OverviewPage extends Component {
   componentDidMount() {
@@ -19,17 +19,16 @@ export class OverviewPage extends Component {
     const { subaccounts } = this.props;
 
     return (
-      <Page
-        title='Signals Overview'
-        primaryArea={
-          <Fragment>
-            <SubaccountFilter />
-            <DateFilter />
+      <Page title='Signals Overview'>
+        <Panel sectioned>
+          <Grid>
+            <Grid.Column xs={4}>
+              <DateFilter />
+            </Grid.Column>
             <FacetFilter />
-          </Fragment>
-        }
-      >
-        <OverviewHelpCopy />
+            <SubaccountFilter />
+          </Grid>
+        </Panel>
         <HealthScoreOverview subaccounts={subaccounts} />
         <SpamTrapOverview subaccounts={subaccounts} />
         <EngagementRecencyOverview subaccounts={subaccounts} />
