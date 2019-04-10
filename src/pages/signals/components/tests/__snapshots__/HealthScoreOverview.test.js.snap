@@ -6,24 +6,6 @@ exports[`HealthScoreOverview current score column component renders current scor
 />
 `;
 
-exports[`HealthScoreOverview history component renders absolute bar chart 1`] = `
-<BarChartDataCell
-  dataKey="health_score"
-  label="Health Score"
-  onClick={[Function]}
-  relative={false}
-/>
-`;
-
-exports[`HealthScoreOverview history component renders absolute sparkline 1`] = `
-<SparklineDataCell
-  dataKey="health_score"
-  label="Health Score"
-  onClick={[Function]}
-  relative={false}
-/>
-`;
-
 exports[`HealthScoreOverview renders both subaccount and facet columns 1`] = `
 <Panel>
   <div
@@ -60,14 +42,6 @@ exports[`HealthScoreOverview renders both subaccount and facet columns 1`] = `
           size={18}
         />
       </Tooltip>
-    </div>
-    <div
-      className="Controls"
-    >
-      <ChartType
-        initialSelected="line"
-        onChange={[Function]}
-      />
     </div>
   </div>
   <Connect(SummaryTable)
@@ -175,14 +149,6 @@ exports[`HealthScoreOverview renders overview panel with controls and table 1`] 
           size={18}
         />
       </Tooltip>
-    </div>
-    <div
-      className="Controls"
-    >
-      <ChartType
-        initialSelected="line"
-        onChange={[Function]}
-      />
     </div>
   </div>
   <Connect(SummaryTable)

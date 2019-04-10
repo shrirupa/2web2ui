@@ -7,7 +7,6 @@ import SummaryTable, { Column } from 'src/components/summaryTable';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
 import { SPAM_TRAP_INFO } from '../constants/info';
 import { DEFAULT_VIEW } from '../constants/summaryTables';
-import BarChartDataCell from './dataCells/BarChartDataCell';
 import FacetDataCell from './dataCells/FacetDataCell';
 import NumericDataCell from './dataCells/NumericDataCell';
 import PercentDataCell from './dataCells/PercentDataCell';
@@ -15,13 +14,11 @@ import SparklineDataCell from './dataCells/SparklineDataCell';
 import WoWDataCell from './dataCells/WoWDataCell';
 import WoWHeaderCell from './dataCells/WoWHeaderCell';
 import Calculation from './viewControls/Calculation';
-import ChartType from './viewControls/ChartType';
 import styles from './SpamTrapOverview.module.scss';
 
 class SpamTrapOverview extends React.Component {
   state = {
-    calculation: 'relative',
-    chartType: 'line'
+    calculation: 'relative'
   }
 
   componentDidMount() {
@@ -71,21 +68,19 @@ class SpamTrapOverview extends React.Component {
     getSpamHits({
       facet: signalOptions.facet,
       filter: signalOptions.facetSearchTerm,
+      from: signalOptions.from,
       limit: summaryTable.perPage,
       offset: (summaryTable.currentPage - 1) * summaryTable.perPage,
       order,
       orderBy,
       relativeRange: signalOptions.relativeRange,
-      subaccount
+      subaccount,
+      to: signalOptions.to
     });
   }
 
   handleCalculationChange = (calculation) => {
     this.setState({ calculation });
-  }
-
-  handleChartTypeChange = (chartType) => {
-    this.setState({ chartType });
   }
 
   handleClick = (facetId) => ({ date }) => {
@@ -107,26 +102,35 @@ class SpamTrapOverview extends React.Component {
 
   render() {
     const {
-      data, error, facet, loading, metaData, signalOptions, subaccounts, tableName, totalCount
+      data, error, facet, loading, signalOptions, subaccounts, tableName, totalCount, hideTitle
     } = this.props;
-    const { calculation, chartType } = this.state;
+    const { calculation } = this.state;
+
+    const isCustomRange = signalOptions.relativeRange === 'custom';
 
     return (
       <Panel>
         <div className={styles.Header}>
-          <h5>Spam Trap Monitoring Summary</h5>
-          <div className={styles.Tooltip}>
-            <Tooltip
-              children={<InfoOutline className={styles.TooltipIcon} size={18} />}
-              content={SPAM_TRAP_INFO}
-              dark
-              horizontalOffset="-1rem"
-              right
-            />
-          </div>
+          {/*
+            This prop is only because v1 requires this title, but v2 does not.
+            Should be removed once v2 is released.
+          */}
+          {!hideTitle && (
+            <>
+              <h5>Spam Trap Monitoring Summary</h5>
+              <div className={styles.Tooltip}>
+                <Tooltip
+                  children={<InfoOutline className={styles.TooltipIcon} size={18} />}
+                  content={SPAM_TRAP_INFO}
+                  dark
+                  horizontalOffset="-1rem"
+                  right
+                />
+              </div>
+            </>
+          )}
           <div className={styles.Controls}>
             <Calculation initialSelected={calculation} onChange={this.handleCalculationChange} />
-            <ChartType initialSelected={chartType} onChange={this.handleChartTypeChange} />
           </div>
         </div>
         <SummaryTable
@@ -164,19 +168,6 @@ class SpamTrapOverview extends React.Component {
             component={({ history, ...data }) => {
               const id = data[facet.key];
 
-              if (chartType === 'bar') {
-                return (
-                  <BarChartDataCell
-                    data={_.last(history)}
-                    dataKey={calculation === 'relative' ? 'relative_trap_hits' : 'trap_hits'}
-                    label="Spam Trap Hits"
-                    max={calculation === 'relative' ? metaData.currentRelativeMax : metaData.currentMax}
-                    onClick={this.handleClick(id)}
-                    relative={calculation === 'relative'}
-                  />
-                );
-              }
-
               return (
                 <SparklineDataCell
                   data={history}
@@ -192,7 +183,7 @@ class SpamTrapOverview extends React.Component {
             <Column
               align="right"
               dataKey="current_relative_trap_hits"
-              label="Current Ratio"
+              label={isCustomRange ? 'Ratio' : 'Current Ratio'}
               sortable
               width="12.5%"
               component={({ current_relative_trap_hits }) => (
@@ -203,7 +194,7 @@ class SpamTrapOverview extends React.Component {
             <Column
               align="right"
               dataKey="current_trap_hits"
-              label="Current Count"
+              label={isCustomRange ? 'Count' : 'Current Count'}
               sortable
               width="12.5%"
               component={({ current_trap_hits }) => (

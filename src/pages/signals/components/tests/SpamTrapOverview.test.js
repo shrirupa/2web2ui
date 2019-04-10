@@ -28,10 +28,12 @@ describe('SpamTrapOverview', () => {
       signalOptions={{
         facet: 'domain',
         facetSearchTerm: 'example.com',
+        from: '2015-01-01',
         relativeRange: '14days',
         subaccount: {
           id: 123
-        }
+        },
+        to: '2015-01-05'
       }}
       subaccounts={{
         123: { id: 123, name: 'Test Subaccount' }
@@ -74,16 +76,26 @@ describe('SpamTrapOverview', () => {
     expect(wrapper.find(SummaryTable).prop('loading')).toEqual(true);
   });
 
+  it('renders custom date range', () => {
+    const wrapper = subject({ signalOptions: { relativeRange: 'custom' }});
+    expect(wrapper.find('Column[dataKey="current_relative_trap_hits"]').prop('label')).toEqual('Ratio');
+  });
+
   it('handles calculation change', () => {
     const wrapper = subject();
     wrapper.find('Calculation').simulate('change', 'absolute');
     expect(wrapper.state('calculation')).toEqual('absolute');
   });
 
-  it('handles chart type change', () => {
-    const wrapper = subject();
-    wrapper.find('ChartType').simulate('change', 'bar');
-    expect(wrapper.state('chartType')).toEqual('bar');
+  it('renders custom date range with absolute calculation', () => {
+    const wrapper = subject({ signalOptions: { relativeRange: 'custom' }});
+    wrapper.find('Calculation').simulate('change', 'absolute');
+    expect(wrapper.find('Column[dataKey="current_trap_hits"]').prop('label')).toEqual('Count');
+  });
+
+  it('does not render title', () => {
+    const wrapper = subject({ hideTitle: true });
+    expect(wrapper.find('div[className="Header"]').children()).toMatchSnapshot();
   });
 
   it('requests reset on mount', () => {
@@ -119,6 +131,7 @@ describe('SpamTrapOverview', () => {
     expect(getSpamHits).toHaveBeenCalledWith({
       facet: 'domain',
       filter: 'example.com',
+      from: '2015-01-01',
       limit: 10,
       offset: 10,
       order: undefined,
@@ -126,7 +139,8 @@ describe('SpamTrapOverview', () => {
       relativeRange: '14days',
       subaccount: {
         id: 123
-      }
+      },
+      to: '2015-01-05'
     });
   });
 
@@ -172,40 +186,30 @@ describe('SpamTrapOverview', () => {
   });
 
   describe('history component', () => {
-    const factory = ({ calculation, chartType, history, ...props }) => {
+    const factory = ({ calculation, history, ...props }) => {
       const wrapper = subject({
         history,
         metaData: { currentMax: 200, currentRelativeMax: 40 }
       });
-      wrapper.setState({ calculation, chartType });
+      wrapper.setState({ calculation });
       const Column = wrapper.find('Column[dataKey="history"]').prop('component');
 
       return shallow(<Column {...props} domain="example.com" />);
     };
 
-    it('renders absolute bar chart', () => {
-      const wrapper = factory({ chartType: 'bar' });
-      expect(wrapper).toMatchSnapshot();
-    });
-
-    it('renders relative bar chart', () => {
-      const wrapper = factory({ calculation: 'relative', chartType: 'bar' });
-      expect(wrapper).toMatchSnapshot();
-    });
-
     it('renders absolute sparkline', () => {
-      const wrapper = factory({ chartType: 'line' });
+      const wrapper = factory({});
       expect(wrapper).toMatchSnapshot();
     });
 
     it('renders relative sparkline', () => {
-      const wrapper = factory({ calculation: 'relative', chartType: 'line' });
+      const wrapper = factory({ calculation: 'relative' });
       expect(wrapper).toMatchSnapshot();
     });
 
     it('redirects to details page when bar is clicked', () => {
       const historyPush = jest.fn();
-      const wrapper = factory({ chartType: 'bar', history: { push: historyPush }});
+      const wrapper = factory({ history: { push: historyPush }});
       wrapper.simulate('click', { date: '2018-01-13' });
 
       expect(historyPush).toHaveBeenCalledWith({
@@ -217,7 +221,7 @@ describe('SpamTrapOverview', () => {
 
     it('redirects to details page when dot is clicked', () => {
       const historyPush = jest.fn();
-      const wrapper = factory({ chartType: 'line', history: { push: historyPush }});
+      const wrapper = factory({ history: { push: historyPush }});
       wrapper.simulate('click', { date: '2018-01-13' });
 
       expect(historyPush).toHaveBeenCalledWith({
