@@ -44,6 +44,9 @@ describe('Signals Actions', () => {
     },
     'with a subaccount': {
       action: () => actions.getSpamHits({ ...requiredOptions, subaccount: { id: 123 }})
+    },
+    'with a custom date range': {
+      action: () => actions.getSpamHits({ ...requiredOptions, to: '2018-01-07', from: '2018-01-01', relativeRange: 'custom' })
     }
   });
 

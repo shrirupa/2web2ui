@@ -156,6 +156,29 @@ Array [
 ]
 `;
 
+exports[`Signals Actions .getSpamHits with a custom date range 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "headers": Object {},
+      "method": "GET",
+      "params": Object {
+        "filter": undefined,
+        "from": "2018-01-01",
+        "limit": undefined,
+        "offset": undefined,
+        "order": undefined,
+        "order_by": undefined,
+        "to": "2018-01-07",
+      },
+      "showErrorAlert": false,
+      "url": "/v1/signals/spam-hits/",
+    },
+    "type": "GET_SPAM_HITS",
+  },
+]
+`;
+
 exports[`Signals Actions .getSpamHits with a facet 1`] = `
 Array [
   Object {

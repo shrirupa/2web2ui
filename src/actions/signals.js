@@ -15,14 +15,21 @@ const ORDER_BY_MAPPING = {
 const signalsActionCreator = ({ dimension, type }) => ({
   facet = '',
   filter,
+  from,
   limit,
   offset,
   order,
   orderBy,
   relativeRange,
-  subaccount
+  subaccount,
+  to
 }) => {
-  const { from , to } = getRelativeDates(relativeRange, { now: moment().subtract(1, 'day') });
+  let dates = { from, to };
+
+  if (relativeRange !== 'custom') {
+    dates = getRelativeDates(relativeRange, { now: moment().subtract(1, 'day') });
+  }
+
   let order_by;
 
   // note, to order by subaccount, only pass order direction and do not set order_by
@@ -45,12 +52,12 @@ const signalsActionCreator = ({ dimension, type }) => ({
       showErrorAlert: false,
       params: {
         filter,
-        from: formatInputDate(from),
+        from: formatInputDate(dates.from),
         limit,
         offset,
         order,
         order_by,
-        to: formatInputDate(to)
+        to: formatInputDate(dates.to)
       }
     }
   });
@@ -92,9 +99,16 @@ export const getSpamHits = signalsActionCreator({
 });
 
 export const getInjections = ({
-  relativeRange
+  from,
+  relativeRange,
+  to
 }) => {
-  const { from , to } = getRelativeDates(relativeRange, { now: moment().subtract(1, 'day') });
+
+  let dates = { from, to };
+
+  if (relativeRange !== 'custom') {
+    dates = getRelativeDates(relativeRange, { now: moment().subtract(1, 'day') });
+  }
 
   return sparkpostApiRequest({
     type: 'GET_INJECTIONS',
@@ -104,8 +118,8 @@ export const getInjections = ({
       url: '/v1/signals/injections',
       showErrorAlert: false,
       params: {
-        from: formatInputDate(from),
-        to: formatInputDate(to)
+        from: formatInputDate(dates.from),
+        to: formatInputDate(dates.to)
       }
     }
   });
