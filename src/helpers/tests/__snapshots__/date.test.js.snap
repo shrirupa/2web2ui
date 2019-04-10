@@ -36,3 +36,16 @@ Array [
   },
 ]
 `;
+
+exports[`Date helpers fillByDate returns sorted and filled dataset with custom date 1`] = `
+Array [
+  Object {
+    "date": "2018-02-01",
+    "value": null,
+  },
+  Object {
+    "date": "2018-02-02",
+    "value": null,
+  },
+]
+`;

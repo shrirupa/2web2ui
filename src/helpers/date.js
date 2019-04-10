@@ -8,6 +8,7 @@ export const relativeDateOptions = [
   { value: 'day', label: 'Last 24 Hours' },
   { value: '7days', label: 'Last 7 Days' },
   { value: '10days', label: 'Last 10 Days' },
+  { value: '14days', label: 'Last 14 Days' },
   { value: '30days', label: 'Last 30 Days' },
   { value: '90days', label: 'Last 90 Days' },
   { value: 'custom', label: 'Custom' }
@@ -155,12 +156,17 @@ export const parseDate = (str) => moment(str, FORMATS.INPUT_DATES, true);
 export const parseTime = (str) => moment(str, FORMATS.INPUT_TIMES, true);
 export const parseDatetime = (...args) => moment(args.join(' '), FORMATS.INPUT_DATETIMES, true);
 
-export const fillByDate = ({ dataSet, fill = {}, now, relativeRange } = {}) => {
-  const { from, to } = getRelativeDates(relativeRange, { now });
+export const fillByDate = ({ dataSet, fill = {}, from, now, relativeRange, to } = {}) => {
+  let dates = { from, to };
+
+  if (relativeRange && relativeRange !== 'custom') {
+    dates = getRelativeDates(relativeRange, { now });
+  }
+
   const orderedData = dataSet.sort((a, b) => new Date(a.date) - new Date(b.date));
   let filledDataSet = [];
 
-  for (let time = moment(from), index = 0; time.isBefore(moment(to)); time.add(1, 'day')) {
+  for (let time = moment(dates.from), index = 0; time.isBefore(moment(dates.to)); time.add(1, 'day')) {
     const data = orderedData[index];
     const fillData = { ...fill, date: formatInputDate(time) };
 

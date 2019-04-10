@@ -312,6 +312,16 @@ describe('Date helpers', () => {
 
       expect(fillByDate({ dataSet, fill, now, relativeRange })).toMatchSnapshot();
     });
+
+    it('returns sorted and filled dataset with custom date', () => {
+      const dataSet = [
+        { date: '2018-02-02', value: 234 },
+        { date: '2018-01-30', value: 123 }
+      ];
+      const fill = { value: null };
+
+      expect(fillByDate({ dataSet, fill, now, relativeRange: 'custom', to: '2018-02-03', from: '2018-02-01' })).toMatchSnapshot();
+    });
   });
 
   describe('getDateTicks', () => {
