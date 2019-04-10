@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import DayPicker, { DateUtils } from 'react-day-picker';
-
+import classnames from 'classnames';
 import { ArrowForward, ArrowBack } from '@sparkpost/matchbox-icons';
 import styles from './DateSelector.module.scss';
 
@@ -8,7 +8,9 @@ export class Navbar extends Component {
   render() {
     const {
       onPreviousClick,
-      onNextClick
+      onNextClick,
+      showNextButton,
+      showPreviousButton
     } = this.props;
 
     return (
@@ -16,11 +18,11 @@ export class Navbar extends Component {
         <ArrowBack
           size={21}
           onClick={() => onPreviousClick()}
-          className={styles.Prev} />
+          className={classnames(styles.Prev, showPreviousButton && styles.show)} />
         <ArrowForward
           size={21}
           onClick={() => onNextClick()}
-          className={styles.Next} />
+          className={classnames(styles.Next, showNextButton && styles.show)} />
       </div>
     );
   }

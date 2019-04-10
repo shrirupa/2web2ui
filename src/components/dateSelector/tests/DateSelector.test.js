@@ -40,7 +40,13 @@ describe('dateselector', () => {
 describe('Navbar', () => {
 
   it('should render correctly', () => {
-    expect(shallow(<Navbar />)).toMatchSnapshot();
+    expect(shallow(<Navbar/>)).toMatchSnapshot();
+  });
+
+  it('should be able to show prev and next buttons', () => {
+    const wrapper = shallow(<Navbar showNextButton showPreviousButton />);
+    expect(wrapper.find('ArrowForward').prop('className')).toContain('show');
+    expect(wrapper.find('ArrowBack').prop('className')).toContain('show');
   });
 
   it('should call previous button handler', () => {

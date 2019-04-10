@@ -3,6 +3,7 @@
 /* DayPicker styles */
 .container {
   display: block;
+  margin-bottom: spacing();
 }
 
 .wrapper {
@@ -77,11 +78,9 @@
   flex-basis: 0;
   min-width: rem(24);
 
-  padding: rem(3) rem(7);
-  margin-bottom: -1px;
-  margin-right: -1px;
+  padding: rem(0) rem(6);
+  margin: rem(2) 0;
 
-  border: 1px solid color(gray, 9);
   font-size: rem(12);
   font-weight: 400;
   text-align: center;
@@ -94,7 +93,7 @@
   }
 
   &:hover:not(.disabled):not(.inBetween):not(.firstSelected):not(.lastSelected) {
-    background: color(gray, 9);
+    background: color(gray, 8);
   }
 
   &:active:not(.disabled) {
@@ -114,7 +113,6 @@
 
 .inBetween {
   background: rgba(color(blue), 0.3);
-  border: 1px solid rgba(color(blue), 0.4);
   z-index: 100;
   color: color(gray, 1);
   font-weight: 600;
@@ -127,7 +125,12 @@
   &.inBetween {
     background: rgba(color(blue), 0.12) !important;
     color: color(gray, 7) !important;
-    border: 1px solid rgba(color(blue), 0.15);
+    font-weight: 400;
+  }
+
+  &.lastSelected, &.firstSelected {
+    background: rgba(color(blue, dark), 0.4);
+    color: color(gray, 9) !important;
   }
 }
 
@@ -140,14 +143,14 @@
   color: white;
   background: color(blue, dark);
   border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px
+  border-bottom-left-radius: 4px;
 }
 
 .lastSelected {
   color: white;
   background-color: color(blue, dark);
   border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px
+  border-bottom-right-radius: 4px;
 }
 
 // Custom Components
@@ -163,8 +166,9 @@
   display: inline-block;
   cursor: pointer;
 
-  fill: color(gray, 5);
   transition: 0.15s;
+  fill: rgba(color(gray, 5), 0);
+  pointer-events: none;
 
   &:hover {
     fill: color(blue, dark);
@@ -173,3 +177,7 @@
 
 .Prev { left: rem(24); }
 .Next { right: rem(24); }
+.show {
+  fill: rgba(color(gray, 5), 1);
+  pointer-events: auto;
+}
