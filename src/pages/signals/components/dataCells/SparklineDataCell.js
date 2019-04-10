@@ -12,7 +12,7 @@ const StyledDot = (props) => (
 );
 
 const SparklineDataCell = ({ data, dataKey, label, onClick = () => {}, relative }) => {
-  const currentDate = _.last(data).date;
+  const currentDate = _.get(_.last(data), 'date');
   const isEmpty = data.every((values) => values[dataKey] === null);
 
   if (isEmpty) {
