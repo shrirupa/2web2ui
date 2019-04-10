@@ -5,6 +5,7 @@ import { getEngagementRecency } from 'src/actions/signals';
 import { selectEngagementRecencyDetails, getSelectedDateFromRouter } from 'src/selectors/signals';
 import { getDateTicks } from 'src/helpers/date';
 import { getDisplayName } from 'src/helpers/hoc';
+import _ from 'lodash';
 
 export class WithEngagementRecencyDetails extends Component {
   componentDidMount() {
@@ -12,23 +13,25 @@ export class WithEngagementRecencyDetails extends Component {
     getEngagementRecency({
       facet,
       filter: facetId,
+      from: filters.from,
       relativeRange: filters.relativeRange,
-      subaccount: subaccountId
+      subaccount: subaccountId,
+      to: filters.to
     });
   }
 
   componentDidUpdate(prevProps) {
     const { getEngagementRecency, facet, facetId, filters, subaccountId } = this.props;
-    const prevRange = prevProps.filters.relativeRange;
-    const nextRange = filters.relativeRange;
 
-    // Refresh when date range changes
-    if (prevRange !== nextRange) {
+    // Refresh when filters change
+    if (!_.isEqual(prevProps.filters, filters)) {
       getEngagementRecency({
         facet,
         filter: facetId,
-        relativeRange: nextRange,
-        subaccount: subaccountId
+        from: filters.from,
+        relativeRange: filters.relativeRange,
+        subaccount: subaccountId,
+        to: filters.to
       });
     }
   }
@@ -48,7 +51,7 @@ export class WithEngagementRecencyDetails extends Component {
     const gap = details.data && details.data.length > 15 ? 0.2 : 1;
 
     return (
-      <WrappedComponent {...details} facet={facet} facetId={facetId} gap={gap} xTicks={getDateTicks(filters.relativeRange)} selected={selected} subaccountId={subaccountId} />
+      <WrappedComponent {...details} facet={facet} facetId={facetId} gap={gap} xTicks={getDateTicks(filters)} selected={selected} subaccountId={subaccountId} />
     );
   }
 }

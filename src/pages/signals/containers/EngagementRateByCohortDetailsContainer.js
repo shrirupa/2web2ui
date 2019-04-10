@@ -5,6 +5,7 @@ import { getEngagementRateByCohort } from 'src/actions/signals';
 import { selectEngagementRateByCohortDetails, getSelectedDateFromRouter } from 'src/selectors/signals';
 import { getDateTicks } from 'src/helpers/date';
 import { getDisplayName } from 'src/helpers/hoc';
+import _ from 'lodash';
 
 export class WithEngagementRateByCohortDetails extends Component {
   componentDidMount() {
@@ -12,23 +13,25 @@ export class WithEngagementRateByCohortDetails extends Component {
     getEngagementRateByCohort({
       facet,
       filter: facetId,
+      from: filters.from,
       relativeRange: filters.relativeRange,
-      subaccount: subaccountId
+      subaccount: subaccountId,
+      to: filters.to
     });
   }
 
   componentDidUpdate(prevProps) {
     const { getEngagementRateByCohort, facet, facetId, filters, subaccountId } = this.props;
-    const prevRange = prevProps.filters.relativeRange;
-    const nextRange = filters.relativeRange;
 
-    // Refresh when date range changes
-    if (prevRange !== nextRange) {
+    // Refresh when filters change
+    if (!_.isEqual(prevProps.filters, filters)) {
       getEngagementRateByCohort({
         facet,
         filter: facetId,
-        relativeRange: nextRange,
-        subaccount: subaccountId
+        from: filters.from,
+        relativeRange: filters.relativeRange,
+        subaccount: subaccountId,
+        to: filters.to
       });
     }
   }
@@ -45,7 +48,7 @@ export class WithEngagementRateByCohortDetails extends Component {
     } = this.props;
 
     return (
-      <WrappedComponent {...details} facet={facet} facetId={facetId} xTicks={getDateTicks(filters.relativeRange)} selected={selected} subaccountId={subaccountId} />
+      <WrappedComponent {...details} facet={facet} facetId={facetId} xTicks={getDateTicks(filters)} selected={selected} subaccountId={subaccountId} />
     );
   }
 }

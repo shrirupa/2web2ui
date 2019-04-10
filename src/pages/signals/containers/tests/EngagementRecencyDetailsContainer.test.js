@@ -20,7 +20,9 @@ describe('Signals Engagement Recency Details Container', () => {
       facet: 'sending_domain',
       facetId: 'test.com',
       filters: {
-        relativeRange: '14days'
+        from: '2015-01-01',
+        relativeRange: '14days',
+        to: '2015-01-05'
       },
       getEngagementRecency: jest.fn(),
       selected: '2015-01-01',
@@ -36,8 +38,10 @@ describe('Signals Engagement Recency Details Container', () => {
     expect(props.getEngagementRecency).toHaveBeenCalledWith({
       facet: 'sending_domain',
       filter: 'test.com',
+      from: '2015-01-01',
       relativeRange: '14days',
-      subaccount: '101'
+      subaccount: '101',
+      to: '2015-01-05'
     });
   });
 
@@ -48,6 +52,18 @@ describe('Signals Engagement Recency Details Container', () => {
       filter: 'test.com',
       relativeRange: '30days',
       subaccount: '101'
+    });
+  });
+
+  it('gets engagement recency when dates are updated', () => {
+    wrapper.setProps({ filters: { relativeRange: 'custom', to: '2016-01-02', from: '2016-01-01' }});
+    expect(props.getEngagementRecency).toHaveBeenCalledWith({
+      facet: 'sending_domain',
+      filter: 'test.com',
+      from: '2016-01-01',
+      relativeRange: 'custom',
+      subaccount: '101',
+      to: '2016-01-02'
     });
   });
 
