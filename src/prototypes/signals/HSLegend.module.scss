@@ -1,0 +1,47 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.Legend {
+  display: flex;
+  align-items: center;
+  margin: spacing() 0 spacing(large);
+
+  & > * {
+    flex: 1 0 0;
+  }
+}
+
+.b, .w, .g {
+  position: relative;
+  // top: -3px;
+  height: 10px;
+  background: green;
+}
+
+.b {
+  background: #D1E4F4;
+}
+
+.w {
+  background: #91C5FD;
+}
+
+.g {
+  background: #4194ED;
+}
+
+.Desc {
+  position: relative;
+  top: 13px;
+
+  font-size: rem(12);
+  line-height: 1em;
+  color: color(gray, 4);
+}
+
+
+.Label {
+  flex: 0 0 0;
+  margin-right: spacing();
+  font-size: rem(12);
+  font-weight: 600;
+}

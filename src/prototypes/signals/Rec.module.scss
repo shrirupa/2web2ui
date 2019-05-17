@@ -1,0 +1,145 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.Grid {
+  align-items: stretch;
+
+  & > * {
+    padding-bottom: spacing();
+  }
+}
+
+.Title {
+  font-size: rem(15);
+  font-weight: 600;
+  padding: 0;
+}
+
+.SectionTitle {
+  margin-top: spacing(large);
+
+  span {
+    display: inline-block;
+    padding-left: spacing();
+    font-size: rem(18);
+    font-weight: 400;
+    color: color(gray, 2);
+  }
+}
+
+.Panel {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  padding-bottom: rem(33);
+}
+
+.ActionSection {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: spacing();
+  border-top: 1px solid color(gray, 9);
+
+  font-size: rem(12);
+  line-height: 1em;
+}
+
+.ActionSection a {
+  color: color(blue, dark);
+  font-size: rem(12);
+  line-height: 1em;
+}
+
+.Reveal {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  border-radius: border-radius();
+
+  pointer-events: none;
+  transform: translate(0, 101%);
+  opacity: 1;
+  transition: 0.25s cubic-bezier(0.5,0,0.5,1);
+
+  padding: spacing();
+  background: color(gray, 2);
+
+  &.open {
+    pointer-events: auto;
+    transform: translate(0, 0);
+    opacity: 1;
+    transition: 0.3s cubic-bezier(0,.5,.2,1);
+  }
+}
+
+.Content {
+  padding: spacing() 0;
+}
+
+.Value {
+  margin-bottom: spacing();
+  font-size: rem(39);
+  color: #0B58B0;
+}
+
+.Desc {
+  margin: 0;
+  font-size: rem(13);
+  line-height: 1.5em;
+}
+
+.Clear {
+  position: absolute;
+  top: rem(15);
+  right: rem(15);
+  color: color(gray, 4);
+
+  &:hover {
+    color: color(gray, 2);
+  }
+
+  svg {
+    transform: rotate(45deg)
+  }
+}
+
+.RevealContent {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Fix {
+  // margin-top: rem(33);
+  color: color(gray, 10);
+  font-size: rem(12);
+  line-height: 1.5em;
+}
+
+.FixButton {
+  color: color(gray, 10) !important;
+}
+
+.BadIcon, .GoodIcon {
+
+}
+
+
+.BadIcon, .GoodIcon {
+  position: absolute;
+  top: rem(15);
+  right: rem(15);
+}
+
+.BadIcon {
+  fill: color(red, dark);
+}
+
+.GoodIcon {
+  fill: color(green, dark);
+}

@@ -1,0 +1,29 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.ChartHeader {
+  // display: inline-block;
+  margin-top: spacing();
+}
+
+.Label, .Value {
+  display: inline-block;
+}
+
+.Label {
+  font-size: rem(12);
+  margin: 0;
+
+  .ChartHeader:first-child & {
+    padding-left: rem(65);
+  }
+
+  .ChartHeader:not(:first-child) & {
+    padding-left: spacing(large);
+  }
+}
+
+.Value {
+  padding-left: spacing();
+  font-size: rem(21);
+  font-weight: 600;
+}

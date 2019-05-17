@@ -1,0 +1,105 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.SelectWrapper:last-child {
+  margin-bottom: rem(-18) !important;
+}
+
+.ComponentWrapper {
+  display: inline-block;
+
+  &:first-child {
+    margin: 0 spacing(small) spacing() 0;
+  }
+
+  &:not(:first-child) {
+    margin: 0 spacing(small) spacing();
+  }
+}
+
+.ComponentAnd {
+  display: inline-block;
+  margin-right: spacing();
+  color: color(gray, 6);
+  font-size: rem(18);
+}
+
+.ComponentPopover {
+  display: inline-block;
+}
+
+.ComponentWeight {
+  position: relative;
+  display: block;
+  padding: spacing(small) 0 0;
+
+  white-space: nowrap;
+  font-size: rem(18);
+
+  a {
+    position: relative;
+    display: block;
+  }
+
+  a:after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: block;
+    content: '';
+
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(to right, color(blue, dark) 70%, transparent 30%);
+    background-size: 2px 100%;
+  }
+}
+
+.ComponentLabel {
+  position: relative;
+  display: block;
+  white-space: nowrap;
+  font-size: rem(11);
+  font-weight: 600;
+}
+
+.RemoveIcon {
+  position: absolute;
+  right: 0;
+  top: 47%;
+  transform: translate(0, -50%);
+  fill: color(gray, 4);
+
+  opacity: 0;
+  transition: 0.15s;
+
+  &:hover {
+    fill: color(gray, 2);
+  }
+
+  .Component:hover & {
+    opacity: 1;
+  }
+}
+
+
+.AddIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: spacing(small);
+
+  color: color(gray, 2);
+  transition: 0.15s;
+
+  background: linear-gradient(180deg, #fff, color(gray, 8));
+  border: 1px solid color(gray, 6);
+  border-radius: 50%;
+  height: 31px;
+  width: 31px;
+
+  &:hover {
+    color: color(gray, 1);
+    border: 1px solid color(gray, 5);
+    background: linear-gradient(180deg, color(gray, 9), color(gray, 8));
+  }
+}
