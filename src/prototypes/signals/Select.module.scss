@@ -52,6 +52,24 @@
     background: linear-gradient(to right, color(blue, dark) 70%, transparent 30%);
     background-size: 2px 100%;
   }
+
+  &.Placeholder a {
+    color: color(gray, 4);
+
+    &:after {
+      background: linear-gradient(to right, color(gray, 4) 70%, transparent 30%);
+      background-size: 2px 100%;
+    }
+
+    &:hover {
+      color: color(blue, dark);
+
+      &:after {
+        background: linear-gradient(to right, color(blue, dark) 70%, transparent 30%);
+        background-size: 2px 100%;
+      }
+    }
+  }
 }
 
 .ComponentLabel {
@@ -80,7 +98,6 @@
     opacity: 1;
   }
 }
-
 
 .AddIcon {
   display: flex;

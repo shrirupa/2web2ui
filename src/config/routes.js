@@ -48,7 +48,6 @@ import {
   isCustomBilling,
   isEnterprise,
   isSelfServeBilling,
-  hasUiOption,
   isAccountUiOptionSet
 } from 'src/helpers/conditions/account';
 import { isHeroku, isAzure, isSubaccountUser } from 'src/helpers/conditions/user';
