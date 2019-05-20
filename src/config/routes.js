@@ -47,8 +47,7 @@ import {
   isAws,
   isCustomBilling,
   isEnterprise,
-  isSelfServeBilling,
-  isAccountUiOptionSet
+  isSelfServeBilling
 } from 'src/helpers/conditions/account';
 import { isHeroku, isAzure, isSubaccountUser } from 'src/helpers/conditions/user';
 import { configFlag, configEquals } from 'src/helpers/conditions/config';
@@ -777,7 +776,6 @@ const routes = [
   {
     path: '/prototype/signals-details',
     component: PrototypeSignalsDetails,
-    condition: isAccountUiOptionSet('prototype_signals_details', false),
     title: 'Prototype Signals',
     layout: App
   }
