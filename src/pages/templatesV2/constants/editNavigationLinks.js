@@ -1,4 +1,5 @@
 import EditContents from '../components/EditContents';
+import TemplateSettings from '../components/settings/EditSettings';
 import EditContentsPrimaryArea from '../components/EditContentsPrimaryArea';
 
 const editNavigationLinks = [
@@ -12,8 +13,8 @@ const editNavigationLinks = [
   {
     content: 'Settings',
     key: 'settings',
-    render: () => null,
-    renderPrimaryArea: () => null,
+    render: TemplateSettings,
+    renderPrimaryArea: EditContentsPrimaryArea,
     routeKey: 'settings'
   }
 ];
