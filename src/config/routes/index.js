@@ -308,6 +308,13 @@ const routes = [
     supportDocSearch: 'signals'
   },
   {
+    path: '/signals/ingest-batch-status',
+    component: signals.BatchStatusPage,
+    layout: App,
+    title: 'Signals',
+    supportDocSearch: 'signals'
+  },
+  {
     path: '/account/security',
     redirect: '/account/profile'
   },

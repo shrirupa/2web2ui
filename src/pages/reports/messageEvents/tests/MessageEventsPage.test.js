@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { MessageEventsPage } from '../MessageEventsPage';
-import { CursorPaging } from '../components/CursorPaging';
+import { CursorPaging } from 'src/components/collection/CursorPaging';
 import * as downloading from 'src/helpers/downloading';
 
 

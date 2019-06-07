@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { snakeToFriendly } from 'src/helpers/string';
 
 import { Table } from '@sparkpost/matchbox';
-import { DisplayDate } from 'src/components';
+import DisplayDate from 'src/components/displayDate/DisplayDate';
 
 import styles from './HistoryTable.module.scss';
 
@@ -27,11 +27,11 @@ const Row = ({ onClick, selected, type, timestamp, formattedDate }) => (
     <Table.Cell>
       <DisplayDate timestamp={timestamp} formattedDate={formattedDate} />
     </Table.Cell>
-    <Table.Cell>{ snakeToFriendly(type) }</Table.Cell>
+    <Table.Cell>{snakeToFriendly(type)}</Table.Cell>
   </Table.Row>
 );
 
-const TableWrapper = ({ children }) => <Table>{ children }</Table>;
+const TableWrapper = ({ children }) => <Table>{children}</Table>;
 
 export {
   Header,

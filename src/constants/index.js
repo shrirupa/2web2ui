@@ -26,6 +26,14 @@ export const FORMATS = {
   INPUT_DATETIMES: ['YYYY-MM-DD h:mma', 'YYYY-MM-DD H:mm', 'YYYY-MM-DD H:mma']
 };
 
+export const RELATIVE_DATE_OPTIONS = [
+  'hour',
+  'day',
+  '7days',
+  '10days',
+  'custom'
+];
+
 export const LINKS = {
   SPC_EU_URL: 'https://app.eu.sparkpost.com',
   SPC_US_URL: 'https://app.sparkpost.com',

@@ -14,8 +14,7 @@ import { recipientEmail as recipientEmailValidator } from 'src/helpers/validatio
 import { parseSearch } from 'src/helpers/messageEvents';
 import { stringToArray } from 'src/helpers/string';
 import { onEnter } from 'src/helpers/keyEvents';
-import { RELATIVE_DATE_OPTIONS } from './searchConfig';
-import { FORMATS, ALL_EVENTS_FILTERS } from 'src/constants';
+import { FORMATS, RELATIVE_DATE_OPTIONS, ALL_EVENTS_FILTERS } from 'src/constants';
 import config from 'src/config';
 
 export class MessageEventsSearch extends Component {
