@@ -17,7 +17,7 @@ const EditAndPreviewPage = () => {
   if (hasDraftFailedToLoad) {
     return (
       <RedirectAndAlert
-        to="/templates"
+        to={`/${routeNamespace}`}
         alert={{ type: 'error', message: 'Unable to load template' }}
       />
     );

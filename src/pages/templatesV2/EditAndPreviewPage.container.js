@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getDraft, getPreview, getPublished, update } from 'src/actions/templates';
+import { getDraft, getPreview, getPublished, update, deleteTemplate } from 'src/actions/templates';
 import { list as listDomains } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 
@@ -29,6 +29,7 @@ const mapStateToProps = (state, props) => {
     hasDraftFailedToLoad: Boolean(state.templates.getDraftError),
     hasFailedToPreview: Boolean(state.templates.contentPreview.error),
     isDraftLoading: !draft || Boolean(state.templates.getDraftLoading),
+    isDeletePending: state.templates.deletePending,
     isDraftUpdating: Boolean(state.templates.updating),
     preview: selectDraftTemplatePreview(state, id, {}),
     previewLineErrors: selectPreviewLineErrors(state),
@@ -40,6 +41,7 @@ const mapDispatchToProps = {
   getDraft,
   getPreview,
   getPublished,
+  deleteTemplate,
   updateDraft: update,
   listDomains,
   listSubaccounts

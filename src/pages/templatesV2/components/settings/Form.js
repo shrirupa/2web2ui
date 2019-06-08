@@ -1,7 +1,12 @@
+/* eslint max-lines: ["error", 200] */
+
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { Button, Panel } from '@sparkpost/matchbox';
+
 import ToggleBlock from 'src/components/toggleBlock/ToggleBlock';
 import SubaccountSection from 'src/components/subaccountSection';
 import { TextFieldWrapper } from 'src/components';
@@ -12,19 +17,18 @@ import { emailOrSubstitution } from '../validation';
 import { isSubaccountUser } from 'src/helpers/conditions/user';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { not } from '../../../../helpers/conditions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { update as updateTemplate } from 'src/actions/templates';
 import { selectDomainsBySubaccount } from 'src/selectors/templates';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { showAlert } from 'src/actions/globalAlert';
+import DeleteTemplate from '../DeleteTemplate';
+import { routeNamespace } from '../../constants/routes';
 
 const formName = 'templateSettings';
 
 export class SettingsForm extends React.Component {
   updateSettings = (values) => {
     const { draft, updateDraft, subaccountId, showAlert } = this.props;
-
     return updateDraft({ id: draft.id, ...values }, subaccountId)
       .then(() => {
         showAlert({ type: 'success', message: 'Template settings updated' }); //todo change to top header feedback
@@ -33,11 +37,15 @@ export class SettingsForm extends React.Component {
 
   parseToggle = (value) => !!value;
 
+  onDelete = () => {
+    const { showAlert, history } = this.props;
+    history.push(`/${routeNamespace}`);
+    showAlert({ message: 'Template deleted', type: 'success' });
+  };
+
   render() {
     const { handleSubmit, domainsLoading, domains, subaccountId, submitting, hasSubaccounts, canViewSubaccount } = this.props;
-
     const canViewSubaccountSection = hasSubaccounts && canViewSubaccount;
-
     const fromEmailHelpText = !domainsLoading && !domains.length ? (subaccountId ? 'The selected subaccount does not have any verified sending domains.' : 'You do not have any verified sending domains to use.') : null;
 
     return (<>
@@ -60,9 +68,7 @@ export class SettingsForm extends React.Component {
             disabled={true}
           />
         </Panel.Section>
-
         {canViewSubaccountSection && <SubaccountSection newTemplate={false} disabled={submitting}/>}
-
         <Panel.Section>
           <Field
             name='content.subject'
@@ -148,12 +154,7 @@ export class SettingsForm extends React.Component {
             Update Settings
           </Button>
 
-          <Button
-            className={styles.DeleteButton}
-          >
-            Delete Template
-          </Button>
-
+          <DeleteTemplate className={styles.DeleteButton} afterDelete={this.onDelete}>Delete Template</DeleteTemplate>
         </Panel.Section>
       </form>
     </>);
@@ -173,4 +174,7 @@ const formOptions = {
   enableReinitialize: true // required to update initial values from redux state
 };
 
-export default withRouter(connect(mapStateToProps, { updateTemplate, showAlert })(reduxForm(formOptions)(SettingsForm)));
+export default withRouter(connect(mapStateToProps, {
+  updateTemplate,
+  showAlert
+})(reduxForm(formOptions)(SettingsForm)));
