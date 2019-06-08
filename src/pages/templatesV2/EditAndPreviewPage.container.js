@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getDraft, getPreview, getPublished, update } from 'src/actions/templates';
+import { list as listDomains } from 'src/actions/sendingDomains';
+import { list as listSubaccounts } from 'src/actions/subaccounts';
+
 import {
   selectDraftTemplate,
   selectDraftTemplatePreview,
@@ -37,7 +40,9 @@ const mapDispatchToProps = {
   getDraft,
   getPreview,
   getPublished,
-  updateDraft: update
+  updateDraft: update,
+  listDomains,
+  listSubaccounts
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAndPreviewPageContainer);

@@ -5,14 +5,14 @@ import styles from './ToggleBlock.module.scss';
 
 const ToggleBlock = ({ input, meta, label, helpText, ...rest }) => {
   const helpMarkup = helpText
-    ? <p className={styles.Help}>{ helpText }</p>
+    ? <div className={styles.Help}>{helpText}</div>
     : null;
 
   return (
     <div className={styles.ToggleBlock}>
       <Grid>
         <Grid.Column xs={8}>
-          <label className={styles.Label}>{ label }</label>
+          <label className={styles.Label}>{label}</label>
         </Grid.Column>
         <Grid.Column xs={4}>
           <div className={styles.ToggleWrapper}>
@@ -20,7 +20,7 @@ const ToggleBlock = ({ input, meta, label, helpText, ...rest }) => {
           </div>
         </Grid.Column>
       </Grid>
-      { helpMarkup }
+      {helpMarkup}
     </div>
   );
 };

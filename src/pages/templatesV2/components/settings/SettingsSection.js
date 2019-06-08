@@ -1,6 +1,6 @@
 import React from 'react';
 import { Panel } from '@sparkpost/matchbox';
-import SettingsForm from './Form';
+import SettingsForm from './Form.Container';
 import styles from './SettingsSection.module.scss';
 
 const SettingsSection = () => (

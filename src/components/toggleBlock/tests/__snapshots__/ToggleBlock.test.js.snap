@@ -27,10 +27,10 @@ exports[`ToggleBlock should render 1`] = `
       </div>
     </Grid.Column>
   </Grid>
-  <p
+  <div
     className="Help"
   >
     some help
-  </p>
+  </div>
 </div>
 `;
