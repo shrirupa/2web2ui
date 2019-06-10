@@ -1,9 +1,5 @@
-/* eslint max-lines: ["error", 200] */
-
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Field } from 'redux-form';
 
 import { Button, Panel } from '@sparkpost/matchbox';
 
@@ -14,19 +10,10 @@ import FromEmailWrapper from '../FromEmailWrapper';
 import { required } from 'src/helpers/validation';
 import styles from './Form.module.scss';
 import { emailOrSubstitution } from '../validation';
-import { isSubaccountUser } from 'src/helpers/conditions/user';
-import { hasSubaccounts } from 'src/selectors/subaccounts';
-import { not } from '../../../../helpers/conditions';
-import { update as updateTemplate } from 'src/actions/templates';
-import { selectDomainsBySubaccount } from 'src/selectors/templates';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { showAlert } from 'src/actions/globalAlert';
 import DeleteTemplate from '../DeleteTemplate';
 import { routeNamespace } from '../../constants/routes';
 
-const formName = 'templateSettings';
-
-export class SettingsForm extends React.Component {
+export default class SettingsForm extends React.Component {
   updateSettings = (values) => {
     const { draft, updateDraft, subaccountId, showAlert } = this.props;
     return updateDraft({ id: draft.id, ...values }, subaccountId)
@@ -49,7 +36,7 @@ export class SettingsForm extends React.Component {
     const fromEmailHelpText = !domainsLoading && !domains.length ? (subaccountId ? 'The selected subaccount does not have any verified sending domains.' : 'You do not have any verified sending domains to use.') : null;
 
     return (<>
-      <form name={formName} onSubmit={handleSubmit(this.updateSettings)}>
+      <form onSubmit={handleSubmit(this.updateSettings)}>
         <Panel.Section>
           <Field
             name='name'
@@ -160,21 +147,3 @@ export class SettingsForm extends React.Component {
     </>);
   }
 }
-
-const mapStateToProps = (state, props) => ({
-  domains: selectDomainsBySubaccount(state, props),
-  domainsLoading: state.sendingDomains.listLoading,
-  hasSubaccounts: hasSubaccounts(state),
-  canViewSubaccount: selectCondition(not(isSubaccountUser))(state),
-  initialValues: props.draft
-});
-
-const formOptions = {
-  form: formName,
-  enableReinitialize: true // required to update initial values from redux state
-};
-
-export default withRouter(connect(mapStateToProps, {
-  updateTemplate,
-  showAlert
-})(reduxForm(formOptions)(SettingsForm)));
