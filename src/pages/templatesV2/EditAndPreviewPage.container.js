@@ -12,6 +12,7 @@ import {
 } from 'src/selectors/templates';
 import { EditorContextProvider } from './context/EditorContext';
 import EditAndPreviewPage from './EditAndPreviewPage';
+import { selectDomainsBySubaccount } from '../../selectors/templates';
 
 const EditAndPreviewPageContainer = (props) => (
   <EditorContextProvider value={props}>
@@ -26,6 +27,7 @@ const mapStateToProps = (state, props) => {
 
   return {
     draft,
+    published,
     hasDraftFailedToLoad: Boolean(state.templates.getDraftError),
     hasFailedToPreview: Boolean(state.templates.contentPreview.error),
     isDraftLoading: !draft || Boolean(state.templates.getDraftLoading),
@@ -33,7 +35,8 @@ const mapStateToProps = (state, props) => {
     isDraftUpdating: Boolean(state.templates.updating),
     preview: selectDraftTemplatePreview(state, id, {}),
     previewLineErrors: selectPreviewLineErrors(state),
-    published
+    domains: selectDomainsBySubaccount(state, props),
+    domainsLoading: state.sendingDomains.listLoading
   };
 };
 

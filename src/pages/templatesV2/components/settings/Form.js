@@ -1,149 +1,156 @@
 import React from 'react';
-import { Field } from 'redux-form';
-
+import _ from 'lodash';
 import { Button, Panel } from '@sparkpost/matchbox';
-
-import ToggleBlock from 'src/components/toggleBlock/ToggleBlock';
-import SubaccountSection from 'src/components/subaccountSection';
-import { TextFieldWrapper } from 'src/components';
-import FromEmailWrapper from '../FromEmailWrapper';
+import { useForm } from 'src/hooks/useForm';
+import { TextFieldWrapper, ToggleBlockWrapper } from 'src/components/hooksFormWrapper';
 import { required } from 'src/helpers/validation';
-import styles from './Form.module.scss';
-import { emailOrSubstitution } from '../validation';
 import DeleteTemplate from '../DeleteTemplate';
 import { routeNamespace } from '../../constants/routes';
+import useEditorContext from '../../hooks/useEditorContext';
+import { minLength } from '../../../../helpers/validation';
+import styles from './Form.module.scss';
+import { emailOrSubstitution } from './validation';
 
-export default class SettingsForm extends React.Component {
-  updateSettings = (values) => {
-    const { draft, updateDraft, subaccountId, showAlert } = this.props;
-    return updateDraft({ id: draft.id, ...values }, subaccountId)
-      .then(() => {
-        showAlert({ type: 'success', message: 'Template settings updated' }); //todo change to top header feedback
-      });
+const SettingsForm = (props) => {
+  const { settings, draft, domainsLoading, domains, updateDraft, subaccountId, showAlert, history } = useEditorContext();
+
+  const formHook = useForm(settings);
+  const { values, isPristine, isValid } = formHook;
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    //prepare values
+    const settingValues = _.merge({}, draft, {
+      id: settings.id,
+      name: values.name,
+      content: {
+        subject: values.subject,
+        from: {
+          name: values.from_name,
+          email: values.from_email
+        },
+        options: {
+          transactional: values.transactional,
+          click_tracking: values.click_tracking,
+          open_tracking: values.click_open
+        }
+      },
+      description: values.description
+    });
+
+    return updateDraft(settingValues, subaccountId);
   };
 
-  parseToggle = (value) => !!value;
+  const parseToggle = (value) => !!value;
 
-  onDelete = () => {
-    const { showAlert, history } = this.props;
+  const onDelete = () => {
     history.push(`/${routeNamespace}`);
     showAlert({ message: 'Template deleted', type: 'success' });
   };
 
-  render() {
-    const { handleSubmit, domainsLoading, domains, subaccountId, submitting, hasSubaccounts, canViewSubaccount } = this.props;
-    const canViewSubaccountSection = hasSubaccounts && canViewSubaccount;
-    const fromEmailHelpText = !domainsLoading && !domains.length ? (subaccountId ? 'The selected subaccount does not have any verified sending domains.' : 'You do not have any verified sending domains to use.') : null;
+  // const canViewSubaccountSection = hasSubaccounts && canViewSubaccount;
+  const fromEmailHelpText = !domainsLoading && !domains.length ? (subaccountId ? 'The selected subaccount does not have any verified sending domains.' : 'You do not have any verified sending domains to use.') : null;
 
-    return (<>
-      <form onSubmit={handleSubmit(this.updateSettings)}>
-        <Panel.Section>
-          <Field
-            name='name'
-            component={TextFieldWrapper}
-            label='Template Name'
-            // onChange={this.handleIdFill}
-            disabled={submitting}
-            validate={required}
-          />
+  return (<>
+    <form onSubmit={submitForm}>
+      <Panel.Section>
+        <TextFieldWrapper
+          name='name'
+          label='Template Name'
+          formHook={formHook}
+          validate={[required, minLength(4)]}
+        />
 
-          <Field
-            name='id'
-            component={TextFieldWrapper}
-            label='Template ID'
-            helpText={'A Unique ID for your template, we\'ll fill this in for you.'}
-            disabled={true}
-          />
-        </Panel.Section>
-        {canViewSubaccountSection && <SubaccountSection newTemplate={false} disabled={submitting}/>}
-        <Panel.Section>
-          <Field
-            name='content.subject'
-            component={TextFieldWrapper}
-            label='Subject'
-            validate={required}
-            disabled={submitting}
-          />
+        <TextFieldWrapper
+          name='id'
+          label='Template ID'
+          disabled={true}
+          formHook={formHook}
+          validate={[required, minLength(4)]}
+        />
+      </Panel.Section>
+      {/*{canViewSubaccountSection && <SubaccountSection newTemplate={false} disabled={submitting}/>}*/}
+      <Panel.Section>
+        <TextFieldWrapper
+          name='subject'
+          label='Subject'
+          formHook={formHook}
+          validate={[required, minLength(4)]}
+        />
 
-          <Field
-            name='content.from.email'
-            component={FromEmailWrapper}
-            placeholder='example@email.com'
-            label='From Email'
-            validate={[required, emailOrSubstitution]}
-            domains={domains}
-            helpText={fromEmailHelpText}
-            disabled={submitting}
-          />
+        {/** Todo need to fix the wrapper for auto suggestion */}
+        <TextFieldWrapper
+          name='from_email'
+          label='From Email'
+          formHook={formHook}
+          helpText={fromEmailHelpText}
+          validate={[required, emailOrSubstitution]}
+        />
 
-          <Field
-            name='content.from.name'
-            component={TextFieldWrapper}
-            label='From Name'
-            helpText='A friendly from for your recipients.'
-          />
+        <TextFieldWrapper
+          name='from_name'
+          label='From Name'
+          formHook={formHook}
+          helpText='A friendly from for your recipients.'
+        />
 
-          <Field
-            name='content.reply_to'
-            component={TextFieldWrapper}
-            label='Reply To'
-            helpText='An email address recipients can reply to.'
-            validate={emailOrSubstitution}
-            disabled={submitting}
-          />
+        <TextFieldWrapper
+          name='reply_to'
+          label='Reply To'
+          formHook={formHook}
+          helpText='An email address recipients can reply to.'
+          validate={emailOrSubstitution}
+        />
 
-          <Field
-            name='description'
-            component={TextFieldWrapper}
-            label='Description'
-            helpText='Not visible to recipients.'
-            disabled={submitting}
-          />
-        </Panel.Section>
-        <Panel.Section>
-          <Field
-            name='options.open_tracking'
-            component={ToggleBlock}
-            label='Track Opens'
-            type='checkbox'
-            parse={this.parseToggle}
-            disabled={submitting}
+        <TextFieldWrapper
+          name='description'
+          label='Description'
+          formHook={formHook}
+          helpText='Not visible to recipients.'
+          validate={required}
+        />
+      </Panel.Section>
+      <Panel.Section>
+        <ToggleBlockWrapper
+          name='open_tracking'
+          label='Track Opens'
+          formHook={formHook}
+          type='checkbox'
+          parse={parseToggle}
+        />
 
-          />
+        <ToggleBlockWrapper
+          name='click_tracking'
+          label='Track Clicks'
+          formHook={formHook}
+          type='checkbox'
+          parse={parseToggle}
+        />
+        <ToggleBlockWrapper
+          name='transactional'
+          label='Transactional'
+          formHook={formHook}
+          type='checkbox'
+          parse={parseToggle}
+          helpText={<p className={styles.HelpText}>Transactional messages are triggered by a user’s actions on the
+            website, like requesting a password reset, signing up, or making a purchase.</p>}
+        />
 
-          <Field
-            name='options.click_tracking'
-            component={ToggleBlock}
-            label='Track Clicks'
-            type='checkbox'
-            parse={this.parseToggle}
-            disabled={submitting}
 
-          />
-          <Field
-            name='options.transactional'
-            component={ToggleBlock}
-            label='Transactional'
-            type='checkbox'
-            parse={this.parseToggle}
-            helpText={<p className={styles.HelpText}>Transactional messages are triggered by a user’s actions on the
-              website, like requesting a password reset, signing up, or making a purchase.</p>}
-            disabled={submitting}
+      </Panel.Section>
+      <Panel.Section>
+        <Button
+          type='submit'
+          primary
+          disabled={!isValid || isPristine}
+        >
+          Update Settings
+        </Button>
 
-          />
-        </Panel.Section>
-        <Panel.Section>
-          <Button
-            type='submit'
-            primary
-            disabled={submitting}
-          >
-            Update Settings
-          </Button>
+        <DeleteTemplate className={styles.DeleteButton} afterDelete={onDelete}>Delete Template</DeleteTemplate>
+      </Panel.Section>
+    </form>
+  </>);
+};
 
-          <DeleteTemplate className={styles.DeleteButton} afterDelete={this.onDelete}>Delete Template</DeleteTemplate>
-        </Panel.Section>
-      </form>
-    </>);
-  }
-}
+export default SettingsForm;
