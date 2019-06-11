@@ -70,6 +70,7 @@ const SettingsForm = (props) => {
         />
       </Panel.Section>
       {/*{canViewSubaccountSection && <SubaccountSection newTemplate={false} disabled={submitting}/>}*/}
+
       <Panel.Section>
         <TextFieldWrapper
           name='subject'
@@ -107,9 +108,9 @@ const SettingsForm = (props) => {
           label='Description'
           formHook={formHook}
           helpText='Not visible to recipients.'
-          validate={required}
         />
       </Panel.Section>
+
       <Panel.Section>
         <ToggleBlockWrapper
           name='open_tracking'
@@ -135,8 +136,6 @@ const SettingsForm = (props) => {
           helpText={<p className={styles.HelpText}>Transactional messages are triggered by a user’s actions on the
             website, like requesting a password reset, signing up, or making a purchase.</p>}
         />
-
-
       </Panel.Section>
       <Panel.Section>
         <Button
@@ -146,7 +145,6 @@ const SettingsForm = (props) => {
         >
           Update Settings
         </Button>
-
         <DeleteTemplate className={styles.DeleteButton} afterDelete={onDelete}>Delete Template</DeleteTemplate>
       </Panel.Section>
     </form>

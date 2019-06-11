@@ -5,8 +5,7 @@ const TextFieldWrapper = ({ name, validate, formHook, ...rest }) => {
   const defaultResize = rest.multiline ? 'vertical' : 'both';
 
   const { useInput, errors } = formHook;
-  const { isFocused, isTouched, validateField, isValid, ...inputHooks } = useInput(name, validate);
-
+  const { isFocused, isTouched, isValid, ...inputHooks } = useInput(name, validate);
   const error = errors[name];
 
   return (

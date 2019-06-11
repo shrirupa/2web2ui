@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import _ from 'lodash';
 
 export default function useFormInput({ name, formHandler, validation = null, handleError }) {
-  const [formData, setFormData] = formHandler;
-  const formValue = formData[name] || '';
+  const [formValues, setFormValues] = formHandler;
+  const formValue = formValues[name] || ''; //to avoid potential uncontrolled -> controlled react warning
 
   const [value, setValue] = useState(formValue);
   const [isValid, setIsValid] = useState(true);
@@ -30,10 +30,9 @@ export default function useFormInput({ name, formHandler, validation = null, han
   }
 
   function handleValidation(value) {
-    // console.log(`invoked handleValidation with ${value} value`);
-    const unmetRule = performValidations(value, validation);
-    setIsValid(!unmetRule);
-    handleError(name, unmetRule);
+    const validationErrors = performValidations(value, validation);
+    setIsValid(!validationErrors);
+    handleError(name, validationErrors);
   }
 
   // initial validation
@@ -62,8 +61,8 @@ export default function useFormInput({ name, formHandler, validation = null, han
     const newValue = type === 'checkbox' ? checked : value;
 
     setValue(value);
-    setFormData({
-      ...formData,
+    setFormValues({
+      ...formValue,
       [name]: newValue
     });
   }
@@ -82,7 +81,7 @@ export default function useFormInput({ name, formHandler, validation = null, han
 
   return {
     value,
-    name,
+    // name,
     isTouched,
     isFocused,
     onChange: handleChange,

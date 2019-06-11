@@ -4,21 +4,20 @@ import useFormInput from './useFormInput';
 
 export function useForm(defaultValues) {
   const formHandler = useState(defaultValues);
-  const errorHandler = useState({});
+  const [values, setValues] = formHandler;
+  const [errors, setErrors] = useState({});
   const [mounted, setMounted] = useState(false);
   const [isValid, setIsValid] = useState(false);
-
-  const [values, setValues] = formHandler;
-  const [errors, setErrors] = errorHandler;
+  const [isPristine, setIsPristine] = useState(true);
 
   // initial mounted flag
   useEffect(() => setMounted(true), []);
 
-  const handleError = (name, unmetRule) => {
-    if (!unmetRule) {
-      delete errors[name];
+  const handleError = (name, error) => {
+    if (error) {
+      errors[name] = error;
     } else {
-      errors[name] = unmetRule;
+      delete errors[name];
     }
     setErrors(errors);
   };
@@ -38,16 +37,20 @@ export function useForm(defaultValues) {
     setValues(defaultValues);
   }, [defaultValues, setValues]);
 
-  useEffect(() => {
+  useEffect(() => { //detect if form is valid
     setIsValid(mounted && !Object.values(errors).length);
   }, [errors, mounted, values]);
+
+  useEffect(() => { //detect if form is pristine
+    setIsPristine(_.isEqual(defaultValues, values));
+  }, [defaultValues, values]);
 
   return {
     values,
     setValues,
     useInput,
     errors,
-    isPristine: _.isEqual(defaultValues, values),
+    isPristine,
     isValid
   };
 }
