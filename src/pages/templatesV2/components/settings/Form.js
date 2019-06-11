@@ -9,7 +9,7 @@ import { routeNamespace } from '../../constants/routes';
 import useEditorContext from '../../hooks/useEditorContext';
 import { minLength } from '../../../../helpers/validation';
 import styles from './Form.module.scss';
-import { emailOrSubstitution } from './validation';
+import { emailOrSubstitution } from '../validation';
 
 const SettingsForm = (props) => {
   const { settings, draft, domainsLoading, domains, updateDraft, subaccountId, showAlert, history } = useEditorContext();
@@ -28,12 +28,12 @@ const SettingsForm = (props) => {
         from: {
           name: values.from_name,
           email: values.from_email
-        },
-        options: {
-          transactional: values.transactional,
-          click_tracking: values.click_tracking,
-          open_tracking: values.click_open
         }
+      },
+      options: {
+        transactional: values.transactional,
+        click_tracking: values.click_tracking,
+        open_tracking: values.click_open
       },
       description: values.description
     });
