@@ -21,7 +21,7 @@ const performValidations = (value, rules) => {
   return validationMessage;
 };
 
-export function useForm(defaultValues) {
+export function useForm(defaultValues = {}) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -50,10 +50,12 @@ export function useForm(defaultValues) {
   };
 
   const handleValidations = useCallback(() => {
-    const validationErrors = {};
+    let validationErrors = {};
     _.forEach(validations, (rules, name) => {
       validationErrors[name] = performValidations(values[name], rules);
     });
+
+    validationErrors = _.pickBy(validationErrors, _.identity); //removing falsey values
 
     if (!_.isEqual(validationErrors, errors)) {
       setErrors(validationErrors);
@@ -63,11 +65,7 @@ export function useForm(defaultValues) {
 
   useEffect(() => {
     setValues(defaultValues);
-  }, [defaultValues]);
-
-  useEffect(() => { //detect if form is valid
-    setIsValid(!Object.values(errors).length);
-  }, [errors]);
+  }, [defaultValues]); //values rather than identity dep
 
   useEffect(() => { //detect if form is pristine
     setIsPristine(_.isEqual(defaultValues, values));
@@ -76,6 +74,10 @@ export function useForm(defaultValues) {
   useEffect(() => { //handle validations
     handleValidations();
   }, [handleValidations, values]);
+
+  useEffect(() => { //handle validations. effect otherwise valid
+    setIsValid(!Object.values(errors).length);
+  }, [errors]);
 
   return {
     values,
