@@ -1,55 +1,86 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 import useFormInput from './useFormInput';
 
+const performValidations = (value, rules) => {
+  const validationRules = rules ? _.isArray(rules) ? rules : [rules] : [];
+
+  let validationMessage = null;
+  _.forEach(validationRules, (rule) => {
+    if (validationMessage) { //already an error exist, no further iteration needed
+      return false;
+    }
+
+    if (!_.isFunction(rule)) {
+      validationMessage = `Invalid validation ${rule}`;
+    }
+
+    validationMessage = rule(value);
+  });
+
+  return validationMessage;
+};
+
 export function useForm(defaultValues) {
-  const formHandler = useState(defaultValues);
-  const [values, setValues] = formHandler;
+  const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
-  const [mounted, setMounted] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [isPristine, setIsPristine] = useState(true);
+  const [validations, setValidations] = useState({});
 
-  // initial mounted flag
-  useEffect(() => setMounted(true), []);
-
-  const handleError = (name, error) => {
-    if (error) {
-      errors[name] = error;
-    } else {
-      delete errors[name];
+  const useInput = (name, inputValidation) => {
+    const existingInputValidation = validations[name];
+    if (!_.isEqual(inputValidation, existingInputValidation)) {
+      setValidations({ ...validations, [name]: inputValidation });
     }
-    setErrors(errors);
-  };
 
-  const useInput = (name, validation) => {
+    const updateValue = (name, value) => { //TODO figure out why not working nicely with useCallback
+      if (values[name] !== value) {
+        setValues({ ...values, [name]: value });
+      }
+    };
+
     const input = useFormInput({
       name,
-      validation,
-      formHandler,
-      handleError
+      values,
+      updateValue
     });
 
     return input;
   };
 
+  const handleValidations = useCallback(() => {
+    const validationErrors = {};
+    _.forEach(validations, (rules, name) => {
+      validationErrors[name] = performValidations(values[name], rules);
+    });
+
+    if (!_.isEqual(validationErrors, errors)) {
+      setErrors(validationErrors);
+    }
+  });
+
+
   useEffect(() => {
     setValues(defaultValues);
-  }, [defaultValues, setValues]);
+  }, [defaultValues]);
 
   useEffect(() => { //detect if form is valid
-    setIsValid(mounted && !Object.values(errors).length);
-  }, [errors, mounted, values]);
+    setIsValid(!Object.values(errors).length);
+  }, [errors]);
 
   useEffect(() => { //detect if form is pristine
     setIsPristine(_.isEqual(defaultValues, values));
   }, [defaultValues, values]);
 
+  useEffect(() => { //handle validations
+    handleValidations();
+  }, [handleValidations, values]);
+
   return {
     values,
-    setValues,
-    useInput,
     errors,
+    useInput,
     isPristine,
     isValid
   };
