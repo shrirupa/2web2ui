@@ -24,9 +24,10 @@ const performValidations = (value, rules) => {
 export function useForm(defaultValues = {}) {
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
+  const [validations, setValidations] = useState({});
   const [isValid, setIsValid] = useState(false);
   const [isPristine, setIsPristine] = useState(true);
-  const [validations, setValidations] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   const useInput = (name, inputValidation) => {
     const existingInputValidation = validations[name];
@@ -62,6 +63,16 @@ export function useForm(defaultValues = {}) {
     }
   });
 
+  const handleSubmit = (onSubmit) => //todo useCallback?
+    async (e) => {
+      e.preventDefault();
+      if (isValid) {
+        setSubmitting(true);
+        await onSubmit(values);
+        setSubmitting(false);
+      }
+    }
+  ;
 
   useEffect(() => {
     setValues(defaultValues);
@@ -84,6 +95,8 @@ export function useForm(defaultValues = {}) {
     errors,
     useInput,
     isPristine,
-    isValid
+    isValid,
+    submitting,
+    handleSubmit
   };
 }

@@ -14,11 +14,10 @@ import { emailOrSubstitution } from '../validation';
 const SettingsForm = (props) => {
   const { settings, draft, domainsLoading, domains, updateDraft, subaccountId, showAlert, history } = useEditorContext();
 
-  const formHook = useForm(settings);
-  const { values, isPristine, isValid } = formHook;
+  const formHook = useForm(settings); //todo fix the case when we do not pass any default values
+  const { isPristine, isValid, handleSubmit, submitting } = formHook;
 
-  const submitForm = (e) => {
-    e.preventDefault();
+  const submitForm = (values) => {
     //prepare values
     const settingValues = _.merge({}, draft, {
       id: settings.id,
@@ -52,7 +51,7 @@ const SettingsForm = (props) => {
   const fromEmailHelpText = !domainsLoading && !domains.length ? (subaccountId ? 'The selected subaccount does not have any verified sending domains.' : 'You do not have any verified sending domains to use.') : null;
 
   return (<>
-    <form onSubmit={submitForm}>
+    <form onSubmit={handleSubmit(submitForm)}>
       <Panel.Section>
         <TextFieldWrapper
           name='name'
@@ -141,7 +140,7 @@ const SettingsForm = (props) => {
         <Button
           type='submit'
           primary
-          disabled={!isValid || isPristine}
+          disabled={!isValid || isPristine || submitting}
         >
           Update Settings
         </Button>
