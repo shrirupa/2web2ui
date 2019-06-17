@@ -76,17 +76,17 @@ export function useForm(defaultValues = {}) {
 
   useEffect(() => {
     setValues(defaultValues);
-  }, [defaultValues]); //values rather than identity dep
+  }, [defaultValues]);
 
-  useEffect(() => { //detect if form is pristine
+  useEffect(() => {
     setIsPristine(_.isEqual(defaultValues, values));
   }, [defaultValues, values]);
 
-  useEffect(() => { //handle validations
+  useEffect(() => {
     handleValidations();
   }, [handleValidations, values]);
 
-  useEffect(() => { //handle validations. effect otherwise valid
+  useEffect(() => {
     setIsValid(!Object.values(errors).length);
   }, [errors]);
 

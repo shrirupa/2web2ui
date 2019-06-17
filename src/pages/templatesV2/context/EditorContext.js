@@ -5,8 +5,6 @@ import useEditorNavigation from '../hooks/useEditorNavigation';
 import useEditorPreview from '../hooks/useEditorPreview';
 import useEditorTabs from '../hooks/useEditorTabs';
 import useTemplateSettings from '../hooks/useTemplateSettings';
-import useDispatch from 'src/hooks/useDispatch';
-import { showAlert } from 'src/actions/globalAlert';
 
 const EditorContext = createContext();
 
@@ -24,8 +22,6 @@ export const EditorContextProvider = ({ children, value: { getDraft, getPublishe
     useEditorTabs,
     useTemplateSettings
   );
-
-  pageValue.showAlert = useDispatch(showAlert);
 
   useEffect(() => {
     getDraft(requestParams.id, requestParams.subaccount);

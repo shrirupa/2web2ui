@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getDraft, getPreview, getPublished, update, deleteTemplate } from 'src/actions/templates';
 import { list as listDomains } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
-
+import { showAlert } from 'src/actions/globalAlert';
 import {
   selectDraftTemplate,
   selectDraftTemplatePreview,
@@ -47,7 +47,8 @@ const mapDispatchToProps = {
   deleteTemplate,
   updateDraft: update,
   listDomains,
-  listSubaccounts
+  listSubaccounts,
+  showAlert
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAndPreviewPageContainer);
