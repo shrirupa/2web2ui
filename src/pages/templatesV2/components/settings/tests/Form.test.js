@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import every from 'lodash/every';
 import SettingsForm from '../Form';
 
 jest.mock('../../DeleteTemplate');
@@ -14,6 +15,7 @@ describe('SettingsForm', () => {
       domainsLoading: false,
       hasSubaccounts: false,
       canViewSubaccount: false,
+      isPublishedMode: false,
       handleSubmit: jest.fn((func) => func),
       showAlert: jest.fn()
     };
@@ -29,6 +31,14 @@ describe('SettingsForm', () => {
 
   it('renders with subaccounts', () => {
     expect(subject({ hasSubaccounts: true, canViewSubaccount: true }).exists('SubaccountSection')).toBe(true);
+  });
+
+  it('renders with fields disabled in published mode', () => {
+    const wrapper = subject({ hasSubaccounts: true, canViewSubaccount: true, isPublishedMode: true });
+    const fieldProps = wrapper.find('Field').map((field) => field.prop('disabled'));
+    expect(fieldProps.length).toEqual(10);
+    expect(every(fieldProps)).toBe(true);
+    expect(wrapper.find('SubaccountSection').prop('disabled')).toBe(true);
   });
 
   it('renders From Email help text with no verified domains', () => {

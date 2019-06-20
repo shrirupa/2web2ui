@@ -8,6 +8,7 @@ exports[`SettingsForm renders without subaccounts 1`] = `
     <Panel.Section>
       <Field
         component={[Function]}
+        disabled={false}
         label="Template Name"
         name="name"
         validate={[Function]}
@@ -23,12 +24,14 @@ exports[`SettingsForm renders without subaccounts 1`] = `
     <Panel.Section>
       <Field
         component={[Function]}
+        disabled={false}
         label="Subject"
         name="content.subject"
         validate={[Function]}
       />
       <Field
         component={[Function]}
+        disabled={false}
         domains={
           Array [
             Object {
@@ -52,12 +55,14 @@ exports[`SettingsForm renders without subaccounts 1`] = `
       />
       <Field
         component={[Function]}
+        disabled={false}
         helpText="A friendly from for your recipients."
         label="From Name"
         name="content.from.name"
       />
       <Field
         component={[Function]}
+        disabled={false}
         helpText="An email address recipients can reply to."
         label="Reply To"
         name="content.reply_to"
@@ -65,6 +70,7 @@ exports[`SettingsForm renders without subaccounts 1`] = `
       />
       <Field
         component={[Function]}
+        disabled={false}
         helpText="Not visible to recipients."
         label="Description"
         name="description"
@@ -73,6 +79,7 @@ exports[`SettingsForm renders without subaccounts 1`] = `
     <Panel.Section>
       <Field
         component={[Function]}
+        disabled={false}
         label="Track Opens"
         name="options.open_tracking"
         parse={[Function]}
@@ -80,6 +87,7 @@ exports[`SettingsForm renders without subaccounts 1`] = `
       />
       <Field
         component={[Function]}
+        disabled={false}
         label="Track Clicks"
         name="options.click_tracking"
         parse={[Function]}
@@ -87,6 +95,7 @@ exports[`SettingsForm renders without subaccounts 1`] = `
       />
       <Field
         component={[Function]}
+        disabled={false}
         helpText={
           <p
             className="HelpText"
