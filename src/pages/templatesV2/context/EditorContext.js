@@ -26,7 +26,7 @@ export const EditorContextProvider = ({ children, value: { getDraft, getPublishe
     getPublished(requestParams.id, requestParams.subaccount);
     listDomains();
     listSubaccounts();
-  }, [listSubaccounts, listDomains, getDraft, getPublished, requestParams.id, requestParams.subaccount]);
+  }, [listSubaccounts, listDomains, getDraft, getPublished, requestParams.id, requestParams.version, requestParams.subaccount]);
 
   return (
     <EditorContext.Provider value={pageValue}>

@@ -5,9 +5,9 @@ import { routeNamespace } from '../constants/routes';
 import { setSubaccountQuery } from '../../../helpers/subaccounts';
 
 const useEditorNavigation = () => {
-  const { history, requestParams: { id, navKey = '', subaccount: subaccountId }} = useRouter();
+  const { history, requestParams: { id, version = 'draft', navKey = '', subaccount: subaccountId }} = useRouter();
   const setNavigation = (nextNavigationKey) => {
-    history.push(`/${routeNamespace}/edit/${id}/${nextNavigationKey}${setSubaccountQuery(subaccountId)}`);
+    history.push(`/${routeNamespace}/edit/${id}/${version}/${nextNavigationKey}${setSubaccountQuery(subaccountId)}`);
   };
 
   return useMemo(() => {

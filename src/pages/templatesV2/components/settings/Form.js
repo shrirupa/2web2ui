@@ -30,7 +30,7 @@ export default class SettingsForm extends React.Component {
   };
 
   render() {
-    const { handleSubmit, domainsLoading, domains, subaccountId, submitting, pristine, valid, hasSubaccounts, canViewSubaccount } = this.props;
+    const { handleSubmit, domainsLoading, domains, subaccountId, submitting, pristine, valid, hasSubaccounts, canViewSubaccount, isPublishedMode } = this.props;
     const canViewSubaccountSection = hasSubaccounts && canViewSubaccount;
     const fromEmailHelpText = !domainsLoading && !domains.length ? (subaccountId ? 'The selected subaccount does not have any verified sending domains.' : 'You do not have any verified sending domains to use.') : null;
 
@@ -41,7 +41,7 @@ export default class SettingsForm extends React.Component {
             name='name'
             component={TextFieldWrapper}
             label='Template Name'
-            disabled={submitting}
+            disabled={submitting || isPublishedMode}
             validate={required}
           />
 
@@ -53,14 +53,14 @@ export default class SettingsForm extends React.Component {
             disabled={true}
           />
         </Panel.Section>
-        {canViewSubaccountSection && <SubaccountSection newTemplate={false} disabled={submitting}/>}
+        {canViewSubaccountSection && <SubaccountSection newTemplate={false} disabled={submitting || isPublishedMode}/>}
         <Panel.Section>
           <Field
             name='content.subject'
             component={TextFieldWrapper}
             label='Subject'
             validate={required}
-            disabled={submitting}
+            disabled={submitting || isPublishedMode}
           />
 
           <Field
@@ -71,7 +71,7 @@ export default class SettingsForm extends React.Component {
             validate={[required, emailOrSubstitution]}
             domains={domains}
             helpText={fromEmailHelpText}
-            disabled={submitting}
+            disabled={submitting || isPublishedMode}
           />
 
           <Field
@@ -79,6 +79,7 @@ export default class SettingsForm extends React.Component {
             component={TextFieldWrapper}
             label='From Name'
             helpText='A friendly from for your recipients.'
+            disabled={submitting || isPublishedMode}
           />
 
           <Field
@@ -87,7 +88,7 @@ export default class SettingsForm extends React.Component {
             label='Reply To'
             helpText='An email address recipients can reply to.'
             validate={emailOrSubstitution}
-            disabled={submitting}
+            disabled={submitting || isPublishedMode}
           />
 
           <Field
@@ -95,7 +96,7 @@ export default class SettingsForm extends React.Component {
             component={TextFieldWrapper}
             label='Description'
             helpText='Not visible to recipients.'
-            disabled={submitting}
+            disabled={submitting || isPublishedMode}
           />
         </Panel.Section>
         <Panel.Section>
@@ -105,8 +106,7 @@ export default class SettingsForm extends React.Component {
             label='Track Opens'
             type='checkbox'
             parse={this.parseToggle}
-            disabled={submitting}
-
+            disabled={submitting || isPublishedMode}
           />
 
           <Field
@@ -115,8 +115,7 @@ export default class SettingsForm extends React.Component {
             label='Track Clicks'
             type='checkbox'
             parse={this.parseToggle}
-            disabled={submitting}
-
+            disabled={submitting || isPublishedMode}
           />
           <Field
             name='options.transactional'
@@ -126,7 +125,7 @@ export default class SettingsForm extends React.Component {
             parse={this.parseToggle}
             helpText={<p className={styles.HelpText}>Transactional messages are triggered by a user’s actions on the
               website, like requesting a password reset, signing up, or making a purchase.</p>}
-            disabled={submitting}
+            disabled={submitting || isPublishedMode}
 
           />
         </Panel.Section>
@@ -134,7 +133,7 @@ export default class SettingsForm extends React.Component {
           <Button
             type='submit'
             primary
-            disabled={submitting || !valid || pristine}
+            disabled={submitting || !valid || pristine || isPublishedMode}
           >
             Update Settings
           </Button>
