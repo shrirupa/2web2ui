@@ -72,7 +72,7 @@ const v2Routes = [
     supportDocSearch: 'template'
   },
   {
-    path: '/templatesv2/edit/:id/:navKey?',
+    path: '/templatesv2/edit/:id/:version?/:navKey?',
     component: templatesV2.EditAndPreviewPage,
     condition: hasGrants('templates/view'),
     layout: Fullscreen,
