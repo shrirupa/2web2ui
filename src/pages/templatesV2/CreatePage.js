@@ -20,7 +20,7 @@ export default class CreatePage extends Component {
     return create(formData)
       .then(() => {
         showAlert({ type: 'success', message: 'Template Created.' });
-        history.push(`/${routeNamespace}/edit/${values.id}${setSubaccountQuery(subaccountId)}`);
+        history.push(`/${routeNamespace}/edit/${values.id}/draft/content${setSubaccountQuery(subaccountId)}`);
       });
   };
 

@@ -56,7 +56,7 @@ describe('CreatePage', () => {
       const mockAlert = jest.fn();
       const wrapper = subject({ create: jest.fn(() => Promise.resolve()), history: { push: mockPush }, showAlert: mockAlert });
       await wrapper.find('form').simulate('submit', { id: 'foo', content: {}});
-      expect(mockPush).toHaveBeenCalledWith('/templatesv2/edit/foo');
+      expect(mockPush).toHaveBeenCalledWith('/templatesv2/edit/foo/draft/content');
       expect(mockAlert).toHaveBeenCalledWith({ type: 'success', message: 'Template Created.' });
     });
   });
