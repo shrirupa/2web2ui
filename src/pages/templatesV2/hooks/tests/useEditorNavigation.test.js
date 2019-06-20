@@ -13,8 +13,8 @@ describe('useEditorNavigation', () => {
       ...routerState
     });
 
-    const TestComponent = () => <div hooked={useEditorNavigation()} />;
-    return mount(<TestComponent />);
+    const TestComponent = () => <div hooked={useEditorNavigation()}/>;
+    return mount(<TestComponent/>);
   };
   const useHook = (wrapper) => wrapper.update().children().prop('hooked');
 
@@ -39,25 +39,46 @@ describe('useEditorNavigation', () => {
       .toEqual(expect.objectContaining({ currentNavigationIndex: 1, currentNavigationKey: 'settings' }));
   });
 
-  it('redirects when link is clicked', () => {
-    const historyPush = jest.fn();
-    const wrapper = useTestWrapper({ routerState: { history: { push: historyPush }}});
-
-    act(() => {
-      useHook(wrapper).setNavigation('settings');
+  describe('redirections', () => {
+    let historyPush;
+    beforeEach(() => {
+      historyPush = jest.fn();
     });
 
-    expect(historyPush).toHaveBeenCalledWith('/templatesv2/edit/test-template/settings');
-  });
-
-  it('redirects with subaccount id', () => {
-    const historyPush = jest.fn();
-    const wrapper = useTestWrapper({ routerState: { history: { push: historyPush }, requestParams: { id: 'test-template', subaccount: 102 }}});
-
-    act(() => {
-      useHook(wrapper).setNavigation('settings');
+    afterEach(() => {
+      historyPush.mockReset();
     });
 
-    expect(historyPush).toHaveBeenCalledWith('/templatesv2/edit/test-template/settings?subaccount=102');
+    const subject = (wrapper) => {
+      act(() => {
+        useHook(wrapper).setNavigation('settings');
+      });
+    };
+    const routeState = (overrides = {}) => ({
+      routerState: {
+        history: { push: historyPush },
+        requestParams: { id: 'test-template', ...overrides }
+      }
+    });
+
+    it('redirects when link is clicked (draft)', () => {
+      subject(useTestWrapper(routeState()));
+      expect(historyPush).toHaveBeenCalledWith('/templatesv2/edit/test-template/draft/settings');
+    });
+
+    it('redirects with subaccount id (draft)', () => {
+      subject(useTestWrapper(routeState({ subaccount: 102 })));
+      expect(historyPush).toHaveBeenCalledWith('/templatesv2/edit/test-template/draft/settings?subaccount=102');
+    });
+
+    it('redirects when link is clicked (published)', () => {
+      subject(useTestWrapper(routeState({ version: 'published' })));
+      expect(historyPush).toHaveBeenCalledWith('/templatesv2/edit/test-template/published/settings');
+    });
+
+    it('redirects with subaccount id (published)', () => {
+      subject(useTestWrapper(routeState({ version: 'published', subaccount: 102 })));
+      expect(historyPush).toHaveBeenCalledWith('/templatesv2/edit/test-template/published/settings?subaccount=102');
+    });
   });
 });
