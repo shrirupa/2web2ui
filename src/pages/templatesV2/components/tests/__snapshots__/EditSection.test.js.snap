@@ -26,6 +26,10 @@ exports[`EditSection renders tabs and section 1`] = `
             "content": "Text",
             "key": "text",
           },
+          Object {
+            "content": "Test Data",
+            "key": "test_data",
+          },
         ]
       }
     />

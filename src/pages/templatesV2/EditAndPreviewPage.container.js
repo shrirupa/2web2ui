@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getDraft, getPreview, getPublished, update as updateDraft, publish as publishDraft, deleteTemplate } from 'src/actions/templates';
+import { getDraft, getPreview, getPublished, update as updateDraft, publish as publishDraft, deleteTemplate, getTestData, setTestData } from 'src/actions/templates';
 import { list as listDomains } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 
@@ -8,7 +8,8 @@ import {
   selectDraftTemplate,
   selectDraftTemplatePreview,
   selectPreviewLineErrors,
-  selectPublishedTemplate
+  selectPublishedTemplate,
+  selectTemplateTestData
 } from 'src/selectors/templates';
 import { EditorContextProvider } from './context/EditorContext';
 import EditAndPreviewPage from './EditAndPreviewPage';
@@ -41,7 +42,8 @@ const mapStateToProps = (state, props) => {
     isDraftUpdating: Boolean(state.templates.updating),
     isDraftPublishing: Boolean(state.templates.publishPending),
     preview: selectDraftTemplatePreview(state, id, {}),
-    previewLineErrors: selectPreviewLineErrors(state)
+    previewLineErrors: selectPreviewLineErrors(state),
+    testData: selectTemplateTestData(state)
   };
 };
 
@@ -53,7 +55,9 @@ const mapDispatchToProps = {
   updateDraft,
   publishDraft,
   listDomains,
-  listSubaccounts
+  listSubaccounts,
+  getTestData,
+  setTestData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAndPreviewPageContainer);

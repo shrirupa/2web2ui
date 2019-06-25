@@ -1,6 +1,7 @@
 import EditAmpSection from '../components/EditAmpSection';
 import EditHtmlSection from '../components/EditHtmlSection';
 import EditTextSection from '../components/EditTextSection';
+import TestDataSection from '../components/TestDataSection';
 
 const editTabs = [
   {
@@ -17,6 +18,11 @@ const editTabs = [
     content: 'Text',
     key: 'text',
     render: EditTextSection
+  },
+  {
+    content: 'Test Data',
+    key: 'test_data',
+    render: TestDataSection
   }
 ];
 
