@@ -7,12 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 const debouncer = debounce((fn) => fn(), 1000);
 
 // tracks changes to content and requests preview update
-const useEditorPreview = ({
-  content,
-  draft = {},
-  getPreview,
-  debounceAction = debouncer
-}) => {
+const useEditorPreview = ({ content, draft = {}, getPreview, getTestData, testData, debounceAction = debouncer, formattedTestData }) => {
   const [previewDevice, setPreviewDevice] = useState('desktop');
 
   useEffect(() => {
@@ -23,14 +18,16 @@ const useEditorPreview = ({
           content,
           mode: 'draft',
           subaccountId: draft.subaccount_id,
-          substitution_data: {}
+          substitution_data: formattedTestData.substitution_data
         });
       });
     }
-  }, [getPreview, content, debounceAction, draft.id, draft.subaccount_id]);
+  }, [content, debounceAction, draft.id, draft.subaccount_id, getPreview, formattedTestData]);
 
   // clean-up debounced state when unmounted
-  useEffect(() => () => { debounceAction.cancel(); }, [debounceAction]);
+  useEffect(() => () => {
+    debounceAction.cancel();
+  }, [debounceAction]);
 
   return {
     previewDevice,
