@@ -1,41 +1,29 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useTestData = ({ draft = {}, testData, getTestData, setTestData, isPublishedMode }) => {
-  const [subData, setSubData] = useState(testData);
-  const mode = isPublishedMode ? 'published' : 'draft';
-
-  const syncTestData = (data) => {
-    setSubData(data);
-  };
-
-  const formatSubData = useMemo(() => {
-    try {
-      return JSON.parse(subData, null, 2);
-    } catch (err) {
-      // console.warn(err);
-      return {};
-    }
-  }, [subData]);
+const useTestData = ({ draft = {}, templateTestData, version: mode, getTestDataFromLocalStorage, setTestDataToLocalStorage, isPublishedMode }) => {
+  const [state, setState] = useState(templateTestData);
+  const [formattedData, setFormattedData] = useState({});
 
   //on mount, trigger fetching data from store
   useEffect(() => {
-    getTestData({ id: draft.id, mode });
-  }, [draft.id, getTestData, mode]);
+    getTestDataFromLocalStorage({ id: draft.id, mode });
+  }, [draft.id, getTestDataFromLocalStorage, mode]);
 
   //update local state when testData is externally updated (e.g. completed loading from store)
   useEffect(() => {
-    syncTestData(testData);
-  }, [syncTestData, testData]);
+    setState(templateTestData);
+    setFormattedData(JSON.parse(templateTestData));
+  }, [setState, setFormattedData, templateTestData]);
 
   //whenever data is changed locally, save it in localstorage.
   useEffect(() => {
-    setTestData({ id: draft.id, data: subData, mode });
-  }, [subData, draft.id, mode, setTestData]);
+    setTestDataToLocalStorage({ id: draft.id, data: state, mode });
+  }, [state, draft.id, mode, setTestDataToLocalStorage]);
 
   return {
-    formattedTestData: formatSubData,
-    stringTestData: subData,
-    syncTestData
+    formattedTestData: formattedData,
+    testData: state,
+    setTestData: setState
   };
 };
 

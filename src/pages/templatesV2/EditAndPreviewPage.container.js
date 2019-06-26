@@ -1,6 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getDraft, getPreview, getPublished, update as updateDraft, publish as publishDraft, deleteTemplate, getTestData, setTestData } from 'src/actions/templates';
+import {
+  deleteTemplate,
+  getDraft,
+  getPreview,
+  getPublished,
+  getTestData,
+  publish as publishDraft,
+  setTestData,
+  update as updateDraft
+} from 'src/actions/templates';
 import { list as listDomains } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 
@@ -16,7 +25,7 @@ import EditAndPreviewPage from './EditAndPreviewPage';
 
 const EditAndPreviewPageContainer = (props) => (
   <EditorContextProvider value={props}>
-    <EditAndPreviewPage />
+    <EditAndPreviewPage/>
   </EditorContextProvider>
 );
 
@@ -43,7 +52,7 @@ const mapStateToProps = (state, props) => {
     isDraftPublishing: Boolean(state.templates.publishPending),
     preview: selectDraftTemplatePreview(state, id, {}),
     previewLineErrors: selectPreviewLineErrors(state),
-    testData: selectTemplateTestData(state)
+    templateTestData: selectTemplateTestData(state)
   };
 };
 
@@ -56,8 +65,8 @@ const mapDispatchToProps = {
   publishDraft,
   listDomains,
   listSubaccounts,
-  getTestData,
-  setTestData
+  getTestDataFromLocalStorage: getTestData,
+  setTestDataToLocalStorage: setTestData
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAndPreviewPageContainer);

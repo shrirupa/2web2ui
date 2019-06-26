@@ -3,16 +3,16 @@ import useEditorContext from '../hooks/useEditorContext';
 import Editor from './Editor';
 
 const TestDataSection = () => {
-  const { syncTestData, stringTestData } = useEditorContext();
+  const { setTestData, testData } = useEditorContext();
 
   return (
     <Editor
       mode="json"
       name="test-data-editor"
       onChange={(val) => {
-        syncTestData(val);
+        setTestData(val);
       }}
-      value={stringTestData}
+      value={testData}
     />
   );
 };
