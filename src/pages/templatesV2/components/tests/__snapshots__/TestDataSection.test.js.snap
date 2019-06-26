@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestDataSection renders test data editor 1`] = `
+<Editor
+  mode="json"
+  name="test-data-editor"
+  onChange={[Function]}
+  value="{\\"subject\\":\\"Example Subject\\"}"
+/>
+`;
