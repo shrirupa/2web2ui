@@ -5,7 +5,7 @@ import useEditorPreview from '../useEditorPreview';
 
 describe('useEditorPreview', () => {
   const useTestWrapper = (value = {}) => {
-    const TestComponent = () => <div hooked={useEditorPreview(value)} />;
+    const TestComponent = () => <div hooked={useEditorPreview({ formattedTestData: {}, ...value })} />;
     return mount(<TestComponent />);
   };
   const useHook = (wrapper) => wrapper.update().children().prop('hooked');
@@ -24,14 +24,14 @@ describe('useEditorPreview', () => {
     const content = { html: '<h1>Test Example</h1>' };
     const draft = { id: 'test-template', subaccount_id: 123 };
 
-    useTestWrapper({ content, debounceAction, draft, getPreview });
+    useTestWrapper({ content, debounceAction, draft, getPreview, formattedTestData: { substitution_data: { foo: 'bar' }}});
 
     expect(getPreview).toHaveBeenCalledWith({
       id: draft.id,
       content,
       mode: 'draft',
       subaccountId: draft.subaccount_id,
-      substitution_data: {}
+      substitution_data: { foo: 'bar' }
     });
   });
 

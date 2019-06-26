@@ -36,7 +36,7 @@ describe('EditorContext', () => {
 
       subject({
         render: mount, // for useEffect
-        value: { getDraft, getPublished }
+        value: { getDraft, getPublished, getTestDataFromLocalStorage: jest.fn() }
       });
 
       expect(getDraft).toHaveBeenCalledWith('test-template', '123');

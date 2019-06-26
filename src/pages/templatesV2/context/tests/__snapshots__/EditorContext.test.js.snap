@@ -14,11 +14,15 @@ exports[`EditorContext EditorContextProvider renders children wrapped by a conte
       "currentNavigationKey": "content",
       "currentTabIndex": 0,
       "currentTabKey": "html",
+      "formattedTestData": Object {},
       "previewDevice": "desktop",
       "setContent": [Function],
       "setNavigation": [Function],
       "setPreviewDevice": [Function],
       "setTab": [Function],
+      "setTestData": [Function],
+      "syncTestDataInStorage": [Function],
+      "testData": undefined,
     }
   }
 >
