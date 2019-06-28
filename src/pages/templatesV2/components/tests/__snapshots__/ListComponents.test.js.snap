@@ -26,7 +26,6 @@ exports[`Template List Components Name should render 1`] = `
     className="Name"
   >
     <Link
-      replace={false}
       to="/templatesv2/edit/id-123/draft/content?subaccount=123"
     >
       <strong>
