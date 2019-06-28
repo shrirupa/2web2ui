@@ -29,7 +29,6 @@ exports[`Page: Webhook List should render correctly with subaccounts 2`] = `
 Array [
   Array [
     <Link
-      replace={false}
       to="/webhooks/details/id?subaccount=0"
     >
       my webby hook
@@ -47,7 +46,6 @@ Array [
   ],
   Array [
     <Link
-      replace={false}
       to="/webhooks/details/id-2?subaccount=101"
     >
       my webby hooki 2
@@ -65,7 +63,6 @@ Array [
   ],
   Array [
     <Link
-      replace={false}
       to="/webhooks/details/id-3"
     >
       my webby hooki 3
@@ -214,7 +211,6 @@ exports[`Page: Webhook List should render loading component when loading data 1`
 exports[`Page: Webhook List should render row data properly 1`] = `
 Array [
   <Link
-    replace={false}
     to="/webhooks/details/id?subaccount=0"
   >
     my webby hook

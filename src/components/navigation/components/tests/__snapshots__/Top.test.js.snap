@@ -14,7 +14,6 @@ exports[`Top should render close icon when open 1`] = `
   </UnstyledLink>
   <Link
     className="MobileLogo"
-    replace={false}
     to="/landing"
   >
     <Logo
@@ -35,7 +34,6 @@ exports[`Top should render correctly on desktop 1`] = `
 >
   <Link
     className="Logo"
-    replace={false}
     to="/landing"
   >
     <Logo
@@ -70,7 +68,6 @@ exports[`Top should render correctly on mobile 1`] = `
   </UnstyledLink>
   <Link
     className="MobileLogo"
-    replace={false}
     to="/landing"
   >
     <Logo

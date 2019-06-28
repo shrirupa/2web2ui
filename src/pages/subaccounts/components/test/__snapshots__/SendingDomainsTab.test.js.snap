@@ -3,7 +3,6 @@
 exports[`SendingDomainsTab getRowData 1`] = `
 Array [
   <Link
-    replace={false}
     to="/account/sending-domains/edit/foo.com"
   >
     foo.com

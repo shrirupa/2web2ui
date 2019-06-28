@@ -92,7 +92,6 @@ exports[`renders correctly with no subaccounts 1`] = `
 
 exports[`should render a redirect when an error is present 1`] = `
 <Redirect
-  push={false}
   to="/account/api-keys"
 />
 `;

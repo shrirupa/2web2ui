@@ -3,7 +3,6 @@
 exports[`Get row data active 1`] = `
 Array [
   <Link
-    replace={false}
     to="/account/subaccounts/123"
   >
     Joe's Garage
@@ -22,7 +21,6 @@ Array [
 exports[`Get row data suspended 1`] = `
 Array [
   <Link
-    replace={false}
     to="/account/subaccounts/789"
   >
     Dev Avocado
@@ -41,7 +39,6 @@ Array [
 exports[`Get row data terminated 1`] = `
 Array [
   <Link
-    replace={false}
     to="/account/subaccounts/456"
   >
     SharkPost

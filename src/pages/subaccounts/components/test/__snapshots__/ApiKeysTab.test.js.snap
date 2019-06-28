@@ -90,7 +90,6 @@ exports[`ApiKeysTab normal props 1`] = `
 exports[`getRowData 1`] = `
 Array [
   <Link
-    replace={false}
     to="/account/api-keys/edit/12313"
   >
     test

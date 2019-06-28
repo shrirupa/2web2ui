@@ -148,7 +148,6 @@ exports[`Component: EditBounce renders not ready correctly 1`] = `
       </strong>
        for bounce domains. 
       <Link
-        replace={false}
         to="/account/sending-domains/create"
       >
         Create a new domain now.
@@ -188,7 +187,6 @@ exports[`Component: EditBounce renders ready correctly 1`] = `
       </strong>
        for bounce domains. 
       <Link
-        replace={false}
         to="/account/sending-domains/create"
       >
         Create a new domain now.

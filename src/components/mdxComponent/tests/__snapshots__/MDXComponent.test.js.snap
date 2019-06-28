@@ -15,7 +15,6 @@ exports[`Component: MDX Wrapper markdown link factory should transform external 
 exports[`Component: MDX Wrapper markdown link factory should transform internal links 1`] = `
 <Link
   otherProp={true}
-  replace={false}
   to="/some/route"
 >
   <span>
