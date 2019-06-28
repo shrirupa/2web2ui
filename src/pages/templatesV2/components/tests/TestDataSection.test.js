@@ -6,7 +6,7 @@ import TestDataSection from '../TestDataSection';
 jest.mock('../../hooks/useEditorContext');
 
 describe('TestDataSection', () => {
-  const subject = ({ stateOverride } = {}) => {
+  const subject = (...stateOverride) => {
     useEditorContext.mockReturnValue({
       testData: JSON.stringify({
         subject: 'Example Subject'
@@ -21,4 +21,11 @@ describe('TestDataSection', () => {
   it('renders test data editor', () => {
     expect(subject()).toMatchSnapshot();
   });
+
+  it.skip('updates state on change', () => {
+  });
+
+  it.skip('syncs data in local storage upon unmount', () => {
+  });
+
 });

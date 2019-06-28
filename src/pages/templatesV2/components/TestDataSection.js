@@ -14,9 +14,7 @@ const TestDataSection = () => {
       mode="json"
       name="test-data-editor"
       onChange={(val) => {
-        try {
-          setTestData(JSON.parse(val));
-        } catch (err) {} /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
+        setTestData(val);
       }}
       value={testData}
     />
