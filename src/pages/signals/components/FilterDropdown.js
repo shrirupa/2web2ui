@@ -6,6 +6,7 @@ import {
 } from '@sparkpost/matchbox';
 import { ArrowDropDown } from '@sparkpost/matchbox-icons';
 
+// This is a simplified non-redux-form version of src/components/filterDropdown
 const FilterDropdown = ({ options, initialSelected, label, onChange }) => {
   const [selected, setSelected] = useState(initialSelected);
 

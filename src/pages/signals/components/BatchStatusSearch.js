@@ -77,6 +77,7 @@ const BatchStatusSearch = ({ now, disabled, filters: initialFilters, onFilterCha
           <Grid.Column xs={12} md={6} xl={4}>
             <TextField
               labelHidden
+              name='batchIds'
               placeholder="Filter by batch ID"
               value={batchIds}
               {...batchIdProps}

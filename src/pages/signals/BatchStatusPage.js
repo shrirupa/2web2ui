@@ -37,7 +37,7 @@ const withoutEmptyValues = (obj) => pickBy(obj, identity);
 const paramsToApi = ({ errorTypes, showSuccessful, batchIds, from, to, perPage }) =>
   withoutEmptyValues({
     events: ['error', showSuccessful && 'success'].filter(Boolean).join(','),
-    error_types: errorTypes,
+    error_types: errorTypes.join(','),
     batch_ids: batchIds,
     from: from && from.toISOString(),
     to: to && to.toISOString(),

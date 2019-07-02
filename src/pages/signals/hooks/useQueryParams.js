@@ -8,9 +8,9 @@ import { comparableJson } from '../helpers/hooks';
 
 const toQueryString = (params) => qs.stringify(params, { arrayFormat: 'repeat' });
 
-export const array = (param) => (Array.isArray(param) ? param : [param]);
-export const boolean = (param) => (param === 'true' ? true : false);
-export const string = (param) => (param ? param : '');
+export const array = (param) => Array.isArray(param) ? param : [param];
+export const boolean = (param) => param === 'true' ? true : false;
+export const string = (param) => param ? param : '';
 export const number = (param) => Number(param) || 0;
 export const date = (param) => (param ? moment(param).toDate() : '');
 
