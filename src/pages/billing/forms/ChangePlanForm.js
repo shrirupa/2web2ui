@@ -163,7 +163,7 @@ const mapStateToProps = (state, props) => {
   const { account, loading } = selectAccountBilling(state);
 
   return {
-    loading: (!account.created && loading) || (_.isEmpty(plans) && state.billing.plansLoading),
+    loading: loading || (_.isEmpty(plans) && state.billing.plansLoading),
     isAws: selectCondition(isAws)(state),
     account,
     billing: state.billing,
