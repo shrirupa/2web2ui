@@ -2,7 +2,10 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import { OnboardingPlanPage as ChoosePlan } from '../ChoosePlan';
 import * as billingHelpers from 'src/helpers/billing';
+import { trackEvent } from 'src/helpers/analytics';
+import { ANALYTICS_CHOOSE_PLAN, ANALYTICS_ONBOARDING } from 'src/constants';
 
+jest.mock('src/helpers/analytics');
 jest.mock('src/helpers/billing');
 
 describe('ChoosePlan page tests', () => {
@@ -78,10 +81,11 @@ describe('ChoosePlan page tests', () => {
     });
 
     it('should create billing record on submission', async () => {
-      const values = { planpicker: { isFree: false }, key: 'value', card: 'card info' };
+      const values = { planpicker: { isFree: false, code: 'plan-code' }, key: 'value', card: 'card info' };
       await instance.onSubmit(values);
       expect(instance.props.billingCreate).toHaveBeenCalledWith(values);
       expect(instance.props.history.push).toHaveBeenCalledWith('/onboarding/sending-domain');
+      expect(trackEvent).toHaveBeenCalledWith({ category: ANALYTICS_ONBOARDING, action: ANALYTICS_CHOOSE_PLAN, data: { plan_code: values.planpicker.code }});
       expect(instance.props.showAlert).toHaveBeenCalledWith({ type: 'success', message: 'Added your plan' });
     });
 

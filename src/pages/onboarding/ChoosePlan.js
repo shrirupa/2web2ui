@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Panel, Grid, Button } from '@sparkpost/matchbox';
 import { showAlert } from 'src/actions/globalAlert';
 import { CenteredLogo, Loading, PlanPicker } from 'src/components';
-import { FORMS } from 'src/constants';
+import { FORMS, ANALYTICS_CHOOSE_PLAN, ANALYTICS_ONBOARDING } from 'src/constants';
 import Steps from './components/Steps';
 import { getPlans } from 'src/actions/account';
 import { getBillingCountries, verifyPromoCode, clearPromoCode } from 'src/actions/billing';
@@ -18,6 +18,7 @@ import { not } from 'src/helpers/conditions';
 import AccessControl from 'src/components/auth/AccessControl';
 import { prepareCardInfo } from 'src/helpers/billing';
 import PromoCode from 'src/components/billing/PromoCode';
+import { trackEvent } from 'src/helpers/analytics';
 
 const NEXT_STEP = '/onboarding/sending-domain';
 
@@ -64,7 +65,10 @@ export class OnboardingPlanPage extends Component {
         return billingCreate(newValues);
       })
       .then(() => history.push(NEXT_STEP))
-      .then(() => showAlert({ type: 'success', message: 'Added your plan' }));
+      .then(() => {
+        trackEvent({ category: ANALYTICS_ONBOARDING, action: ANALYTICS_CHOOSE_PLAN, data: { plan_code: values.planpicker.code }});
+        showAlert({ type: 'success', message: 'Added your plan' });
+      });
   };
 
   renderCCSection = () => {
