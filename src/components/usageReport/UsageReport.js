@@ -76,7 +76,7 @@ export class UsageReport extends Component {
             title='Today'
             secondaryTitle={`Since ${formatDateTime(usage.day.start)}`}
           />
-          <ProgressBar completed={dailyUsage} />
+          //<ProgressBar completed={dailyUsage} />
           <DisplayNumber label='Used' content={usage.day.used.toLocaleString()} orange />
           {dailyLimitMarkup}
 
