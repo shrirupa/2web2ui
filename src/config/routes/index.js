@@ -42,7 +42,13 @@ import { default as emailVerification } from 'src/components/emailVerification/E
 import SecretBillingPlanOrBillingSummaryPage from '../SecretBillingPlanOrBillingSummaryPage';
 
 import { all, hasGrants, not } from 'src/helpers/conditions';
-import { isAws, isCustomBilling, isEnterprise, isSelfServeBilling } from 'src/helpers/conditions/account';
+import {
+  hasAccountOptionEnabled,
+  isAws,
+  isCustomBilling,
+  isEnterprise,
+  isSelfServeBilling
+} from 'src/helpers/conditions/account';
 import { isAzure, isHeroku, isSubaccountUser } from 'src/helpers/conditions/user';
 import { configEquals, configFlag } from 'src/helpers/conditions/config';
 import App from 'src/components/layout/App';
@@ -310,6 +316,7 @@ const routes = [
   {
     path: '/signals/ingest-batch-status',
     component: signals.BatchStatusPage,
+    condition: hasAccountOptionEnabled('allow_events_ingest'),
     layout: App,
     title: 'Signals',
     supportDocSearch: 'signals'
