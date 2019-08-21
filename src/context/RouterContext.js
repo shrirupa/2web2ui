@@ -13,10 +13,15 @@ export const ProviderComponent = ({ children, ...routerProps }) => {
       ...qs.parse(routerProps.location.search, { ignoreQueryPrefix: true }),
       ...routerProps.match.params
     }
-  }), [routerProps]);
+  }), [routerProps ]);
+
+  const updateRoute = (newParams) => {
+    const queryString = qs.stringify(newParams, { arrayFormat: 'repeat' });
+    routerProps.history.push(`${routerProps.location.pathname}?${queryString}`);
+  };
 
   return (
-    <RouterContext.Provider value={value}>
+    <RouterContext.Provider value={{ ...value, updateRoute: updateRoute }} >
       {children}
     </RouterContext.Provider>
   );

@@ -1,12 +1,11 @@
-import { useState, useCallback, useLayoutEffect } from 'react';
-import qs from 'qs';
+import { useState, useLayoutEffect } from 'react';
 import moment from 'moment';
 
 import useRouter from 'src/hooks/useRouter';
 
 import { comparableJson } from '../helpers/hooks';
 
-const toQueryString = (params) => qs.stringify(params, { arrayFormat: 'repeat' });
+
 
 export const array = (param) => Array.isArray(param) ? param : [param];
 export const boolean = (param) => param === 'true' ? true : false;
@@ -43,17 +42,8 @@ const applySchema = (obj, schema) => {
  * Provide a way to keep page-level state in route request params.
  */
 export const useQueryParams = (schema) => {
-  const { location, history, requestParams } = useRouter();
+  const { requestParams, updateRoute } = useRouter();
   const [queryParams, setQueryParams] = useState(applySchema(requestParams, schema));
-
-  // On receipt of new params, we update the route.
-  const updateRoute = useCallback(
-    (newParams) => {
-      const queryString = toQueryString(newParams);
-      history.push(`${location.pathname}?${queryString}`);
-    },
-    [history, location.pathname]
-  );
 
   // On mount, update the route from initial parsed and default params
   useLayoutEffect(() => {
