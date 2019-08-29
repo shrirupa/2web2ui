@@ -314,11 +314,11 @@ const routes = [
     supportDocSearch: 'signals'
   },
   {
-    path: '/signals/ingest-batch-status',
-    component: signals.BatchStatusPage,
+    path: '/signals/integration',
+    component: signals.Integration,
     condition: hasAccountOptionEnabled('allow_events_ingest'),
     layout: App,
-    title: 'Signals',
+    title: 'Signals | Integration',
     supportDocSearch: 'signals'
   },
   {

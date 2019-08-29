@@ -1,5 +1,5 @@
 /* eslint max-lines: ["error", 160] */
-import { Home, InsertChart, Code, MailOutline, Language, Settings, Compare, NotificationsActive, Signal, VerifiedUser } from '@sparkpost/matchbox-icons';
+import { Home, InsertChart, Code, MailOutline, Language, Compare, NotificationsActive, Signal, VerifiedUser } from '@sparkpost/matchbox-icons';
 
 import campaignNavItems from './campaignNavItems';
 import settingsNavItems from './settingsNavItems';
@@ -66,8 +66,8 @@ export default [
         to: '/signals/engagement'
       },
       {
-        label: 'Ingestion Status',
-        to: '/signals/ingest-batch-status'
+        label: 'Integration',
+        to: '/signals/integration'
       }
     ]
   },
