@@ -5,7 +5,7 @@ import React from 'react';
 import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
 
 
-const PerPageButtons = ({ data, perPage, perPageButtons = DEFAULT_PER_PAGE_BUTTONS, onPerPageChange, totalCount }) => {
+const PerPageButtons = ({ perPage, perPageButtons = DEFAULT_PER_PAGE_BUTTONS, onPerPageChange, totalCount }) => {
 
   if (totalCount <= Math.min(...perPageButtons)) {
     return null;

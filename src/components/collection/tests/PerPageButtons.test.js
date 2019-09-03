@@ -1,13 +1,11 @@
 import React from 'react';
 import PerPageButtons from '../PerPageButtons';
-import _ from 'lodash';
 import { shallow } from 'enzyme';
 
 
 describe('Per Page Buttons', () => {
   let wrapper;
   const props = {
-    data: _.times(11, (i) => ({ key: i + 1 })),
     currentPage: 1,
     onPerPageChange: jest.fn(),
     perPage: 25,
