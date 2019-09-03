@@ -4,7 +4,7 @@ import EngagementRecencyPage from './EngagementRecencyPage';
 import HealthScorePage from './HealthScorePage';
 import SpamTrapPage from './SpamTrapPage';
 import UnsubscribeRateByCohortPage from './UnsubscribeRateByCohortPage';
-import BatchStatusPage from './BatchStatusPage';
+import IntegrationPage from './IntegrationPage';
 import * as dashboards from './dashboards';
 
 export default {
@@ -14,6 +14,6 @@ export default {
   HealthScorePage,
   SpamTrapPage,
   UnsubscribeRateByCohortPage,
-  BatchStatusPage,
+  IntegrationPage,
   ...dashboards
 };
