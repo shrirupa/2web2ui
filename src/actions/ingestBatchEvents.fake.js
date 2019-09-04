@@ -1,3 +1,4 @@
+
 const fakeRecord = {
   'retryable': false,
   'number_succeeded': 440,
@@ -15,7 +16,7 @@ const fakeRecord = {
 };
 
 const insertrecords = () => {
-  const times = Math.floor(500 * Math.random());
+  const times = Math.floor(200 * Math.random());
   let arr = [];
   for (let i = 0; i < times; i++) { arr = [...arr, fakeRecord]; }
 
@@ -25,18 +26,27 @@ const insertrecords = () => {
 const events = insertrecords();
 const length = events.length;
 
-export const getIngestBatchEvents = (params) =>
-//   return (dispatch) =>
+export const getIngestBatchEvents = (params) => (dispatch) => {
+  dispatch({
+    type: 'GET_INGEST_BATCH_EVENTS_PENDING',
+    meta: { params }
+  });
 
-  ({ 'type': 'GET_INGEST_BATCH_EVENTS_SUCCESS',
-    'extra': { 'total_count': length,
-      'links': {}},
-    'meta': {
-      params
+  const next = events.length > params.perPage
+    ? '/api/v1/events/message?cursor=MTU2NzEwNjc5MjAwMCw5MzM1NTUxMzkzMjY3ODU0MA==&from=2019-08-29T18:28&to=2019-08-29T19:28&per_page=25'
+    : undefined;
+
+
+  dispatch({
+    type: 'GET_INGEST_BATCH_EVENTS_SUCCESS',
+    extra: {
+      'total_count': length,
+      'links': { next }
     },
-    'payload': events.splice(0, params.perPage) })
-
-;
+    meta: { params },
+    payload: events.splice(0, params.perPage)
+  });
+};
 
 
 

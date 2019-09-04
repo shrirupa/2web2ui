@@ -65,6 +65,12 @@
         "message": "☀️ Plz avoid bare strings inside JSX ☀️",
         "selector": "JSXElement[children.length > 1] > Literal[value=/\\w+/]"
       }
+    ],
+    "no-unused-vars": [
+      "error", 
+      {
+        "varsIgnorePattern": "^_" ,
+      }
     ]
   },
   "extends": [

@@ -1,5 +1,4 @@
-// /api/v1/events/message?cursor=MTU2NzEwNjc5MjAwMCw5MzM1NTUxMzkzMjY3ODU0MA==&from=2019-08-29T18:28&to=2019-08-29T19:28&per_page=25
-// import qs from 'qs';
+import qs from 'qs';
 
 const initialState = {
   eventsByPage: [
@@ -15,21 +14,38 @@ const initialState = {
 const ingestBatchEventsReducer = (state = initialState, { type, payload, extra, meta }) => {
   switch (type) {
     case 'GET_INGEST_BATCH_EVENTS_PENDING': {
-      if (!meta.params.cursor) {
-        // reset events and nextCursor
+      if (!meta.params.cursor) { // request for first page
+        return {
+          ...state,
+          loadingStatus: 'pending',
+          eventsByPage: [],
+          nextCursor: undefined
+        };
       }
 
-      return { ...state, loadingStatus: 'pending' ,eventsByPage: []};
+      return {
+        ...state,
+        loadingStatus: 'pending'
+      };
     }
 
     case 'GET_INGEST_BATCH_EVENTS_FAIL':
       return { ...state, loadingStatus: 'fail' };
 
     case 'GET_INGEST_BATCH_EVENTS_SUCCESS': {
-      if (!extra.links.next) {
-        // unset nextCursor
-      }
-      return { ...state, loadingStatus: 'success', eventsByPage: [...state.eventsByPage, payload], totalCount: extra.total_count ? extra.total_count : 0 };
+      const [_path, query] = (extra.links.next || '').split('?');
+      return {
+        ...state,
+        loadingStatus: 'success',
+        eventsByPage: [
+          ...state.eventsByPage,
+          payload
+        ],
+        nextCursor: query
+          ? qs.parse(query).cursor
+          : undefined, // unset on last page
+        totalCount: extra.total_count ? extra.total_count : 0
+      };
     }
 
     // case 'SIGNALS_BATCH_STATUS_FETCH_SUCCESS':

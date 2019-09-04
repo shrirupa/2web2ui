@@ -4,9 +4,10 @@ import { Page } from '@sparkpost/matchbox';
 import { CursorPaging, PerPageButtons, TableCollection } from 'src/components/collection';
 import { getIngestBatchEvents } from 'src/actions/ingestBatchEvents.fake';
 import DisplayDate from 'src/components/displayDate/DisplayDate';
+import Loading from 'src/components/loading';
 import { formatDateTime } from 'src/helpers/date';
 import Status from './components/tags/statusTags';
-const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount }) => {
+const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextCursor }) => {
   const columns = [
     'Timestamp', 'Status', 'Accepted', 'Batch ID'
   ];
@@ -27,20 +28,25 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount }) => 
   const onFirstPage = () => {
     setPage(0);
   };
+  const events = eventsByPage[page];
 
-  const nextCursor = ''; //TODO
-  useEffect(() => {
-    if (!eventsByPage[page]) {
+
+  useEffect(() => { // fetch data when page changes and on initial page load
+    if (!events) {
       getIngestBatchEvents({ cursor: nextCursor, perPage });
     }
-  },[eventsByPage, getIngestBatchEvents, page, perPage]);
-  // console.log(eventsByPage);
+  },[events, getIngestBatchEvents, nextCursor, perPage]);
+
+  if (!events) {
+    return <Loading />;
+  }
+
   return (
     <Page title="Signals Integration">
       <p>Review the health of your Signals integration.</p>
       <TableCollection
         columns={columns}
-        rows={eventsByPage[page] || []}
+        rows={events}
         getRowData={formatRow}
         updateQueryString={false}
       />
