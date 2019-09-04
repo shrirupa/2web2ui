@@ -31,7 +31,6 @@ import sendingDomains from './sendingDomains';
 import sendingIps from './sendingIps';
 import signalOptions from './signalOptions';
 import signals from './signals';
-import signalsBatchStatus from './signalsBatchStatus';
 import snippets from './snippets';
 import subaccounts from './subaccounts';
 import summaryChart from './summaryChart';
@@ -47,6 +46,8 @@ import typeahead from './typeahead';
 import webhooks from './webhooks';
 import websiteAuth from './websiteAuth';
 import inboxPlacement from './inboxPlacement';
+import ingestBatchEvents from './ingestBatchEvents';
+
 
 const appReducer = combineReducers({
   acceptedReport,
@@ -68,6 +69,7 @@ const appReducer = combineReducers({
   form,
   inboxPlacement,
   invoices,
+  ingestBatchEvents,
   ipPools,
   globalAlert,
   metrics,
@@ -81,7 +83,6 @@ const appReducer = combineReducers({
   sendingIps,
   signalOptions,
   signals,
-  signalsBatchStatus,
   snippets,
   subaccounts,
   support,

@@ -1,3 +1,70 @@
+const fakeRecord = {
+  'retryable': false,
+  'number_succeeded': 440,
+  'event_id': '1d1941e9-4987-1a6c-b124-2a4328585721',
+  'number_failed': 460,
+  'batch_id': 'fbd59e4c-1629-4736-803d-201ff9fa8dd6',
+  'expiration_timestamp': '2019-06-16T19:02:09.373Z',
+  'error_type': 'validation',
+  'href': 'https://api.sparkpost.com/ingest/number_failed/fbd59e4c-1629-4736-803d-201ff9fa8dd6',
+  'type': 'error',
+  'customer_id': 8675308,
+  'subaccount_id': 38,
+  'number_duplicates': 20,
+  'timestamp': '2019-06-06T19:02:09.373Z'
+};
+
+const insertrecords = () => {
+  const times = Math.floor(500 * Math.random());
+  let arr = [];
+  for (let i = 0; i < times; i++) { arr = [...arr, fakeRecord]; }
+
+  return arr;
+
+};
+const events = insertrecords();
+const length = events.length;
+
+export const getIngestBatchEvents = (params) =>
+//   return (dispatch) =>
+
+  ({ 'type': 'GET_INGEST_BATCH_EVENTS_SUCCESS',
+    'extra': { 'total_count': length,
+      'links': {}},
+    'meta': {
+      params
+    },
+    'payload': events.splice(0, params.perPage) })
+
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import moment from 'moment';
 // import BatchStatusSearch from 'src/pages/signals/components/BatchStatusSearch';
 
