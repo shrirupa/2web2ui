@@ -1,4 +1,3 @@
-
 const fakeRecord = {
   'retryable': false,
   'number_succeeded': 440,
@@ -24,7 +23,13 @@ const insertrecords = () => {
 
 };
 const events = insertrecords();
-const length = events.length;
+const model = {
+
+  reset() {
+    this.events = [ ...events ];
+    this.totalCount = events.length;
+  }
+};
 
 export const getIngestBatchEvents = (params) => (dispatch) => {
   dispatch({
@@ -32,7 +37,11 @@ export const getIngestBatchEvents = (params) => (dispatch) => {
     meta: { params }
   });
 
-  const next = events.length > params.perPage
+  if (!params.cursor) {
+    model.reset();
+  }
+
+  const next = model.totalCount > params.perPage
     ? '/api/v1/events/message?cursor=MTU2NzEwNjc5MjAwMCw5MzM1NTUxMzkzMjY3ODU0MA==&from=2019-08-29T18:28&to=2019-08-29T19:28&per_page=25'
     : undefined;
 
@@ -40,11 +49,11 @@ export const getIngestBatchEvents = (params) => (dispatch) => {
   dispatch({
     type: 'GET_INGEST_BATCH_EVENTS_SUCCESS',
     extra: {
-      'total_count': length,
+      'total_count': model.totalCount,
       'links': { next }
     },
     meta: { params },
-    payload: events.splice(0, params.perPage)
+    payload: model.events.splice(0, params.perPage)
   });
 };
 

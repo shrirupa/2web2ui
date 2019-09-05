@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Page } from '@sparkpost/matchbox';
+import DatePicker from 'src/components/datePicker/DatePicker';
+import { Page, Tabs, Panel, Grid, TextField } from '@sparkpost/matchbox';
 import { CursorPaging, PerPageButtons, TableCollection } from 'src/components/collection';
 import { getIngestBatchEvents } from 'src/actions/ingestBatchEvents.fake';
 import DisplayDate from 'src/components/displayDate/DisplayDate';
 import Loading from 'src/components/loading';
 import { formatDateTime } from 'src/helpers/date';
 import Status from './components/tags/statusTags';
-const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextCursor }) => {
+import useTabs from 'src/hooks/useTabs';
+import FilterDropdown from './components/FilterDropdown';
+import { batchStatusOptions } from './constants/integration';
+import { FORMATS, RELATIVE_DATE_OPTIONS } from 'src/constants';
+import { getRelativeDates } from 'src/helpers/date';
+
+
+const initialTabs = [
+  { content: 'Filter By Date/Status' },
+  { content: 'Filter By Batch ID' }];
+const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextCursor, loadingStatus }) => {
   const columns = [
     'Timestamp', 'Status', 'Accepted', 'Batch ID'
   ];
   const [ page, setPage] = useState(0);
   const [ perPage, setPerPage] = useState(10);
+
+  const [ selectedTab, tabs] = useTabs(initialTabs);
   const formatRow = ({ timestamp, type, error_type, number_succeeded, number_failed, number_duplicates, batch_id }) => [
     <DisplayDate timestamp={timestamp} formattedDate={formatDateTime(timestamp)}/>,
     <Status status={type} error={error_type} />,
@@ -22,8 +35,11 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   const onChangePage = (nextPage) => {
     setPage(nextPage - 1);
   };
-  const onChangePageSize = (pageSize) => {
-    setPerPage(pageSize);
+  const onChangePageSize = (perPage) => {
+    setPage(0);
+    setPerPage(perPage);
+    getIngestBatchEvents({ perPage });
+
   };
   const onFirstPage = () => {
     setPage(0);
@@ -41,8 +57,45 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
     return <Loading />;
   }
 
+
   return (
     <Page title="Signals Integration">
+      <Tabs
+        selected={selectedTab}
+        connectBelow={true}
+        tabs={tabs}
+      />
+      <Panel sectioned>
+        {selectedTab === 0 &&
+        <Grid>
+          <Grid.Column xs={12} md={6} >
+            <DatePicker
+              roundToPrecision={false}
+              disabled={loadingStatus === 'pending'}
+              dateFieldFormat={FORMATS.DATETIME}
+              relativeDateOptions={RELATIVE_DATE_OPTIONS}
+              {...getRelativeDates(RELATIVE_DATE_OPTIONS[1])}
+
+            />
+          </Grid.Column>
+          <Grid.Column xs={12} md={6}>
+            <FilterDropdown
+              label="Batch Status"
+              options={batchStatusOptions}
+              initialSelected={'success'}
+              onChange={() => {}}
+            />
+          </Grid.Column>
+        </Grid>
+        }
+        {selectedTab === 1 &&
+         <TextField
+           labelHidden
+           name='batchIds'
+           placeholder="Filter by batch ID"
+         />
+        }
+      </Panel>
       <p>Review the health of your Signals integration.</p>
       <TableCollection
         columns={columns}
@@ -60,7 +113,6 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
         perPage={perPage}
         totalCount={totalCount}
       />
-
       <PerPageButtons
         onPerPageChange={onChangePageSize}
         perPage={perPage}
