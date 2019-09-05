@@ -13,7 +13,25 @@ import FilterDropdown from './components/FilterDropdown';
 import { batchStatusOptions } from './constants/integration';
 import { FORMATS, RELATIVE_DATE_OPTIONS } from 'src/constants';
 import { getRelativeDates } from 'src/helpers/date';
+import moment from 'moment';
 
+const useDateRange = (initialDateRange) => {
+  const [dateRange, setDateRange] = useState(() => getRelativeDates(initialDateRange));
+
+  return [
+    dateRange,
+    (obj) => {
+      if (obj.relativeRange === 'custom') {
+        setDateRange(obj);
+        return;
+      }
+
+      const nextDateRange = getRelativeDates(obj.relativeRange);
+
+      setDateRange(nextDateRange);
+    }
+  ];
+};
 
 const initialTabs = [
   { content: 'Filter By Date/Status' },
@@ -24,6 +42,7 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   ];
   const [ page, setPage] = useState(0);
   const [ perPage, setPerPage] = useState(10);
+  const [dateRange, setDateRange] = useDateRange(RELATIVE_DATE_OPTIONS[1]);
 
   const [ selectedTab, tabs] = useTabs(initialTabs);
   const formatRow = ({ timestamp, type, error_type, number_succeeded, number_failed, number_duplicates, batch_id }) => [
@@ -47,6 +66,9 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   const events = eventsByPage[page];
 
 
+  const handleDateChange = (obj) => {
+    setDateRange(obj);
+  };
   useEffect(() => { // fetch data when page changes and on initial page load
     if (!events) {
       getIngestBatchEvents({ cursor: nextCursor, perPage });
@@ -58,8 +80,11 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   }
 
 
+
   return (
     <Page title="Signals Integration">
+      <p>Review the health of your Signals integration.</p>
+
       <Tabs
         selected={selectedTab}
         connectBelow={true}
@@ -74,8 +99,14 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
               disabled={loadingStatus === 'pending'}
               dateFieldFormat={FORMATS.DATETIME}
               relativeDateOptions={RELATIVE_DATE_OPTIONS}
-              {...getRelativeDates(RELATIVE_DATE_OPTIONS[1])}
-
+              {...dateRange}
+              datePickerProps={{
+                disabledDays: {
+                  after: moment().toDate(),
+                  before: moment().subtract(7, 'days').toDate()
+                }
+              }}
+              onChange={handleDateChange}
             />
           </Grid.Column>
           <Grid.Column xs={12} md={6}>
@@ -96,7 +127,6 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
          />
         }
       </Panel>
-      <p>Review the health of your Signals integration.</p>
       <TableCollection
         columns={columns}
         rows={events}
