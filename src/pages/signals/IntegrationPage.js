@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import DatePicker from 'src/components/datePicker/DatePicker';
@@ -14,10 +15,9 @@ import { batchStatusOptions } from './constants/integration';
 import { FORMATS, RELATIVE_DATE_OPTIONS } from 'src/constants';
 import { getRelativeDates } from 'src/helpers/date';
 import moment from 'moment';
-
+import useRouter from 'src/hooks/useRouter';
 const useDateRange = (initialDateRange) => {
-  const [dateRange, setDateRange] = useState(() => getRelativeDates(initialDateRange));
-
+  const [dateRange, setDateRange] = useState(getRelativeDates(initialDateRange));
   return [
     dateRange,
     (obj) => {
@@ -25,9 +25,7 @@ const useDateRange = (initialDateRange) => {
         setDateRange(obj);
         return;
       }
-
       const nextDateRange = getRelativeDates(obj.relativeRange);
-
       setDateRange(nextDateRange);
     }
   ];
@@ -43,8 +41,10 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   const [ page, setPage] = useState(0);
   const [ perPage, setPerPage] = useState(10);
   const [dateRange, setDateRange] = useDateRange(RELATIVE_DATE_OPTIONS[1]);
-
   const [ selectedTab, tabs] = useTabs(initialTabs);
+  const { updateRoute } = useRouter();
+  const [ batchIds, setBatchIds ] = useState('');
+  const [ status, setStatus ] = useState('');
   const formatRow = ({ timestamp, type, error_type, number_succeeded, number_failed, number_duplicates, batch_id }) => [
     <DisplayDate timestamp={timestamp} formattedDate={formatDateTime(timestamp)}/>,
     <Status status={type} error={error_type} />,
@@ -64,11 +64,33 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
     setPage(0);
   };
   const events = eventsByPage[page];
-
-
   const handleDateChange = (obj) => {
     setDateRange(obj);
+
   };
+  const handleFieldChange = (event) => {
+    const value = event.target.value;
+    if (typeof value === 'string') {
+      const ids = value.split(',').filter(Boolean);
+      setBatchIds(ids.join(','));
+    }
+  };
+
+  const handleDropDownSelection = (statusArray) => {
+    setStatus(statusArray.join(','));
+  };
+  //for filter
+  useEffect(() => {
+    //call updateRoute
+    if (selectedTab === 0) {
+      getIngestBatchEvents({ perPage, ...dateRange, status: status });
+      updateRoute({ ...dateRange, status: status });
+    }
+    if (selectedTab === 1) {
+      getIngestBatchEvents({ perPage, batchIds });
+      updateRoute({ batchIds: batchIds });
+    }
+  },[dateRange, batchIds, status, perPage, selectedTab, getIngestBatchEvents, updateRoute]);
   useEffect(() => { // fetch data when page changes and on initial page load
     if (!events) {
       getIngestBatchEvents({ cursor: nextCursor, perPage });
@@ -80,11 +102,9 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   }
 
 
-
   return (
     <Page title="Signals Integration">
       <p>Review the health of your Signals integration.</p>
-
       <Tabs
         selected={selectedTab}
         connectBelow={true}
@@ -113,8 +133,8 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
             <FilterDropdown
               label="Batch Status"
               options={batchStatusOptions}
-              initialSelected={'success'}
-              onChange={() => {}}
+              initialSelected={status}
+              onChange={handleDropDownSelection}
             />
           </Grid.Column>
         </Grid>
@@ -124,6 +144,7 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
            labelHidden
            name='batchIds'
            placeholder="Filter by batch ID"
+           onBlur={handleFieldChange}
          />
         }
       </Panel>
