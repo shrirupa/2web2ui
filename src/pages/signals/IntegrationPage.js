@@ -1,10 +1,8 @@
 /* eslint-disable max-lines */
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import DatePicker from 'src/components/datePicker/DatePicker';
 import { Page, Tabs, Panel, Grid, TextField } from '@sparkpost/matchbox';
 import { CursorPaging, PerPageButtons, TableCollection } from 'src/components/collection';
-import { getIngestBatchEvents } from 'src/actions/ingestBatchEvents.fake';
 import DisplayDate from 'src/components/displayDate/DisplayDate';
 import Loading from 'src/components/loading';
 import { formatDateTime } from 'src/helpers/date';
@@ -16,6 +14,7 @@ import { FORMATS, RELATIVE_DATE_OPTIONS } from 'src/constants';
 import { getRelativeDates } from 'src/helpers/date';
 import moment from 'moment';
 import useRouter from 'src/hooks/useRouter';
+
 const useDateRange = (initialDateRange) => {
   const [dateRange, setDateRange] = useState(getRelativeDates(initialDateRange));
   return [
@@ -79,6 +78,7 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   const handleDropDownSelection = (statusArray) => {
     setStatus(statusArray.join(','));
   };
+
   //for filter
   useEffect(() => {
     //call updateRoute
@@ -173,12 +173,4 @@ const IntegrationPage = ({ getIngestBatchEvents, eventsByPage, totalCount, nextC
   );
 };
 
-const mapStateToProps = (state) => ({
-  ...state.ingestBatchEvents
-});
-
-const mapDispatchToProps = {
-  getIngestBatchEvents
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(IntegrationPage);
+export default IntegrationPage;

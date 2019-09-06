@@ -322,6 +322,14 @@ const routes = [
     supportDocSearch: 'signals'
   },
   {
+    path: '/signals/integration-demo',
+    component: signals.IntegrationDemoPage,
+    condition: hasAccountOptionEnabled('allow_events_ingest'),
+    layout: App,
+    title: 'Signals | Integration',
+    supportDocSearch: 'signals'
+  },
+  {
     path: '/account/security',
     redirect: '/account/profile'
   },
