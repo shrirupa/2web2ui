@@ -139,22 +139,4 @@ describe('Page: Message Events tests', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  describe('getRowData', () => {
-    let event;
-    beforeEach(() => {
-      event = {
-        formattedDate: 'formatted',
-        type: 'injection',
-        friendly_from: 'mean@friendly',
-        rcpt_to: 'tom.haverford@pawnee.state.in.us',
-        message_id: '123abc',
-        event_id: '456xyz'
-      };
-    });
-
-    it('renders correctly', () => {
-      expect(instance.getRowData(event)).toMatchSnapshot();
-    });
-
-  });
 });

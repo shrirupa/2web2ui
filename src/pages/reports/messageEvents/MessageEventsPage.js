@@ -1,28 +1,26 @@
 /* eslint-disable max-lines */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { snakeToFriendly } from 'src/helpers/string';
 import { Button, Page } from '@sparkpost/matchbox';
 import { PanelLoading, TableCollection, CursorPaging, PerPageButtons, ApiErrorBanner, Empty } from 'src/components';
-import DisplayDate from 'src/components/displayDate/DisplayDate';
 import MessageEventsSearch from './components/MessageEventsSearch';
-import ViewDetailsButton from './components/ViewDetailsButton';
 import { getMessageEvents, changePage, getMessageEventsCSV, clearCSV } from 'src/actions/messageEvents';
 import { selectMessageEvents, selectMessageEventsCSV } from 'src/selectors/messageEvents';
 import { formatToCsv, download } from 'src/helpers/downloading';
 import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
 import _ from 'lodash';
 import styles from './MessageEventsPage.module.scss';
+import MessageEventRow from './components/MessageEventRow';
 
 const errorMsg = 'Sorry, we seem to have had some trouble loading your message events.';
 const emptyMessage = 'There are no message events for your current query';
 
 const columns = [
-  { label: 'Time' },
   { label: 'Event' },
+  { label: 'Subject' },
   { label: 'Recipient' },
-  { label: 'From Address' },
-  null
+  { label: 'From' },
+  { label: 'Timestamp' }
 ];
 
 export class MessageEventsPage extends Component {
@@ -88,17 +86,6 @@ export class MessageEventsPage extends Component {
     getMessageEventsCSV(search);
   }
 
-  getRowData = (rowData) => {
-    const { timestamp, formattedDate, type, friendly_from, rcpt_to } = rowData;
-    return [
-      <DisplayDate timestamp={timestamp} formattedDate={formattedDate} />,
-      snakeToFriendly(type),
-      rcpt_to,
-      friendly_from,
-      <ViewDetailsButton {...rowData} />
-    ];
-  }
-
   renderError() {
     const { error, getMessageEvents, search } = this.props;
     return (
@@ -118,6 +105,8 @@ export class MessageEventsPage extends Component {
       return <PanelLoading />;
     }
 
+    const RowComponent = (row) => <MessageEventRow event={row}></MessageEventRow>;
+
     const content = empty
       ? <Empty message={emptyMessage} />
       : (
@@ -125,7 +114,7 @@ export class MessageEventsPage extends Component {
           <TableCollection
             columns={columns}
             rows={events}
-            getRowData={this.getRowData}
+            rowComponent={RowComponent}
             defaultSortColumn='timestamp'
             defaultSortDirection='desc'
           />

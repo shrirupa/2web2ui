@@ -1,0 +1,19 @@
+@import '~@sparkpost/matchbox/src/styles/config.scss';
+
+.Row {
+  position: relative;
+  transition: 0.15s;
+
+  &:not(.selected):hover {
+    cursor: pointer;
+    background: lighten(color(gray, 9), 1);
+  }
+}
+
+.Cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: color(gray, 4);
+  max-width: rem(350);
+}

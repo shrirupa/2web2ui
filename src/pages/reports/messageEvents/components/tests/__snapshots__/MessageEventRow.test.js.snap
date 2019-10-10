@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: MessageEventRow renders correctly 1`] = `
+<Table.Row
+  className="Row"
+  onClick={[Function]}
+>
+  <Table.Cell
+    className="Cell"
+  >
+    Injection
+  </Table.Cell>
+  <Table.Cell
+    className="Cell"
+  />
+  <Table.Cell
+    className="Cell"
+  >
+    tom.haverford@pawnee.state.in.us
+  </Table.Cell>
+  <Table.Cell
+    className="Cell"
+  >
+    mean@friendly
+  </Table.Cell>
+  <Table.Cell
+    className="Cell"
+  >
+    <DisplayDate
+      formattedDate="formatted"
+    />
+  </Table.Cell>
+</Table.Row>
+`;
