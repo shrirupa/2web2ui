@@ -13,6 +13,7 @@ import GlobalBanner from 'src/context/GlobalBanner';
 import config from 'src/config';
 
 import { BrowserRouter } from 'react-router-dom';
+import { Hibana } from './context/Hibana';
 
 const reloadApp = () => {
   window.location.reload(true);
@@ -20,26 +21,28 @@ const reloadApp = () => {
 
 const App = ({ RouterComponent = BrowserRouter }) => (
   <ErrorBoundary onCtaClick={reloadApp} ctaLabel='Reload Page'>
-    <Poll>
-      <RouterComponent>
-        <div>
-          {config.siftScience && <SiftScience config={config.siftScience} />}
-          <BoomerangBanner />
-          {config.gtmId && <GoogleTagManager id={config.gtmId} />}
-          <Pendo />
-          <AuthenticationGate />
-          <SuspensionAlerts />
-          <CookieConsent />
-          <GlobalBanner>
-            <Layout>
-              <AppRoutes />
-            </Layout>
-          </GlobalBanner>
-          <Support />
-          <GlobalAlertWrapper />
-        </div>
-      </RouterComponent>
-    </Poll>
+    <Hibana>  
+      <Poll>
+        <RouterComponent>
+          <div>
+            {config.siftScience && <SiftScience config={config.siftScience} />}
+            <BoomerangBanner />
+            {config.gtmId && <GoogleTagManager id={config.gtmId} />}
+            <Pendo />
+            <AuthenticationGate />
+            <SuspensionAlerts />
+            <CookieConsent />
+            <GlobalBanner>
+              <Layout>
+                <AppRoutes />
+              </Layout>
+            </GlobalBanner>
+            <Support />
+            <GlobalAlertWrapper />
+          </div>
+        </RouterComponent>
+      </Poll>
+    </Hibana>
   </ErrorBoundary>
 );
 

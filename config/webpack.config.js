@@ -27,7 +27,7 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const snapshotGenerator = require('../scripts/browsersSnapshotGen');
 const generateConfigs = require('../scripts/generateConfigs');
-
+const CopyPlugin = require('copy-webpack-plugin');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -645,6 +645,20 @@ module.exports = function(webpackEnv) {
           SUPPORTED_BROWSERS: JSON.stringify(snapshotGenerator()), //Refer to docs/browser-support-sentry-issue.md for more info
           TENANT_CONFIGS: JSON.stringify(generateConfigs())
         }),
+        // Only works with production builds
+        // new CopyPlugin([
+        //   {
+        //     from: 'node_modules/@sparkpost/matchbox/styles.css',
+        //     to: 'static/css/old'
+        //   },
+        //   {
+        //     from: 'node_modules/hibana/styles.css',
+        //     to: 'static/css/new'
+        //   },
+        // ], {
+        //   copyUnmodified: true,
+        //   logLevel: 'trace'
+        // }),
       ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
