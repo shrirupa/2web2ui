@@ -99,10 +99,6 @@ module.exports = function(proxy, allowedHost) {
       // it used the same host and port.
       // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
       app.use(noopServiceWorkerMiddleware());
-    },
-    writeToDisk: (filePath) => {
-      console.log(/styles\.css$/.test(filePath), filePath)
-      return /styles\.css$/.test(filePath);
     }
   };
 };

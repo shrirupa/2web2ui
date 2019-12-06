@@ -14,34 +14,37 @@ import config from 'src/config';
 
 import { BrowserRouter } from 'react-router-dom';
 import { Hibana } from './context/Hibana';
+import { ThemeProvider } from 'hibana';
 
 const reloadApp = () => {
   window.location.reload(true);
 };
 
 const App = ({ RouterComponent = BrowserRouter }) => (
-  <ErrorBoundary onCtaClick={reloadApp} ctaLabel='Reload Page'>
-    <Hibana>  
-      <Poll>
-        <RouterComponent>
-          <div>
-            {config.siftScience && <SiftScience config={config.siftScience} />}
-            <BoomerangBanner />
-            {config.gtmId && <GoogleTagManager id={config.gtmId} />}
-            <Pendo />
-            <AuthenticationGate />
-            <SuspensionAlerts />
-            <CookieConsent />
-            <GlobalBanner>
-              <Layout>
-                <AppRoutes />
-              </Layout>
-            </GlobalBanner>
-            <Support />
-            <GlobalAlertWrapper />
-          </div>
-        </RouterComponent>
-      </Poll>
+  <ErrorBoundary onCtaClick={reloadApp} ctaLabel="Reload Page">
+    <Hibana>
+      <ThemeProvider>
+        <Poll>
+          <RouterComponent>
+            <div>
+              {config.siftScience && <SiftScience config={config.siftScience} />}
+              <BoomerangBanner />
+              {config.gtmId && <GoogleTagManager id={config.gtmId} />}
+              <Pendo />
+              <AuthenticationGate />
+              <SuspensionAlerts />
+              <CookieConsent />
+              <GlobalBanner>
+                <Layout>
+                  <AppRoutes />
+                </Layout>
+              </GlobalBanner>
+              <Support />
+              <GlobalAlertWrapper />
+            </div>
+          </RouterComponent>
+        </Poll>
+      </ThemeProvider>
     </Hibana>
   </ErrorBoundary>
 );
