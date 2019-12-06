@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const themes = {
-  old: 'static/styles-old.css',
-  new: 'static/styles-new.css'
+  old: '/static/styles-old.css',
+  new: '/static/styles-new.css'
 }
 
 const defaultContext = false;
