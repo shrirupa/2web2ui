@@ -103,7 +103,7 @@ describe('Filter Fields Component', () => {
 
     it('displays only blacklist codes', () => {
       const wrapper = blackListFilters();
-      expect(wrapper.find({ name: 'provider' })).toHaveProp('results', [
+      expect(wrapper.find({ name: 'blacklist_provider' })).toHaveProp('results', [
         'abuseat.org',
         'spamhaus.org',
       ]);
@@ -111,7 +111,7 @@ describe('Filter Fields Component', () => {
 
     it('displays only blacklist resources', () => {
       const wrapper = blackListFilters();
-      expect(wrapper.find({ name: 'resource' })).toHaveProp('results', [
+      expect(wrapper.find({ name: 'blacklist_resource' })).toHaveProp('results', [
         '0.0.0.0',
         '1.2.3.4',
         'example.com',
@@ -121,12 +121,12 @@ describe('Filter Fields Component', () => {
 
     it('disables provider field when loading options', () => {
       const wrapper = blackListFilters({ blacklistsPending: true });
-      expect(wrapper.find({ name: 'provider' })).toHaveProp('disabled', true);
+      expect(wrapper.find({ name: 'blacklist_provider' })).toHaveProp('disabled', true);
     });
 
     it('disables resource field when loading options', () => {
       const wrapper = blackListFilters({ blacklistMonitorsPending: true });
-      expect(wrapper.find({ name: 'resource' })).toHaveProp('disabled', true);
+      expect(wrapper.find({ name: 'blacklist_resource' })).toHaveProp('disabled', true);
     });
   });
 });

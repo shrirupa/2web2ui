@@ -21,8 +21,8 @@ export const FILTERS_FRIENDLY_NAMES = {
   sending_domain: 'Sending Domain',
   sending_ip: 'Sending IP',
   subaccount_id: 'Subaccounts',
-  provider: 'Blacklists',
-  resource: 'Domains or IPs',
+  blacklist_provider: 'Blacklists',
+  blacklist_resource: 'Domains or IPs',
 };
 
 export const RECOMMENDED_METRIC_VALUE = {
