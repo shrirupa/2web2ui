@@ -444,7 +444,7 @@ const routes = [
     component: suppressions.ListPage,
     condition: hasGrants('suppression_lists/manage'),
     layout: App,
-    title: 'Suppression List',
+    title: 'Suppressions',
     supportDocSearch: 'suppression list',
   },
   {
