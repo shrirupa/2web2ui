@@ -7,6 +7,12 @@ exports[`EmailSearch renders correctly 1`] = `
     xs={12}
   >
     <div>
+      <label
+        className="ScreenReaderOnly"
+        htmlFor="email"
+      >
+        Recipient Email
+      </label>
       <Field
         component={[Function]}
         name="email"
@@ -33,6 +39,12 @@ exports[`EmailSearch renders correctly with subaccounts 1`] = `
     xs={12}
   >
     <div>
+      <label
+        className="ScreenReaderOnly"
+        htmlFor="email"
+      >
+        Recipient Email
+      </label>
       <Field
         component={[Function]}
         name="email"
@@ -54,6 +66,12 @@ exports[`EmailSearch renders correctly with subaccounts 1`] = `
     xs={12}
   >
     <div>
+      <label
+        className="ScreenReaderOnly"
+        htmlFor="subaccount"
+      >
+        Subaccount
+      </label>
       <Field
         component={[Function]}
         label=""

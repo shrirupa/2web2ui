@@ -45,6 +45,8 @@ exports[`SuppressionSearch renders correctly 1`] = `
       <Connect(FilterDropdown)
         displayValue="Type"
         formName="filterForm"
+        id="types-filter-dropdown"
+        label="Type"
         namespace="types"
         onClose={[Function]}
         options={
@@ -71,6 +73,8 @@ exports[`SuppressionSearch renders correctly 1`] = `
       <Connect(FilterDropdown)
         displayValue="Sources"
         formName="filterForm"
+        id="source-filter-dropdown"
+        label="Sources"
         namespace="sources"
         onClose={[Function]}
         options={

@@ -1,5 +1,7 @@
 const PAGE_URL = '/lists/suppressions';
 const SUPPRESSION_LIST_API_URL = '/api/v1/suppression-list*';
+const DELETE_MODAL_CONTENT =
+  'Are you sure you want to delete fake-email@gmail.com from suppression list?';
 
 describe('The recipients suppressions list page', () => {
   beforeEach(() => {
@@ -35,49 +37,6 @@ describe('The recipients suppressions list page', () => {
     });
   });
 
-  describe('filtering triggers a network request, updating suppression list results from the API', () => {
-    beforeEach(() => {
-      cy.visit(PAGE_URL);
-
-      cy.wait('@stubbedSuppressionListRequest');
-
-      cy.stubRequest({
-        url: SUPPRESSION_LIST_API_URL,
-        fixture: 'suppression-list/200.get.filtered-results.json',
-        requestAlias: 'stubbedFilteredRequest',
-      });
-
-      cy.queryByText('filtered-fake-email@gmail.com').should('not.be.visible');
-    });
-
-    it('re-requests data when filtering by a broad date range', () => {
-      cy.findByLabelText('Broad Date Range').select('Last Hour');
-
-      cy.findAllByText('filtered-fake-email@gmail.com').should('have.length', 2);
-    });
-
-    it('re-requests data when filtering by a narrow date range', () => {
-      cy.findByLabelText('Narrow Date Range').click();
-      cy.findByText('Apply').click();
-
-      cy.findAllByText('filtered-fake-email@gmail.com').should('have.length', 2);
-    });
-
-    it('re-requests data when filtering by list type', () => {
-      cy.findByLabelText('Type').click();
-      cy.findByText('Transactional').click();
-      cy.get('main').click({ position: 'bottomRight' }); // Clicking outside of the filter dropdown to trigger the change
-
-      cy.findAllByText('filtered-fake-email@gmail.com').should('have.length', 2);
-    });
-
-    it('re-requests data when filtering by sources', () => {
-      cy.findByLabelText('Sources').click();
-      cy.findByText('Spam Complaint').click();
-      cy.get('main').click({ position: 'bottomRight' }); // Clicking outside of the filter dropdown to trigger the change
-    });
-  });
-
   it('renders date range, "Type", and "Source" fields when the "Filters" tab is selected', () => {
     cy.visit(PAGE_URL);
 
@@ -99,17 +58,6 @@ describe('The recipients suppressions list page', () => {
     cy.findByLabelText('Subaccount').should('be.visible');
   });
 
-  it('renders an empty state when no suppressions have been added', () => {
-    cy.stubRequest({
-      url: SUPPRESSION_LIST_API_URL,
-      fixture: 'suppression-list/200.get.no-results.json',
-    });
-
-    cy.visit(PAGE_URL);
-
-    cy.findByText('There are no results for your current query').should('be.visible');
-  });
-
   describe('the suppressions list table', () => {
     it('renders retrieved suppression lists in the table', () => {
       cy.visit(PAGE_URL);
@@ -120,10 +68,31 @@ describe('The recipients suppressions list page', () => {
       cy.findByText('Master Account').should('be.visible');
     });
 
-    it('renders a delete modal when clicking the "Delete" button within a table row', () => {
-      const deleteModalContent =
-        'Are you sure you want to delete fake-email@gmail.com from suppression list?';
+    it('renders an error when the suppression list endpoint returns an error', () => {
+      cy.stubRequest({
+        statusCode: 400,
+        url: SUPPRESSION_LIST_API_URL,
+        fixture: 'suppression-list/400.get.json',
+      });
 
+      cy.visit(PAGE_URL);
+
+      cy.findByText('Something went wrong.').should('be.visible');
+      cy.findByText('There are no results for your current query').should('be.visible');
+    });
+
+    it('renders an empty state when no suppressions have been added', () => {
+      cy.stubRequest({
+        url: SUPPRESSION_LIST_API_URL,
+        fixture: 'suppression-list/200.get.no-results.json',
+      });
+
+      cy.visit(PAGE_URL);
+
+      cy.findByText('There are no results for your current query').should('be.visible');
+    });
+
+    it('renders a delete modal when clicking the "Delete" button within a table row', () => {
       cy.stubRequest({
         method: 'DELETE',
         url: '/api/v1/suppression-list/fake-email@gmail.com',
@@ -135,13 +104,13 @@ describe('The recipients suppressions list page', () => {
       // Testing cancellation within the modal
       cy.get('table').within(() => cy.findByText('Delete').click());
 
-      cy.findByText(deleteModalContent).should('be.visible');
+      cy.findByText(DELETE_MODAL_CONTENT).should('be.visible');
 
       cy.get('#modal-portal').within(() => {
         cy.findByText('Cancel').click();
       });
 
-      cy.queryByText(deleteModalContent).should('not.be.visible');
+      cy.queryByText(DELETE_MODAL_CONTENT).should('not.be.visible');
 
       // Testing deletion within the modal
       cy.get('table').within(() => cy.findByText('Delete').click());
@@ -153,6 +122,25 @@ describe('The recipients suppressions list page', () => {
       cy.findByText(
         'fake-email@gmail.com was successfully deleted from the suppression list',
       ).should('be.visible');
+    });
+
+    it('renders an error and keeps the modal open when suppression deletion fails', () => {
+      cy.stubRequest({
+        statusCode: 400,
+        method: 'DELETE',
+        url: '/api/v1/suppression-list/fake-email@gmail.com',
+        fixture: 'suppression-list/200.delete.json',
+      });
+
+      cy.visit(PAGE_URL);
+
+      cy.get('table').within(() => cy.findByText('Delete').click());
+      cy.get('#modal-portal').within(() => {
+        cy.findByText('Delete').click();
+      });
+
+      cy.findByText('Something went wrong.').should('be.visible');
+      cy.findByText(DELETE_MODAL_CONTENT).should('be.visible');
     });
 
     it('renders a details modal when clicking the "View Details" button within a table row', () => {
@@ -319,6 +307,49 @@ describe('The recipients suppressions list page', () => {
       cy.visit(PAGE_URL);
 
       cy.queryByText('Subaccount').should('not.be.visible');
+    });
+
+    describe('table filtering that triggers network requests and updates suppression list results', () => {
+      beforeEach(() => {
+        cy.visit(PAGE_URL);
+
+        cy.wait('@stubbedSuppressionListRequest');
+
+        cy.stubRequest({
+          url: SUPPRESSION_LIST_API_URL,
+          fixture: 'suppression-list/200.get.filtered-results.json',
+          requestAlias: 'stubbedFilteredRequest',
+        });
+
+        cy.queryByText('filtered-fake-email@gmail.com').should('not.be.visible');
+      });
+
+      it('re-requests data when filtering by a broad date range', () => {
+        cy.findByLabelText('Broad Date Range').select('Last Hour');
+
+        cy.findAllByText('filtered-fake-email@gmail.com').should('have.length', 2);
+      });
+
+      it('re-requests data when filtering by a narrow date range', () => {
+        cy.findByLabelText('Narrow Date Range').click();
+        cy.findByText('Apply').click();
+
+        cy.findAllByText('filtered-fake-email@gmail.com').should('have.length', 2);
+      });
+
+      it('re-requests data when filtering by list type', () => {
+        cy.findByLabelText('Type').click();
+        cy.findByText('Transactional').click();
+        cy.get('main').click({ position: 'bottomRight' }); // Clicking outside of the filter dropdown to trigger the change
+
+        cy.findAllByText('filtered-fake-email@gmail.com').should('have.length', 2);
+      });
+
+      it('re-requests data when filtering by sources', () => {
+        cy.findByLabelText('Sources').click();
+        cy.findByText('Spam Complaint').click();
+        cy.get('main').click({ position: 'bottomRight' }); // Clicking outside of the filter dropdown to trigger the change
+      });
     });
   });
 
