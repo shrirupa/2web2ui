@@ -143,7 +143,7 @@ describe('The recipients suppressions list page', () => {
       cy.findByText(DELETE_MODAL_CONTENT).should('be.visible');
     });
 
-    it.only('disables "Delete" buttons within the table while a delete request is pending', () => {
+    it('disables "Delete" buttons within the table while a delete request is pending', () => {
       const deleteDelay = 500;
 
       cy.stubRequest({
