@@ -75,7 +75,7 @@ export class FilterDropdown extends Component {
           className={popoverClassName}
           trigger={
             <>
-              <label className={styles.hidden} for={`filter-dropdown-${id}`}>
+              <label className={styles.hidden} htmlFor={`filter-dropdown-${id}`}>
                 {label}
               </label>
 

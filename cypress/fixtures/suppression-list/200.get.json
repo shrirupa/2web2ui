@@ -4,12 +4,12 @@
       "recipient": "fake-email@gmail.com",
       "type": "non_transactional",
       "source": "Manually Added",
-      "description": "this is a test one",
+      "description": "this is a test description",
       "created": "2020-01-03T19:51:46+00:00",
       "updated": "2020-01-03T19:51:46+00:00",
       "non_transactional": true
     }
   ],
   "links": [],
-  "total_count": 6258
+  "total_count": 1
 }

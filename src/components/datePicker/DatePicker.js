@@ -184,7 +184,7 @@ export default class AppDatePicker extends Component {
 
     const rangeSelect = showPresets ? (
       <>
-        <label className={styles.Label} for={`range-select-${id}`}>
+        <label className={styles.Label} htmlFor={`range-select-${id}`}>
           Broad Date Range
         </label>
 
@@ -200,7 +200,7 @@ export default class AppDatePicker extends Component {
 
     const dateField = (
       <>
-        <label className={styles.Label} for={`date-field-${id}`}>
+        <label className={styles.Label} htmlFor={`date-field-${id}`}>
           Narrow Date Range
         </label>
 

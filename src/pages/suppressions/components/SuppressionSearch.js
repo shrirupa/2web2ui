@@ -53,7 +53,7 @@ export class SuppressionSearch extends Component {
         <Grid.Column xs={6} md={3}>
           <div>
             <FilterDropdown
-              label="Types"
+              label="Type"
               id="types-filter-dropdown"
               popoverClassName={styles.suppresionPopver}
               formName="filterForm"

@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "recipient": "recipient-a",
+      "type": "transactional",
+      "source": "source-c",
+      "subaccount_id": "3",
+      "description": "this is a test description",
+      "created": "2020-01-03T19:51:46+00:00",
+      "updated": "2020-01-03T19:51:46+00:00",
+      "non_transactional": true
+    },
+    {
+      "recipient": "recipient-b",
+      "type": "non_transactional",
+      "source": "source-a",
+      "subaccount_id": "1",
+      "description": "this is a test description",
+      "created": "2020-01-03T19:51:46+00:00",
+      "updated": "2020-01-03T19:51:46+00:00",
+      "non_transactional": true
+    },
+    {
+      "recipient": "recipient-c",
+      "type": "transactional",
+      "source": "source-b",
+      "subaccount_id": "2",
+      "description": "this is a test description",
+      "created": "2020-01-03T19:51:46+00:00",
+      "updated": "2020-01-03T19:51:46+00:00",
+      "non_transactional": true
+    }
+  ],
+  "links": [],
+  "total_count": 3
+}
