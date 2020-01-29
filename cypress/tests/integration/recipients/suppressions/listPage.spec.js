@@ -121,6 +121,9 @@ describe('The recipients suppressions list page', () => {
     });
 
     it('renders a delete modal when clicking the "Delete" button within a table row', () => {
+      const deleteModalContent =
+        'Are you sure you want to delete fake-email@gmail.com from suppression list?';
+
       cy.stubRequest({
         method: 'DELETE',
         url: '/api/v1/suppression-list/fake-email@gmail.com',
@@ -129,11 +132,19 @@ describe('The recipients suppressions list page', () => {
 
       cy.visit(PAGE_URL);
 
-      cy.findByText('Delete').click();
+      // Testing cancellation within the modal
+      cy.get('table').within(() => cy.findByText('Delete').click());
 
-      cy.findByText(
-        'Are you sure you want to delete fake-email@gmail.com from suppression list?',
-      ).should('be.visible');
+      cy.findByText(deleteModalContent).should('be.visible');
+
+      cy.get('#modal-portal').within(() => {
+        cy.findByText('Cancel').click();
+      });
+
+      cy.queryByText(deleteModalContent).should('not.be.visible');
+
+      // Testing deletion within the modal
+      cy.get('table').within(() => cy.findByText('Delete').click());
 
       cy.get('#modal-portal').within(() => {
         cy.findByText('Delete').click();
@@ -159,7 +170,7 @@ describe('The recipients suppressions list page', () => {
         cy.findByText('Close').click();
       });
 
-      cy.findByText('Supression Details').should('not.be.visible');
+      cy.findByText('Suppression Details').should('not.be.visible');
     });
 
     it('sorts alphabetically by "Recipient", "Type", "Source", and "Subaccount"', () => {
