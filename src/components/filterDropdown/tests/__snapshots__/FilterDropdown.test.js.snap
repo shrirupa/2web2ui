@@ -7,14 +7,23 @@ exports[`Component: FilterDropdown renders correctly 1`] = `
     onClose={[Function]}
     right={true}
     trigger={
-      <TextField
-        prefix={null}
-        readOnly={true}
-        resize="both"
-        suffix={<ArrowDropDown />}
-        type="text"
-        value="Status"
-      />
+      <React.Fragment>
+        <label
+          className="hidden"
+          htmlFor="filter-dropdown-my-filter-dropdown"
+        >
+          My Label
+        </label>
+        <TextField
+          id="filter-dropdown-my-filter-dropdown"
+          prefix={null}
+          readOnly={true}
+          resize="both"
+          suffix={<ArrowDropDown />}
+          type="text"
+          value="Status"
+        />
+      </React.Fragment>
     }
   >
     <ActionList
@@ -80,14 +89,23 @@ exports[`Component: FilterDropdown renders selected correctly 1`] = `
     onClose={[Function]}
     right={true}
     trigger={
-      <TextField
-        prefix="(1)"
-        readOnly={true}
-        resize="both"
-        suffix={<ArrowDropDown />}
-        type="text"
-        value="Status"
-      />
+      <React.Fragment>
+        <label
+          className="hidden"
+          htmlFor="filter-dropdown-my-filter-dropdown"
+        >
+          My Label
+        </label>
+        <TextField
+          id="filter-dropdown-my-filter-dropdown"
+          prefix="(1)"
+          readOnly={true}
+          resize="both"
+          suffix={<ArrowDropDown />}
+          type="text"
+          value="Status"
+        />
+      </React.Fragment>
     }
   >
     <ActionList

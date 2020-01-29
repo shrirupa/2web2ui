@@ -1,42 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: DatePicker handleFormDates should use a date field format if provided 1`] = `
-<TextField
-  connectLeft={
-    <Select
-      disabled={false}
-      onChange={[MockFunction]}
-      options={
-        Array [
-          1,
-          2,
-          3,
-        ]
-      }
-      value="day"
-    />
-  }
-  disabled={false}
-  onBlur={[MockFunction]}
-  onClick={[MockFunction]}
-  readOnly={true}
-  resize="both"
-  type="text"
-  value="YYYY-MM h – YYYY-MM h"
-/>
+<React.Fragment>
+  <label
+    className="Label"
+    htmlFor="date-field-date-picker"
+  >
+    Narrow Date Range
+  </label>
+  <TextField
+    connectLeft={
+      <React.Fragment>
+        <label
+          className="Label"
+          htmlFor="range-select-date-picker"
+        >
+          Broad Date Range
+        </label>
+        <Select
+          disabled={false}
+          id="range-select-date-picker"
+          onChange={[MockFunction]}
+          options={
+            Array [
+              1,
+              2,
+              3,
+            ]
+          }
+          value="day"
+        />
+      </React.Fragment>
+    }
+    disabled={false}
+    id="date-field-date-picker"
+    onBlur={[MockFunction]}
+    onClick={[MockFunction]}
+    readOnly={true}
+    resize="both"
+    type="text"
+    value="YYYY-MM h – YYYY-MM h"
+  />
+</React.Fragment>
 `;
 
 exports[`Component: DatePicker should not render range select if showPresets is false 1`] = `
-<TextField
-  connectLeft={null}
-  disabled={false}
-  onBlur={[MockFunction]}
-  onClick={[MockFunction]}
-  readOnly={true}
-  resize="both"
-  type="text"
-  value="MMM Do YYYY h:mma – MMM Do YYYY h:mma"
-/>
+<React.Fragment>
+  <label
+    className="Label"
+    htmlFor="date-field-date-picker"
+  >
+    Narrow Date Range
+  </label>
+  <TextField
+    connectLeft={null}
+    disabled={false}
+    id="date-field-date-picker"
+    onBlur={[MockFunction]}
+    onClick={[MockFunction]}
+    readOnly={true}
+    resize="both"
+    type="text"
+    value="MMM Do YYYY h:mma – MMM Do YYYY h:mma"
+  />
+</React.Fragment>
 `;
 
 exports[`Component: DatePicker should render ok by default 1`] = `
@@ -47,29 +74,47 @@ exports[`Component: DatePicker should render ok by default 1`] = `
   open={false}
   right={true}
   trigger={
-    <TextField
-      connectLeft={
-        <Select
-          disabled={false}
-          onChange={[Function]}
-          options={
-            Array [
-              1,
-              2,
-              3,
-            ]
-          }
-          value="day"
-        />
-      }
-      disabled={false}
-      onBlur={[Function]}
-      onClick={[Function]}
-      readOnly={true}
-      resize="both"
-      type="text"
-      value="MMM Do YYYY h:mma – MMM Do YYYY h:mma"
-    />
+    <React.Fragment>
+      <label
+        className="Label"
+        htmlFor="date-field-date-picker"
+      >
+        Narrow Date Range
+      </label>
+      <TextField
+        connectLeft={
+          <React.Fragment>
+            <label
+              className="Label"
+              htmlFor="range-select-date-picker"
+            >
+              Broad Date Range
+            </label>
+            <Select
+              disabled={false}
+              id="range-select-date-picker"
+              onChange={[Function]}
+              options={
+                Array [
+                  1,
+                  2,
+                  3,
+                ]
+              }
+              value="day"
+            />
+          </React.Fragment>
+        }
+        disabled={false}
+        id="date-field-date-picker"
+        onBlur={[Function]}
+        onClick={[Function]}
+        readOnly={true}
+        resize="both"
+        type="text"
+        value="MMM Do YYYY h:mma – MMM Do YYYY h:mma"
+      />
+    </React.Fragment>
   }
   wrapper="div"
 >
