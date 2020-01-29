@@ -33,7 +33,8 @@ export function Results(props) {
           <Button size="small" onClick={() => openDetailModal(row)}>
             View Details
           </Button>
-          <Button destructive size="small" onClick={() => openDeleteModal(row)}>
+
+          <Button disabled={deleting} destructive size="small" onClick={() => openDeleteModal(row)}>
             Delete
           </Button>
         </Button.Group>

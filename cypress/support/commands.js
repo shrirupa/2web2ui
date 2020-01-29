@@ -117,9 +117,11 @@ Cypress.Commands.add('stubAuth', () => {
  *
  * @param {string} method - the method of the HTTP request being stubbed (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods). Defaults to `GET`.
  * @param {number} statusCode - the HTTP response status code. Defaults to `200`.
- * @param {string} method - the URL of the request that will be intercepted
- * @param {string} method - the path of the relevant fixture. See: https://docs.cypress.io/api/commands/fixture.html
- * @param {string} method - the name of the alias used for the passed in fixture
+ * @param {string} url - the URL of the request that will be intercepted
+ * @param {string} fixture - the path of the relevant fixture. See: https://docs.cypress.io/api/commands/fixture.html
+ * @param {string} fixtureAlias - the name of the alias used for the passed in fixture
+ * @param {string} requestAlias - the alias name for the passed in route - useful when paired with cy.wait();
+ * @param {number} delay - delay before a request will resolve - useful for testing loading states
  */
 Cypress.Commands.add(
   'stubRequest',
@@ -131,6 +133,7 @@ Cypress.Commands.add(
     fixture,
     fixtureAlias = 'requestAlias',
     requestAlias = 'stubbedRequest',
+    delay,
   }) => {
     cy.server();
     cy.fixture(fixture).as(fixtureAlias);
@@ -140,6 +143,7 @@ Cypress.Commands.add(
       status: statusCode,
       response: `@${fixtureAlias}`,
       onRequest,
+      delay,
     }).as(requestAlias);
   },
 );

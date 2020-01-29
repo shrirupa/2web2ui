@@ -143,6 +143,39 @@ describe('The recipients suppressions list page', () => {
       cy.findByText(DELETE_MODAL_CONTENT).should('be.visible');
     });
 
+    it.only('disables "Delete" buttons within the table while a delete request is pending', () => {
+      const deleteDelay = 500;
+
+      cy.stubRequest({
+        url: SUPPRESSION_LIST_API_URL,
+        fixture: 'suppression-list/200.get.alphabetical-results.json',
+      });
+
+      cy.stubRequest({
+        method: 'DELETE',
+        url: '/api/v1/suppression-list/recipient-a',
+        fixture: 'suppression-list/200.delete.json',
+        delay: deleteDelay,
+      });
+
+      cy.visit(PAGE_URL);
+
+      cy.get('table').within(() =>
+        cy
+          .findAllByText('Delete')
+          .first()
+          .click(),
+      );
+
+      cy.get('#modal-portal').within(() => cy.findByText('Delete').click());
+
+      cy.get('table').within(() => cy.findAllByText('Delete').should('be.disabled'));
+
+      cy.wait(deleteDelay);
+
+      cy.get('table').within(() => cy.findAllByText('Delete').should('not.be.disabled'));
+    });
+
     it('renders a details modal when clicking the "View Details" button within a table row', () => {
       cy.visit(PAGE_URL);
 
