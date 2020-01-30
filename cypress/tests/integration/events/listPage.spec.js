@@ -4,6 +4,16 @@ describe('The events page', () => {
   beforeEach(() => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
+
+    cy.stubRequest({
+      url: '/api/v1/events/message*',
+      fixture: 'events/message/200.get.json',
+    });
+
+    cy.stubRequest({
+      url: '/api/v1/events/message/documentation',
+      fixture: 'events/message/documentation/200.get.json',
+    });
   });
 
   it('has a relevant page title', () => {
@@ -13,11 +23,57 @@ describe('The events page', () => {
     cy.findByText('Events Search').should('be.visible');
   });
 
-  it('renders an error when the request for events documentation data fails', () => {});
+  it('renders an error when the request for events documentation data fails', () => {
+    cy.stubRequest({
+      statusCode: 400,
+      url: '/api/v1/events/message/documentation',
+      fixture: 'events/message/documentation/400.get.json',
+    });
 
-  it('renders an error when the request for events data fails', () => {});
+    cy.visit(PAGE_URL);
 
-  it('re-requests events data when changing the filter date', () => {});
+    cy.findByText('An error occurred').should('be.visible');
+    cy.findByText('Show Error Details').click();
+    cy.findByText('This is an error').should('be.visible');
+    cy.findByText('Hide Error Details').click();
+    cy.queryByText('This is an error').should('not.be.visible');
+
+    cy.stubRequest({
+      url: '/api/v1/events/message/documentation',
+      fixture: 'events/message/documentation/200.get.json',
+    });
+
+    cy.findByText('Try Again').click();
+    cy.queryByText('An error occurred').should('not.be.visible');
+  });
+
+  it('renders an error when the request for events data fails', () => {
+    cy.stubRequest({
+      statusCode: 400,
+      url: '/api/v1/events/message*',
+      fixture: 'events/message/400.get.json',
+    });
+
+    cy.visit(PAGE_URL);
+
+    cy.findByText('An error occurred').should('be.visible');
+    cy.findByText('Show Error Details').click();
+    cy.findByText('This is an error').should('be.visible');
+    cy.findByText('Hide Error Details').click();
+    cy.queryByText('This is an error').should('not.be.visible');
+
+    cy.stubRequest({
+      url: '/api/v1/events/message*',
+      fixture: 'events/message/200.get.json',
+    });
+
+    cy.findByText('Try Again').click();
+    cy.queryByText('An error occurred').should('not.be.visible');
+  });
+
+  it('re-requests events data when changing the filter date', () => {
+    cy.visit(PAGE_URL);
+  });
 
   it('re-requests events data when the user filters by a recipient email address', () => {});
 
