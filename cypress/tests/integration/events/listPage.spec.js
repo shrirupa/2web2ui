@@ -13,8 +13,6 @@ describe('The events page', () => {
     cy.findByText('Events Search').should('be.visible');
   });
 
-  it('renders the empty state when no events are returned', () => {});
-
   it('renders an error when the request for events documentation data fails', () => {});
 
   it('renders an error when the request for events data fails', () => {});
@@ -27,8 +25,17 @@ describe('The events page', () => {
 
   it('renders the "Share this report" modal when clicking on the "Share" button', () => {});
 
+  describe('the events table', () => {
+    it('renders with a "View Details" button that links to the detail page for this event', () => {});
+
+    it('renders the "Event", "Subject", "Recipient", "From Address", and event "Time" for each event', () => {});
+
+    it('renders the empty state when no events are returned', () => {});
+  });
+
   describe('the "Advanced Filters" modal', () => {
     beforeEach(() => {
+      cy.visit(PAGE_URL);
       cy.findByText('Add Filters').click();
     });
 
