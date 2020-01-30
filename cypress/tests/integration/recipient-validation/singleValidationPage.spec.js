@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 const SINGLE_RESULT_URL = '/api/v1/recipient-validation/single/**';
 
 describe('The recipient validation single result page', () => {

@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 describe('Signals', () => {
   it('displays a list of Signals features when clicked in the navigation', () => {
     cy.login();

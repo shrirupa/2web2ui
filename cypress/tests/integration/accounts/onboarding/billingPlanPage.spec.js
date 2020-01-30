@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 function stubRequest({
   method = 'GET',
   statusCode = 200,
@@ -21,7 +19,7 @@ function stubRequest({
 describe('The billing plan page', () => {
   beforeEach(() => {
     cy.stubAuth();
-    stubRequest({
+    cy.stubRequest({
       url: '/api/v1/account/countries?filter=billing',
       fixture: 'account/countries/200.get.billing-filter.json',
     });

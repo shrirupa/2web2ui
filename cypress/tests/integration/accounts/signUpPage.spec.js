@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 function stubRequest({ method, statusCode = 200, url, fixture, alias }) {
   cy.server();
   cy.fixture(fixture).as(alias);

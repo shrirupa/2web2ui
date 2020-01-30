@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 /* The Flow:
 1. Create a template
 2. Write content to each tab and view the preview

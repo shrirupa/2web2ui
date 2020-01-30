@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 const ROUTE_URL = '/recipient-validation/list';
 
 describe('The recipient validation /list route', () => {

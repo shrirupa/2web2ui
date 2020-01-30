@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 const API_URL = '/api/v1/recipient-validation/job/fake-list';
 const APP_URL = '/recipient-validation/list/fake-list';
 const FIXTURE_BASE_URL = 'recipient-validation/job/fake-list';

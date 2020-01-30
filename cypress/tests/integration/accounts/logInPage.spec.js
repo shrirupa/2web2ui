@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 /**
  * The following tests have some funky behavior between each test. Since we have whitelisted the auth cookies, the logged in state is preserved after finishing the final test. In order to successfully
  * re-run the tests (typically while editing them), stopping the test runner and restarting will

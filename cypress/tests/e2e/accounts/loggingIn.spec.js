@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 describe('The auth view', () => {
   before(() => cy.visit('/'));
 

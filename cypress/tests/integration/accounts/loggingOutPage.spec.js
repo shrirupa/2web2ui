@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 describe('logging out', () => {
   beforeEach(() => {
     cy.stubAuth();

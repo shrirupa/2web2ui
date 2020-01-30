@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 describe('Account settings', () => {
   it('is accessible via the user popover in the header', () => {
     cy.login();

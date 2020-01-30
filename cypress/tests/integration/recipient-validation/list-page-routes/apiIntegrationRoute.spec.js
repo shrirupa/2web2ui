@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 describe('The recipient validation /api route', () => {
   beforeEach(() => {
     cy.stubAuth();

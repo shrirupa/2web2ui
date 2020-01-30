@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 describe('The "Reset Your Password" view', () => {
   beforeEach(() => {
     cy.server();

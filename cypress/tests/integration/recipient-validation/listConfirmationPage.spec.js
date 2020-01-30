@@ -1,5 +1,3 @@
-/// <reference types="Cypress" />
-
 const PAGE_URL = '/recipient-validation/list/fake-list';
 
 describe('The recipient validation list confirmation page', () => {
