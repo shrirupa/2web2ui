@@ -16,30 +16,28 @@ before_install: npm install -g greenkeeper-lockfile@1
 
 install: npm ci --loglevel http
 
-defaults: &defaults
-  script:
-    - npm run test-integration-ci
-    - kill $(jobs -p) || true # Kill all background jobs that may still be running
-
 before_script: greenkeeper-lockfile-update
 
 # Example Cypress Travis-CI config found here:
 # https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.travis.yml
 jobs:
   include:
-    # - stage: test-and-build
-    #   name: 'Unit Testing'
-    #   script: npm run test-ci
-    # Running Cypress tests in parallel by using the same stage name
     - stage: test-and-build
-      name: 'Integration Testing - Accounts'
-      env:
-        - SPECS='cypress/tests/integration/accounts/**/*'
-      <<: *defaults
+      name: 'Unit Testing'
+      script: npm run test-ci
+    # Running Cypress tests in parallel by running them in batches
+    # This could probably be improved by writing a Node script to handle a config
     - stage: test-and-build
-      name: 'Integration Testing - Templates'
+      name: 'Integration Testing - Accounts, Events, Navigation'
       env:
-        - SPECS='cypress/tests/integration/templates/**/*'
-      <<: *defaults
+        - SPECS='cypress/tests/integration/accounts/**/*,cypress/tests/integration/events/**/*,cypress/tests/integration/navigation/**/*'
+      script:
+        - npm run test-integration-ci
+    - stage: test-and-build
+      name: 'Integration Testing - Templates, Recipient Validation'
+      env:
+        - SPECS='cypress/tests/integration/templates/**/*,cypress/tests/integration/recipient-validation/**/*'
+      script:
+        - npm run test-integration-ci
 
 after_script: greenkeeper-lockfile-upload
