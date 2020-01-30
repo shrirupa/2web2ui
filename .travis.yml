@@ -29,15 +29,11 @@ jobs:
     # This could probably be improved by writing a Node script to handle a config
     - stage: test-and-build
       name: 'Integration Testing - Accounts, Events, Navigation'
-      env:
-        - SPECS='cypress/tests/integration/accounts/**/*,cypress/tests/integration/events/**/*,cypress/tests/integration/navigation/**/*'
-      script:
-        - npm run test-integration-ci
+      env: SPECS='cypress/tests/integration/accounts/**/*,cypress/tests/integration/events/**/*,cypress/tests/integration/navigation/**/*'
+      script: npm run test-integration-ci
     - stage: test-and-build
       name: 'Integration Testing - Templates, Recipient Validation'
-      env:
-        - SPECS='cypress/tests/integration/templates/**/*,cypress/tests/integration/recipient-validation/**/*'
-      script:
-        - npm run test-integration-ci
+      env: SPECS='cypress/tests/integration/templates/**/*,cypress/tests/integration/recipient-validation/**/*'
+      script: npm run test-integration-ci
 
 after_script: greenkeeper-lockfile-upload
