@@ -32,14 +32,12 @@ jobs:
     #   script: npm run test-ci
     # Running Cypress tests in parallel by using the same stage name
     - stage: test-and-build
-      name: 'Integration Testing'
       env:
         - STAGE_NAME='Integration Testing'
-      script: npm run test-integration-ci
+      <<: *defaults
     - stage: test-and-build
-      name: 'Integration Testing'
       env:
         - STAGE_NAME='Integration Testing'
-      script: npm run test-integration-ci
+      <<: *defaults
 
 after_script: greenkeeper-lockfile-upload
