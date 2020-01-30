@@ -34,14 +34,12 @@ jobs:
     - stage: test-and-build
       name: 'Integration Testing - Accounts'
       env:
-        - STAGE_NAME='Accounts'
-        - SPECS_TO_TEST='cypress/tests/integration/accounts'
+        - SPECS='cypress/tests/integration/accounts/**/*'
       <<: *defaults
     - stage: test-and-build
       name: 'Integration Testing - Templates'
       env:
-        - STAGE_NAME='Templates'
-        - SPECS_TO_TEST='cypress/tests/integration/templates'
+        - SPECS='cypress/tests/integration/templates/**/*'
       <<: *defaults
 
 after_script: greenkeeper-lockfile-upload
