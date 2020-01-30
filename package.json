@@ -22,7 +22,7 @@
     "test-e2e-ci": "npm run start-app & wait-on http://localhost:3100 && npm run test-e2e-headless",
     "test-integration": "npm run test-cy-env && cypress open --config integrationFolder=cypress/tests/integration",
     "test-integration-headless": "cypress run --config integrationFolder=cypress/tests/integration",
-    "test-integration-ci": "npm run start-app & wait-on http://localhost:3100 && sleep 90 && npm run test-integration-headless -- --config video=false --parallel --group $STAGE_NAME",
+    "test-integration-ci": "npm run start-app & wait-on http://localhost:3100 && sleep 90 && npm run test-integration-headless -- --parallel --group $STAGE_NAME --config video=false",
     "coveralls": "cat ./build-reports/lcov.info | coveralls",
     "storybook-dev": "start-storybook --port 3101 --config-dir .storybook --docs --quiet",
     "storybook-build": "build-storybook --config-dir .storybook --output-dir .out --docs",
