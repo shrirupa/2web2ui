@@ -7,6 +7,10 @@
   grid-template-columns: 1.25fr 1fr auto auto;
 }
 
+.ScreenReaderOnlyLabel {
+  @include visually-hidden();
+}
+
 .DateFilter {
   @media only screen and (max-width: breakpoint(medium)) {
     grid-column-start: 1;
