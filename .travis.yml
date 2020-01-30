@@ -27,19 +27,19 @@ before_script: greenkeeper-lockfile-update
 # https://github.com/cypress-io/cypress-example-kitchensink/blob/master/.travis.yml
 jobs:
   include:
-    - stage: test-and-build
-      name: 'Unit Testing'
-      script: npm run test-ci
+    # - stage: test-and-build
+    #   name: 'Unit Testing'
+    #   script: npm run test-ci
     # Running Cypress tests in parallel by using the same stage name
     - stage: test-and-build
-      name: 'Integration Testing - Accounts'
-      script:
-        npm run test-integration-ci -- --record --group integration/accounts --spec
-        'cypress/tests/integration/accounts/**/*'
+      name: 'Integration Testing'
+      env:
+        - STAGE_NAME='Integration Testing'
+      script: npm run test-integration-ci
     - stage: test-and-build
-      name: 'Integration Testing - Recipients'
-      script:
-        npm run test-integration-ci -- --record --group integration/recipients --spec
-        'cypress/tests/integration/recipients/**/*'
+      name: 'Integration Testing'
+      env:
+        - STAGE_NAME='Integration Testing'
+      script: npm run test-integration-ci
 
 after_script: greenkeeper-lockfile-upload
