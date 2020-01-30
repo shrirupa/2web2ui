@@ -1,21 +1,3 @@
-function stubRequest({
-  method = 'GET',
-  statusCode = 200,
-  url,
-  fixture,
-  alias = 'billingPageAlias',
-}) {
-  cy.server();
-
-  cy.fixture(fixture).as(alias);
-  cy.route({
-    method,
-    url,
-    status: statusCode,
-    response: `@${alias}`,
-  }).as(`${alias}Request`);
-}
-
 describe('The billing plan page', () => {
   beforeEach(() => {
     cy.stubAuth();

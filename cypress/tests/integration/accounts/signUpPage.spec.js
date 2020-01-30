@@ -1,21 +1,10 @@
-function stubRequest({ method, statusCode = 200, url, fixture, alias }) {
-  cy.server();
-  cy.fixture(fixture).as(alias);
-  cy.route({
-    method,
-    url,
-    status: statusCode,
-    response: `@${alias}`,
-  });
-}
-
 describe('The sign up page', () => {
   before(() => {
-    stubRequest({
+    cy.stubRequest({
       method: 'POST',
       url: 'https://www.google.com/recaptcha/**/*',
       fixture: 'recaptcha/200.post.json',
-      alias: 'recaptchaPost',
+      fixtureAlias: 'recaptchaPost',
     });
   });
 
