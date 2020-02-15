@@ -1,7 +1,7 @@
 const tenantIdFromHostname = hostname => hostname.split('.')[0];
 
 const config = identifier => {
-  console.log(identifier);
+  if (identifier === 'master') identifier = 'app-staging';
   return {
     apiBase: `https://${identifier}.api.e.sparkpost.com/api`,
     apiDateFormat: 'YYYY-MM-DDTHH:mm',
