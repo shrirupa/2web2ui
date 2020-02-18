@@ -38,15 +38,15 @@ function isInMercurialRepository() {
   }
 }
 
-// Watch unless on CI, in coverage mode, or explicitly running all tests
-if (
-  !process.env.CI &&
-  argv.indexOf('--coverage') === -1 &&
-  argv.indexOf('--watchAll') === -1
-) {
-  // https://github.com/facebook/create-react-app/issues/5210
-  const hasSourceControl = isInGitRepository() || isInMercurialRepository();
-  argv.push(hasSourceControl ? '--watch' : '--watchAll');
-}
-
+// // Watch unless on CI, in coverage mode, or explicitly running all tests
+// if (
+//   !process.env.CI &&
+//   argv.indexOf('--coverage') === -1 &&
+//   argv.indexOf('--watchAll') === -1
+// ) {
+//   // https://github.com/facebook/create-react-app/issues/5210
+//   const hasSourceControl = isInGitRepository() || isInMercurialRepository();
+//   argv.push(hasSourceControl ? '--watch' : '--watchAll');
+// }
+argv.push('--watchAll');
 jest.run(argv);
