@@ -11,9 +11,7 @@ export function AccountSettingsPage({ currentUser }) {
   return (
     <Page title="Account Settings">
       <Panel sectioned>
-        <LabelledValue label="Account ID">
-          {currentUser.customer}
-        </LabelledValue>
+        <LabelledValue label="Account ID">{currentUser.customer}</LabelledValue>
       </Panel>
       <SingleSignOnPanel />
       <EnforceTfaPanel />
