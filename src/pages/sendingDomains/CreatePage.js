@@ -8,17 +8,24 @@ import { Page, Panel } from '@sparkpost/matchbox';
 import CreateForm from './components/CreateForm';
 
 export class CreatePage extends Component {
-  handleCreate = (values) => {
+  handleCreate = values => {
     const { createDomain, history } = this.props;
 
-    return createDomain(values)
-      .then(() => history.push(`/account/sending-domains/edit/${values.domain}`));
-  }
+    return createDomain(values).then(() =>
+      history.push(`/account/sending-domains/edit/${values.domain}`),
+    );
+  };
 
   render() {
     return (
-      <Page breadcrumbAction={{ content: 'Back to Sending Domains', Component: Link, to: '/account/sending-domains' }}>
-        <Panel title='Add a Domain'>
+      <Page
+        breadcrumbAction={{
+          content: 'Back to Sending Domains',
+          Component: Link,
+          to: '/account/sending-domains',
+        }}
+      >
+        <Panel title="Add a Domain">
           <CreateForm onSubmit={this.handleCreate} />
         </Panel>
       </Page>
