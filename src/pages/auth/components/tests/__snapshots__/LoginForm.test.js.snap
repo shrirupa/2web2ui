@@ -2,7 +2,7 @@
 
 exports[`renders correctly 1`] = `
 <Fragment>
-  Fake Form.
+  Completely Fake Form.
   <form>
     <Field
       autoFocus={true}
@@ -51,7 +51,7 @@ exports[`renders correctly 1`] = `
 
 exports[`renders correctly when logging in 1`] = `
 <Fragment>
-  Fake Form.
+  Completely Fake Form.
   <form>
     <Field
       autoFocus={true}
@@ -111,7 +111,7 @@ exports[`renders errors 1`] = `
       error="asplode"
     />
   </div>
-  Fake Form.
+  Completely Fake Form.
   <form>
     <Field
       autoFocus={true}
