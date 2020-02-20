@@ -14,6 +14,7 @@ export const LoginForm = ({ loginPending, loginError, handleSubmit }) => (
         <Error error={loginError} />
       </div>
     )}
+    {'Fake Form.'}
     <form onSubmit={handleSubmit}>
       <Field
         autoFocus
