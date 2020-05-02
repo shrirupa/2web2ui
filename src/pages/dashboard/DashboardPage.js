@@ -100,7 +100,7 @@ export function DashboardPage(props) {
   //Shows banner if within 14 days of plan to downgrade
 
   return (
-    <Page title="Dashboard">
+    <Page title="Dashboard Page ">
       {currentUser.email_verified === false && (
         <VerifyEmailBanner verifying={currentUser.verifyingEmail} />
       )}
