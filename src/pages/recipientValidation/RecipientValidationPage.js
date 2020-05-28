@@ -82,7 +82,7 @@ export class RecipientValidationPage extends Component {
           Recipient Validation is an easy, efficient way to verify that email addresses are valid
           before you send. We run each address through a series of checks to catch many common
           problems, including syntax errors and non-existent mailboxes, to drive better
-          deliverability, cut down on fraud, and capture every opportunity.
+          deliverability, cut down on fraud, and capture every opportunity. some text changes.
         </p>
 
         <Tabs
